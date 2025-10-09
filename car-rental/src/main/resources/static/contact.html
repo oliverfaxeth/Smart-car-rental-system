@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextCar - Kontakta oss</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-car-front-fill"></i> NextCar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Hem</a></li>
+                    <li class="nav-item"><a class="nav-link" href="all-cars.html">Våra Bilar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Om Oss</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="contact.html">Kontakt</a></li>
+                    <li class="nav-item ms-3">
+                        <a href="register.html" class="btn-register" style="text-decoration: none;">Registrera</a>
+                        <a href="login.html" class="btn-login-red" style="text-decoration: none;"><i class="bi bi-box-arrow-in-right"></i> Logga in</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Kontakta oss</h1>
+            <p class="subtitle">Vi finns här för att hjälpa dig - hör av dig!</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Contact Form -->
+                <div class="col-lg-7">
+                    <div class="contact-form-card">
+                        <h3><i class="bi bi-envelope-fill"></i> Skicka ett meddelande</h3>
+                        <p class="mb-4">Fyll i formuläret så återkommer vi till dig inom 24 timmar.</p>
+                        
+                        <form id="contactForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="contactName" class="form-label">
+                                        <i class="bi bi-person"></i> Namn <span class="required">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" id="contactName" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="contactEmail" class="form-label">
+                                        <i class="bi bi-envelope"></i> E-post <span class="required">*</span>
+                                    </label>
+                                    <input type="email" class="form-control" id="contactEmail" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="contactPhone" class="form-label">
+                                        <i class="bi bi-telephone"></i> Telefon
+                                    </label>
+                                    <input type="tel" class="form-control" id="contactPhone">
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="contactSubject" class="form-label">
+                                        <i class="bi bi-tag"></i> Ämne <span class="required">*</span>
+                                    </label>
+                                    <select class="form-control" id="contactSubject" required>
+                                        <option value="">Välj ämne</option>
+                                        <option value="booking">Bokning</option>
+                                        <option value="question">Allmän fråga</option>
+                                        <option value="complaint">Klagomål</option>
+                                        <option value="feedback">Feedback</option>
+                                        <option value="other">Övrigt</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="contactMessage" class="form-label">
+                                        <i class="bi bi-chat-left-text"></i> Meddelande <span class="required">*</span>
+                                    </label>
+                                    <textarea class="form-control" id="contactMessage" rows="6" required></textarea>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn-contact-submit">
+                                        <i class="bi bi-send"></i> Skicka meddelande
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-lg-5">
+                    <div class="contact-info-card">
+                        <h3><i class="bi bi-info-circle-fill"></i> Kontaktinformation</h3>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-geo-alt-fill"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h5>Adress</h5>
+                                <p>Storgatan 123<br>123 45 Stockholm<br>Sverige</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-telephone-fill"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h5>Telefon</h5>
+                                <p><a href="tel:+46812345678">08-123 456 78</a></p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-envelope-fill"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h5>E-post</h5>
+                                <p><a href="mailto:info@nextcar.se">info@nextcar.se</a></p>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon">
+                                <i class="bi bi-clock-fill"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h5>Öppettider</h5>
+                                <p>Måndag - Fredag: 08:00 - 18:00<br>
+                                Lördag - Söndag: 10:00 - 16:00</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-social">
+                            <h5>Följ oss</h5>
+                            <div class="social-links">
+                                <a href="#"><i class="bi bi-facebook"></i></a>
+                                <a href="#"><i class="bi bi-instagram"></i></a>
+                                <a href="#"><i class="bi bi-twitter"></i></a>
+                                <a href="#"><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="bi bi-car-front-fill"></i> NextCar</h5>
+                    <p style="line-height: 1.8;">Din pålitliga partner för biluthyrning. Vi erbjuder ett brett utbud av högkvalitativa fordon för alla dina behov.</p>
+                    <div class="social-icons mt-3">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Snabblänkar</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Om oss</a></li>
+                        <li class="mb-2"><a href="all-cars.html"><i class="bi bi-chevron-right"></i> Våra bilar</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Priser</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Villkor</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Kundservice</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Support</a></li>
+                        <li class="mb-2"><a href="contact.html"><i class="bi bi-chevron-right"></i> Kontakt</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Försäkring</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5>Kontakt</h5>
+                    <p><i class="bi bi-telephone-fill" style="color: var(--golden-yellow);"></i> 08-123 456 78</p>
+                    <p><i class="bi bi-envelope-fill" style="color: var(--golden-yellow);"></i> info@nextcar.se</p>
+                    <p><i class="bi bi-geo-alt-fill" style="color: var(--golden-yellow);"></i> Storgatan 123<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stockholm, Sverige</p>
+                    <p><i class="bi bi-clock-fill" style="color: var(--golden-yellow);"></i> Mån-Fre: 08:00-18:00<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lör-Sön: 10:00-16:00</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NextCar. Alla rättigheter reserverade. | <a href="#">Integritetspolicy</a> | <a href="#">Användarvillkor</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

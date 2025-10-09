@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextCar - Registrera</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-car-front-fill"></i> NextCar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Hem</a></li>
+                    <li class="nav-item"><a class="nav-link" href="all-cars.html">Våra Bilar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Om Oss</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Kontakt</a></li>
+                    <li class="nav-item ms-3">
+                        <a href="register.html" class="btn-register active" style="text-decoration: none;">Registrera</a>
+                        <a href="login.html" class="btn-login-red" style="text-decoration: none;"><i class="bi bi-box-arrow-in-right"></i> Logga in</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <i class="bi bi-person-plus-fill auth-icon"></i>
+                    <h2>Skapa ditt konto</h2>
+                    <p class="auth-subtitle">Fyll i dina uppgifter för att komma igång</p>
+                </div>
+
+                <form id="registerForm">
+                    <div class="row g-3">
+                        <!-- Förnamn -->
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label">
+                                <i class="bi bi-person"></i> Förnamn <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="firstName" required>
+                        </div>
+
+                        <!-- Efternamn -->
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label">
+                                <i class="bi bi-person"></i> Efternamn <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="lastName" required>
+                        </div>
+
+                        <!-- E-post -->
+                        <div class="col-12">
+                            <label for="email" class="form-label">
+                                <i class="bi bi-envelope"></i> E-postadress <span class="required">*</span>
+                            </label>
+                            <input type="email" class="form-control" id="email" placeholder="exempel@email.com" required>
+                        </div>
+
+                        <!-- Telefon med landprefix -->
+                        <div class="col-12">
+                            <label for="phone" class="form-label">
+                                <i class="bi bi-telephone"></i> Telefonnummer <span class="required">*</span>
+                            </label>
+                            <div class="phone-input-group">
+                                <select class="form-select phone-prefix" id="phonePrefix">
+                                    <option value="+46" selected>🇸🇪 +46</option>
+                                    <option value="+47">🇳🇴 +47</option>
+                                    <option value="+45">🇩🇰 +45</option>
+                                    <option value="+358">🇫🇮 +358</option>
+                                    <option value="+49">🇩🇪 +49</option>
+                                    <option value="+44">🇬🇧 +44</option>
+                                    <option value="+33">🇫🇷 +33</option>
+                                    <option value="+34">🇪🇸 +34</option>
+                                </select>
+                                <input type="tel" class="form-control phone-number" id="phone" placeholder="70-123 45 67" required>
+                            </div>
+                        </div>
+
+                        <!-- Adress -->
+                        <div class="col-12">
+                            <label for="address" class="form-label">
+                                <i class="bi bi-house"></i> Adress <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="address" placeholder="Gatunamn 123" required>
+                        </div>
+
+                        <!-- Postnummer -->
+                        <div class="col-md-4">
+                            <label for="postalCode" class="form-label">
+                                <i class="bi bi-mailbox"></i> Postnummer <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="postalCode" placeholder="123 45" required>
+                        </div>
+
+                        <!-- Stad -->
+                        <div class="col-md-8">
+                            <label for="city" class="form-label">
+                                <i class="bi bi-geo-alt"></i> Stad <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-control" id="city" placeholder="Stockholm" required>
+                        </div>
+
+                        <!-- Land -->
+                        <div class="col-12">
+                            <label for="country" class="form-label">
+                                <i class="bi bi-globe"></i> Land <span class="required">*</span>
+                            </label>
+                            <select class="form-control" id="country" required>
+                                <option value="">Välj land</option>
+                                <option value="SE" selected>🇸🇪 Sverige</option>
+                                <option value="NO">🇳🇴 Norge</option>
+                                <option value="DK">🇩🇰 Danmark</option>
+                                <option value="FI">🇫🇮 Finland</option>
+                                <option value="DE">🇩🇪 Tyskland</option>
+                                <option value="GB">🇬🇧 Storbritannien</option>
+                                <option value="FR">🇫🇷 Frankrike</option>
+                                <option value="ES">🇪🇸 Spanien</option>
+                                <option value="IT">🇮🇹 Italien</option>
+                                <option value="NL">🇳🇱 Nederländerna</option>
+                                <option value="BE">🇧🇪 Belgien</option>
+                                <option value="PL">🇵🇱 Polen</option>
+                            </select>
+                        </div>
+
+                        <!-- Lösenord -->
+                        <div class="col-md-6">
+                            <label for="password" class="form-label">
+                                <i class="bi bi-lock"></i> Lösenord <span class="required">*</span>
+                            </label>
+                            <input type="password" class="form-control" id="password" placeholder="Minst 8 tecken" required>
+                            <small class="form-text text-muted">Minst 8 tecken</small>
+                        </div>
+
+                        <!-- Bekräfta lösenord -->
+                        <div class="col-md-6">
+                            <label for="confirmPassword" class="form-label">
+                                <i class="bi bi-lock-fill"></i> Bekräfta lösenord <span class="required">*</span>
+                            </label>
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="Upprepa lösenord" required>
+                        </div>
+
+                        <!-- Villkor checkbox -->
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    Jag godkänner <a href="#" class="link-primary">användarvillkoren</a> och <a href="#" class="link-primary">integritetspolicyn</a> <span class="required">*</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit button -->
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn-auth-submit">
+                                <i class="bi bi-person-plus"></i> Skapa konto
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Login link -->
+                <div class="auth-footer">
+                    <p>Har du redan ett konto? <a href="login.html" class="link-primary fw-bold">Logga in här</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="bi bi-car-front-fill"></i> NextCar</h5>
+                    <p style="line-height: 1.8;">Din pålitliga partner för biluthyrning. Vi erbjuder ett brett utbud av högkvalitativa fordon för alla dina behov.</p>
+                    <div class="social-icons mt-3">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Snabblänkar</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Om oss</a></li>
+                        <li class="mb-2"><a href="all-cars.html"><i class="bi bi-chevron-right"></i> Våra bilar</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Priser</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Villkor</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Kundservice</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Support</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Kontakt</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Försäkring</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5>Kontakt</h5>
+                    <p><i class="bi bi-telephone-fill" style="color: var(--golden-yellow);"></i> 08-123 456 78</p>
+                    <p><i class="bi bi-envelope-fill" style="color: var(--golden-yellow);"></i> info@nextcar.se</p>
+                    <p><i class="bi bi-geo-alt-fill" style="color: var(--golden-yellow);"></i> Storgatan 123<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stockholm, Sverige</p>
+                    <p><i class="bi bi-clock-fill" style="color: var(--golden-yellow);"></i> Mån-Fre: 08:00-18:00<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lör-Sön: 10:00-16:00</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NextCar. Alla rättigheter reserverade. | <a href="#">Integritetspolicy</a> | <a href="#">Användarvillkor</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextCar - Hitta din perfekta bil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-car-front-fill"></i> NextCar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Hem</a></li>
+                    <li class="nav-item"><a class="nav-link" href="all-cars.html">Våra Bilar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Om Oss</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Kontakt</a></li>
+                    <li class="nav-item ms-3">
+                        <a href="register.html" class="btn-register" style="text-decoration: none;">Registrera</a>
+                        <a href="login.html" class="btn-login-red" style="text-decoration: none;"><i class="bi bi-box-arrow-in-right"></i> Logga in</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Search Section -->
+    <section class="hero-search-section">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h1>Hyr din nästa bil här!</h1>
+                <p class="hero-subtitle">Från ekonomiska stadbilar till lyxiga SUV:ar - vi har det perfekta alternativet för din resa.</p>
+            </div>
+            <div class="search-card">
+                <h3><i class="bi bi-calendar-range"></i> Boka din bil</h3>
+                <form id="searchForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="startDate" class="form-label"><i class="bi bi-calendar-check"></i> Från datum</label>
+                            <input type="date" class="form-control" id="startDate" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="endDate" class="form-label"><i class="bi bi-calendar-x"></i> Till datum</label>
+                            <input type="date" class="form-control" id="endDate" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-search-red"><i class="bi bi-search"></i> Sök Tillgängliga Bilar</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cars Section -->
+    <section class="cars-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="sectionTitle">Våra Bilar</h2>
+                <div class="underline"></div>
+                <p id="sectionSubtitle">Utforska vårt breda utbud av välskötta fordon</p>
+            </div>
+
+            <!-- Filter bar - visas endast efter sökning -->
+            <div class="filter-bar" id="filterBar">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <i class="bi bi-funnel-fill" style="color: var(--golden-yellow); font-size: 1.2rem;"></i>
+                        <span class="filter-label ms-2">Sortera:</span>
+                        <select class="form-select d-inline-block w-auto ms-3" id="sortSelect">
+                            <option value="price-asc" selected>Lägsta pris först</option>
+                            <option value="price-desc">Högsta pris först</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <span class="results-count" id="resultsCount">Visar <strong>6 bilar</strong> för <strong id="daysCount">5 dagar</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carousel view - före sökning -->
+            <div class="carousel-container" id="carouselView">
+                <button class="carousel-nav-btn prev" id="prevBtn"><i class="bi bi-chevron-left"></i></button>
+                <div class="carousel-track" id="carouselTrack">
+                    
+                    <!-- Exempel bilkort 1 -->
+                    <div class="car-card-carousel">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-car-front"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Toyota Corolla</h3></div>
+                            <div class="car-meta"><span class="badge">Liten</span><i class="bi bi-calendar3"></i> 2023</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Bensin</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 5 sits</span>
+                            </div>
+                            <p class="car-description">Bekväm och pålitlig stadsbil perfekt för vardagsbruk.</p>
+                            <div class="car-footer">
+                                <div class="price-info">
+                                    <div class="price-left">
+                                        <span class="small-text">Totalt 5 dagar</span>
+                                        <span class="price-large">2 495 kr</span>
+                                    </div>
+                                    <div class="price-right">
+                                        <div class="availability-badge"><i class="bi bi-check-circle-fill"></i> Tillgänglig</div>
+                                        <div class="price-per-day">499 kr / dag</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exempel bilkort 2 -->
+                    <div class="car-card-carousel">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-truck"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Volvo XC60</h3></div>
+                            <div class="car-meta"><span class="badge">SUV</span><i class="bi bi-calendar3"></i> 2024</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Diesel</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 7 sits</span>
+                                <span class="car-spec-item"><i class="bi bi-truck"></i> Dragkrok</span>
+                            </div>
+                            <p class="car-description">Premium SUV med hög säkerhet och exceptionell komfort.</p>
+                            <div class="car-footer">
+                                <div class="price-info">
+                                    <div class="price-left">
+                                        <span class="small-text">Totalt 5 dagar</span>
+                                        <span class="price-large">4 495 kr</span>
+                                    </div>
+                                    <div class="price-right">
+                                        <div class="availability-badge"><i class="bi bi-check-circle-fill"></i> Tillgänglig</div>
+                                        <div class="price-per-day">899 kr / dag</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exempel bilkort 3 -->
+                    <div class="car-card-carousel">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-truck-front"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Volkswagen Passat</h3></div>
+                            <div class="car-meta"><span class="badge">Combi</span><i class="bi bi-calendar3"></i> 2023</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Diesel</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 5 sits</span>
+                                <span class="car-spec-item"><i class="bi bi-truck"></i> Dragkrok</span>
+                            </div>
+                            <p class="car-description">Rymlig kombi med generöst lastutrymme för familjen.</p>
+                            <div class="car-footer">
+                                <div class="price-info">
+                                    <div class="price-left">
+                                        <span class="small-text">Totalt 5 dagar</span>
+                                        <span class="price-large">3 495 kr</span>
+                                    </div>
+                                    <div class="price-right">
+                                        <div class="availability-badge"><i class="bi bi-check-circle-fill"></i> Tillgänglig</div>
+                                        <div class="price-per-day">699 kr / dag</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fler bilar kan läggas till här... -->
+
+                </div>
+                <button class="carousel-nav-btn next" id="nextBtn"><i class="bi bi-chevron-right"></i></button>
+            </div>
+
+            <!-- Grid view - efter sökning (dold initialt) -->
+            <div class="grid-view" id="gridView">
+                <div class="row g-4" id="gridContainer">
+                    <!-- Bilkort kommer renderas här med React senare -->
+                </div>
+            </div>
+
+            <!-- Meddelande när inga bilar hittas -->
+            <div class="no-results-message" id="noResults">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <h3>Inga bilar tillgängliga</h3>
+                <p>Tyvärr hittade vi inga tillgängliga bilar för dina valda datum. Försök med andra datum.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="bi bi-car-front-fill"></i> NextCar</h5>
+                    <p style="line-height: 1.8;">Din pålitliga partner för biluthyrning. Vi erbjuder ett brett utbud av högkvalitativa fordon för alla dina behov.</p>
+                    <div class="social-icons mt-3">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Snabblänkar</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Om oss</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Våra bilar</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Priser</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Villkor</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Kundservice</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Support</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Kontakt</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Försäkring</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5>Kontakt</h5>
+                    <p><i class="bi bi-telephone-fill" style="color: var(--golden-yellow);"></i> 08-123 456 78</p>
+                    <p><i class="bi bi-envelope-fill" style="color: var(--golden-yellow);"></i> info@nextcar.se</p>
+                    <p><i class="bi bi-geo-alt-fill" style="color: var(--golden-yellow);"></i> Storgatan 123<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stockholm, Sverige</p>
+                    <p><i class="bi bi-clock-fill" style="color: var(--golden-yellow);"></i> Mån-Fre: 08:00-18:00<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lör-Sön: 10:00-16:00</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NextCar. Alla rättigheter reserverade. | <a href="#">Integritetspolicy</a> | <a href="#">Användarvillkor</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- React kommer läggas till här senare -->
+</body>
+</html>

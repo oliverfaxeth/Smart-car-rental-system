@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextCar - Våra Bilar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-car-front-fill"></i> NextCar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Hem</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="all-cars.html">Våra Bilar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Om Oss</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Kontakt</a></li>
+                    <li class="nav-item ms-3">
+                        <a href="register.html" class="btn-register" style="text-decoration: none;">Registrera</a>
+                        <a href="login.html" class="btn-login-red" style="text-decoration: none;"><i class="bi bi-box-arrow-in-right"></i> Logga in</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Våra Bilar</h1>
+            <p class="subtitle">Utforska vårt fullständiga utbud av välskötta fordon</p>
+        </div>
+    </section>
+
+    <!-- Cars Section -->
+    <section class="cars-section">
+        <div class="container">
+            <!-- Filter bar -->
+            <div class="filter-bar active">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 mb-3 mb-lg-0">
+                        <i class="bi bi-funnel-fill" style="color: var(--golden-yellow); font-size: 1.2rem;"></i>
+                        <span class="filter-label ms-2">Filtrera:</span>
+                        <select class="form-select d-inline-block w-auto ms-3 me-3">
+                            <option selected>Alla kategorier</option>
+                            <option>Liten</option>
+                            <option>SUV</option>
+                            <option>Combi</option>
+                            <option>Transport</option>
+                        </select>
+                        <span class="filter-label ms-3">Sortera:</span>
+                        <select class="form-select d-inline-block w-auto ms-3">
+                            <option selected>Lägsta pris först</option>
+                            <option>Högsta pris först</option>
+                            <option>Nyaste först</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <span class="results-count">Visar <strong>9 bilar</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cars Grid -->
+            <div class="row g-4">
+                <!-- Bil 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="car-card-grid">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-car-front"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Toyota Corolla</h3></div>
+                            <div class="car-meta"><span class="badge">Liten</span><i class="bi bi-calendar3"></i> 2023</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Bensin</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 5 sits</span>
+                            </div>
+                            <div class="car-footer">
+                                <div class="price-info-simple">
+                                    <div class="price-display">
+                                        <span class="price-per-day-large">499 kr / dag</span>
+                                    </div>
+                                    <a href="index.html" class="btn-book-now">Välj datum & Boka</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bil 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="car-card-grid">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-truck"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Volvo XC60</h3></div>
+                            <div class="car-meta"><span class="badge">SUV</span><i class="bi bi-calendar3"></i> 2024</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Diesel</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 7 sits</span>
+                                <span class="car-spec-item"><i class="bi bi-truck"></i> Dragkrok</span>
+                            </div>
+                            <div class="car-footer">
+                                <div class="price-info-simple">
+                                    <div class="price-display">
+                                        <span class="price-per-day-large">899 kr / dag</span>
+                                    </div>
+                                    <a href="index.html" class="btn-book-now">Välj datum & Boka</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bil 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="car-card-grid">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-truck-front"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Volkswagen Passat</h3></div>
+                            <div class="car-meta"><span class="badge">Combi</span><i class="bi bi-calendar3"></i> 2023</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Diesel</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 5 sits</span>
+                                <span class="car-spec-item"><i class="bi bi-truck"></i> Dragkrok</span>
+                            </div>
+                            <div class="car-footer">
+                                <div class="price-info-simple">
+                                    <div class="price-display">
+                                        <span class="price-per-day-large">699 kr / dag</span>
+                                    </div>
+                                    <a href="index.html" class="btn-book-now">Välj datum & Boka</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bil 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="car-card-grid">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-lightning-charge"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Tesla Model 3</h3></div>
+                            <div class="car-meta"><span class="badge">Liten</span><i class="bi bi-calendar3"></i> 2024</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-lightning-charge-fill"></i> Elektrisk</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 5 sits</span>
+                            </div>
+                            <div class="car-footer">
+                                <div class="price-info-simple">
+                                    <div class="price-display">
+                                        <span class="price-per-day-large">1 299 kr / dag</span>
+                                    </div>
+                                    <a href="index.html" class="btn-book-now">Välj datum & Boka</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bil 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="car-card-grid">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-van-front"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Mercedes Sprinter</h3></div>
+                            <div class="car-meta"><span class="badge">Transport</span><i class="bi bi-calendar3"></i> 2023</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Diesel</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Manuell</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 3 sits</span>
+                                <span class="car-spec-item"><i class="bi bi-box"></i> 12m³</span>
+                            </div>
+                            <div class="car-footer">
+                                <div class="price-info-simple">
+                                    <div class="price-display">
+                                        <span class="price-per-day-large">1 099 kr / dag</span>
+                                    </div>
+                                    <a href="index.html" class="btn-book-now">Välj datum & Boka</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bil 6 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="car-card-grid">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-van-front"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Ford Transit</h3></div>
+                            <div class="car-meta"><span class="badge">Transport</span><i class="bi bi-calendar3"></i> 2023</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Diesel</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Manuell</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 2 sits</span>
+                                <span class="car-spec-item"><i class="bi bi-box"></i> 10m³</span>
+                            </div>
+                            <div class="car-footer">
+                                <div class="price-info-simple">
+                                    <div class="price-display">
+                                        <span class="price-per-day-large">999 kr / dag</span>
+                                    </div>
+                                    <a href="index.html" class="btn-book-now">Välj datum & Boka</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bil 7 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="car-card-grid">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-car-front"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>BMW 3-Serie</h3></div>
+                            <div class="car-meta"><span class="badge">Liten</span><i class="bi bi-calendar3"></i> 2024</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Bensin</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 5 sits</span>
+                            </div>
+                            <p class="car-description">Sportigt körglädje i premiumklass. Perfekt balans mellan komfort och prestanda.</p>
+                            <div class="car-footer">
+                                <div class="price-info-simple">
+                                    <div class="price-display">
+                                        <span class="price-per-day-large">799 kr / dag</span>
+                                    </div>
+                                    <div class="availability-badge"><i class="bi bi-check-circle-fill"></i> Tillgänglig</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bil 8 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="car-card-grid">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-truck"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Audi Q5</h3></div>
+                            <div class="car-meta"><span class="badge">SUV</span><i class="bi bi-calendar3"></i> 2024</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Diesel</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 5 sits</span>
+                                <span class="car-spec-item"><i class="bi bi-truck"></i> Dragkrok</span>
+                            </div>
+                            <p class="car-description">Elegant SUV med fyrhjulsdrift. Premium interiör och avancerad teknologi.</p>
+                            <div class="car-footer">
+                                <div class="price-info-simple">
+                                    <div class="price-display">
+                                        <span class="price-per-day-large">949 kr / dag</span>
+                                    </div>
+                                    <div class="availability-badge"><i class="bi bi-check-circle-fill"></i> Tillgänglig</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bil 9 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="car-card-grid">
+                        <div class="car-img-section">
+                            <div class="image-carousel">
+                                <button class="carousel-btn carousel-btn-left"><i class="bi bi-chevron-left"></i></button>
+                                <i class="bi bi-truck-front"></i>
+                                <button class="carousel-btn carousel-btn-right"><i class="bi bi-chevron-right"></i></button>
+                                <div class="carousel-indicators">
+                                    <span class="carousel-dot active"></span>
+                                    <span class="carousel-dot"></span>
+                                    <span class="carousel-dot"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="car-info">
+                            <div class="car-header"><h3>Skoda Octavia</h3></div>
+                            <div class="car-meta"><span class="badge">Combi</span><i class="bi bi-calendar3"></i> 2023</div>
+                            <div class="car-specs">
+                                <span class="car-spec-item"><i class="bi bi-fuel-pump"></i> Bensin</span>
+                                <span class="car-spec-item"><i class="bi bi-gear"></i> Automat</span>
+                                <span class="car-spec-item"><i class="bi bi-people"></i> 5 sits</span>
+                            </div>
+                            <p class="car-description">Prisvärd och rymlig kombi. Bra utrustning och låga driftskostnader.</p>
+                            <div class="car-footer">
+                                <div class="price-info-simple">
+                                    <div class="price-display">
+                                        <span class="price-per-day-large">599 kr / dag</span>
+                                    </div>
+                                    <div class="availability-badge"><i class="bi bi-check-circle-fill"></i> Tillgänglig</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><i class="bi bi-car-front-fill"></i> NextCar</h5>
+                    <p style="line-height: 1.8;">Din pålitliga partner för biluthyrning. Vi erbjuder ett brett utbud av högkvalitativa fordon för alla dina behov.</p>
+                    <div class="social-icons mt-3">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Snabblänkar</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Om oss</a></li>
+                        <li class="mb-2"><a href="all-cars.html"><i class="bi bi-chevron-right"></i> Våra bilar</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Priser</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Villkor</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h5>Kundservice</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Support</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Kontakt</a></li>
+                        <li class="mb-2"><a href="#"><i class="bi bi-chevron-right"></i> Försäkring</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h5>Kontakt</h5>
+                    <p><i class="bi bi-telephone-fill" style="color: var(--golden-yellow);"></i> 08-123 456 78</p>
+                    <p><i class="bi bi-envelope-fill" style="color: var(--golden-yellow);"></i> info@nextcar.se</p>
+                    <p><i class="bi bi-geo-alt-fill" style="color: var(--golden-yellow);"></i> Storgatan 123<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Stockholm, Sverige</p>
+                    <p><i class="bi bi-clock-fill" style="color: var(--golden-yellow);"></i> Mån-Fre: 08:00-18:00<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lör-Sön: 10:00-16:00</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NextCar. Alla rättigheter reserverade. | <a href="#">Integritetspolicy</a> | <a href="#">Användarvillkor</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
