@@ -26,8 +26,9 @@ public class Car {
     @Column(nullable = false, length = 20)
     private String transmission;
 
-    @Column(nullable = false)
-    private Integer categoryId;
+    @ManyToOne
+    @JoinColumn(name = "categoryId", nullable = false)
+    private CarsCategory category;
 
     @Column(nullable = false)
     private Integer seats;
@@ -38,119 +39,34 @@ public class Car {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    // Constructors
-    public Car() {
-    }
+    // Getters and setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    public Car(Integer id, String brand, String model, Integer year, String fuel,
-               String transmission, Integer categoryId, Integer seats, String regNr, BigDecimal price) {
-        this.id = id;
-        this.brand = brand;
-        this.model = model;
-        this.year = year;
-        this.fuel = fuel;
-        this.transmission = transmission;
-        this.categoryId = categoryId;
-        this.seats = seats;
-        this.regNr = regNr;
-        this.price = price;
-    }
+    public String getBrand() { return brand; }
+    public void setBrand(String brand) { this.brand = brand; }
 
-    // Getters and Setters
-    public Integer getId() {
-        return id;
-    }
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public Integer getYear() { return year; }
+    public void setYear(Integer year) { this.year = year; }
 
-    public String getBrand() {
-        return brand;
-    }
+    public String getFuel() { return fuel; }
+    public void setFuel(String fuel) { this.fuel = fuel; }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
+    public String getTransmission() { return transmission; }
+    public void setTransmission(String transmission) { this.transmission = transmission; }
 
-    public String getModel() {
-        return model;
-    }
+    public CarsCategory getCategory() { return category; }
+    public void setCategory(CarsCategory category) { this.category = category; }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
+    public Integer getSeats() { return seats; }
+    public void setSeats(Integer seats) { this.seats = seats; }
 
-    public Integer getYear() {
-        return year;
-    }
+    public String getRegNr() { return regNr; }
+    public void setRegNr(String regNr) { this.regNr = regNr; }
 
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public String getFuel() {
-        return fuel;
-    }
-
-    public void setFuel(String fuel) {
-        this.fuel = fuel;
-    }
-
-    public String getTransmission() {
-        return transmission;
-    }
-
-    public void setTransmission(String transmission) {
-        this.transmission = transmission;
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Integer getSeats() {
-        return seats;
-    }
-
-    public void setSeats(Integer seats) {
-        this.seats = seats;
-    }
-
-    public String getRegNr() {
-        return regNr;
-    }
-
-    public void setRegNr(String regNr) {
-        this.regNr = regNr;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    // toString method
-    @Override
-    public String toString() {
-        return "Car{" +
-                "id=" + id +
-                ", brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", year=" + year +
-                ", fuel='" + fuel + '\'' +
-                ", transmission='" + transmission + '\'' +
-                ", categoryId=" + categoryId +
-                ", seats=" + seats +
-                ", regNr='" + regNr + '\'' +
-                ", price=" + price +
-                '}';
-    }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 }
