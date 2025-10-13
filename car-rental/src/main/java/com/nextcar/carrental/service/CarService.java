@@ -42,20 +42,32 @@ public class CarService {
         carRepository.deleteById(id);
     }
 
-    // Hitta tillgängliga bilar baserat på datumintervall
-    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate) {
+    // Hitta tillgängliga bilar baserat på datumintervall OCH kategori
+    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate, Integer categoryId) {
         // 1. Hämta alla bilar
         List<Car> allCars = carRepository.findAll();
 
-        // 2. Hämta alla bokningar
+        // 2. Filtrera på kategori (om categoryId anges)
+        if (categoryId != null) {
+            allCars = allCars.stream()
+                    .filter(car -> car.getCategoryId().equals(categoryId))
+                    .collect(Collectors.toList());
+        }
+
+        // 3. Hämta alla bokningar
         List<Rental> allRentals = rentalRepository.findAll();
 
-        // 3. Filtrera bort bilar som är bokade under det valda datumintervallet
+        // 4. Filtrera bort bilar som är bokade under det valda datumintervallet
         List<Car> availableCars = allCars.stream()
                 .filter(car -> isCarAvailable(car.getId(), startDate, endDate, allRentals))
                 .collect(Collectors.toList());
 
         return availableCars;
+    }
+
+    // Overload: Om inget categoryId anges, visa alla kategorier
+    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate) {
+        return getAvailableCars(startDate, endDate, null);
     }
 
     // Hjälpmetod: Kolla om en bil är tillgänglig

@@ -69,4 +69,9 @@ public class Car {
 
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
+
+    // Hjälpmetod för att hämta categoryId direkt
+    public Integer getCategoryId() {
+        return category != null ? category.getId() : null;
+    }
 }
