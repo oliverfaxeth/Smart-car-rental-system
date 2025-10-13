@@ -54,4 +54,3 @@ public class Rental {
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 }
-
