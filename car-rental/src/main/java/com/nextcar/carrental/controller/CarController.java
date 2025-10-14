@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 // Controller tar emot HTTP-requests från
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cars")
-@CrossOrigin(origins = "http://localhost:3000") // Fråga Ali om detta
+@CrossOrigin(origins = "http://localhost:3000")
 public class CarController {
 
     @Autowired
@@ -25,6 +26,52 @@ public class CarController {
         List<Car> cars = carService.getAllCars();
         return ResponseEntity.ok(cars);
     }
+
+    // GET /cars/available?startDate=2024-10-15&endDate=2024-10-20&categoryId=1
+    @GetMapping("/available")
+    public ResponseEntity<?> getAvailableCars(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) Integer categoryId) {
+
+        // Validering 1: Kolla att parametrarna inte är null eller tomma
+        if (startDate == null || startDate.isEmpty() || endDate == null || endDate.isEmpty()) {
+            return ResponseEntity.badRequest()
+                    .body("Både startdatum och slutdatum måste anges");
+        }
+
+        // Konvertera String till LocalDate
+        LocalDate start;
+        LocalDate end;
+
+        try {
+            start = LocalDate.parse(startDate);
+            end = LocalDate.parse(endDate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body("Ogiltigt datumformat. Använd format: YYYY-MM-DD");
+        }
+
+        // Validering 2: Startdatum kan inte vara tidigare än dagens datum
+        LocalDate today = LocalDate.now();
+        if (start.isBefore(today)) {
+            return ResponseEntity.badRequest()
+                    .body("Startdatum kan inte vara tidigare än dagens datum");
+        }
+
+        // Validering 3: Slutdatum måste vara minst 1 dag efter startdatum
+        if (!end.isAfter(start)) {
+            return ResponseEntity.badRequest()
+                    .body("Slutdatum måste vara minst 1 dag efter startdatum");
+        }
+
+        // Om alla valideringar är OK, hämta tillgängliga bilar (med eller utan kategorifilter)
+        List<Car> availableCars = carService.getAvailableCars(start, end, categoryId);
+
+        return ResponseEntity.ok(availableCars);
+    }
+
+
 
     // GET /cars/5 - Hämta en specifik bil
     @GetMapping("/{id}")

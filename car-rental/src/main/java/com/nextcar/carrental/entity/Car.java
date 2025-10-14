@@ -42,7 +42,6 @@ public class Car {
     @Column(name = "image_url") // För att kunna koppla databas image_url till frontend
     private String imageUrl;
 
-
     // Getters and setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -73,6 +72,11 @@ public class Car {
 
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
+
+    // Hjälpmetod för att hämta categoryId direkt
+    public Integer getCategoryId() {
+        return category != null ? category.getId() : null;
+    }
 
     public String getImageUrl() {
         return imageUrl;
