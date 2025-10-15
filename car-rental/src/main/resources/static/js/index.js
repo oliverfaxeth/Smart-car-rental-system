@@ -69,7 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Dölj "inga resultat"-meddelande
     noResultsMessage.classList.remove('active');
-    document.getElementById("resultsCount").innerHTML = `Visar <strong>${results.length} bilar</strong> för <strong>${calculateDays(startDate, endDate)} dagar</strong>`;
+    document.getElementById("resultsCount").innerHTML = 
+    `Visar <strong>${results.length} bilar</strong> för <strong>${calculateDays(startDate, endDate)} dagar</strong>`;
 
     const sortSelect = document.getElementById("sortSelect");
     
@@ -152,7 +153,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Uppdatera sorteringsknappen baserat på sparad ordning
     sortSelect.value = initialSortOrder;
-}
+
+
+    results.forEach((car) => {
+        const carCard = document.createElement("div");
+        carCard.classList.add("col-md-6", "col-lg-4");
+        carCard.innerHTML = `
+        <div class="car-card-grid">
+            <div class="car-img-section">
+                <img src="/images/${car.imageUrl}" alt="${car.brand} ${car.model}" class="img-fluid">
+            </div>
+            <div class="car-info">
+                <!-- Befintlig bilkortsinformation -->
+                <div class="car-footer">
+                    <div class="price-info">
+                        <div class="price-left">
+                            <span class="small-text">Totalt ${calculateDays(startDate, endDate)} dagar</span>
+                            <span class="price-large">${calculateTotalPrice(car.price, startDate, endDate)} kr</span>
+                        </div>
+                        <div class="price-right">
+                            <a href="#" class="btn-book-now" onclick="handleBooking(${car.id}, '${startDate}', '${endDate}')">
+                                Boka
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+        gridContainer.appendChild(carCard);
+    });
+
+
+    }
 
     // Kontrollera om det finns sparade sökresultat när sidan laddas
     const savedResults = loadSearchResults();
@@ -210,6 +243,29 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Ett fel inträffade vid sökning av bilar. Försök igen.");
         }
     });
+
+    // Funktion för att hantera bokning
+    function handleBooking(carId, startDate, endDate) {
+    // Kontrollera om användaren är inloggad
+    const token = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken');
+    
+    if (!token) {
+        // Spara bokningsinformation i sessionStorage
+        sessionStorage.setItem('pendingBooking', JSON.stringify({
+            carId: carId,
+            startDate: startDate,
+            endDate: endDate
+        }));
+
+        // Visa meddelande och redirecta till login
+        alert('Du måste logga in för att boka');
+        window.location.href = '/login.html';
+        return;
+    }
+
+    // Fortsätt med normal bokningsprocess om inloggad
+    return true;
+}
 
     // Hjälpfunktioner
     function calculateDays(startDate, endDate) {
