@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextCar - Registrera</title>
+    
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -74,14 +77,21 @@
                             </label>
                             <div class="phone-input-group">
                                 <select class="form-select phone-prefix" id="phonePrefix">
-                                    <option value="+46" selected>🇸🇪 +46</option>
-                                    <option value="+47">🇳🇴 +47</option>
-                                    <option value="+45">🇩🇰 +45</option>
-                                    <option value="+358">🇫🇮 +358</option>
-                                    <option value="+49">🇩🇪 +49</option>
-                                    <option value="+44">🇬🇧 +44</option>
-                                    <option value="+33">🇫🇷 +33</option>
-                                    <option value="+34">🇪🇸 +34</option>
+                                    <option value="+1" data-code="US"><span class="fi fi-us"></span> +1 USA</option>
+                                    <option value="+44" data-code="GB"><span class="fi fi-gb"></span> +44 Storbritannien</option>
+                                    <option value="+49" data-code="DE"><span class="fi fi-de"></span> +49 Tyskland</option>
+                                    <option value="+33" data-code="FR"><span class="fi fi-fr"></span> +33 Frankrike</option>
+                                    <option value="+39" data-code="IT"><span class="fi fi-it"></span> +39 Italien</option>
+                                    <option value="+34" data-code="ES"><span class="fi fi-es"></span> +34 Spanien</option>
+                                    <option value="+46" data-code="SE" selected><span class="fi fi-se"></span> +46 Sverige</option>
+                                    <option value="+47" data-code="NO"><span class="fi fi-no"></span> +47 Norge</option>
+                                    <option value="+45" data-code="DK"><span class="fi fi-dk"></span> +45 Danmark</option>
+                                    <option value="+358" data-code="FI"><span class="fi fi-fi"></span> +358 Finland</option>
+                                    <option value="+1" data-code="CA"><span class="fi fi-ca"></span> +1 Kanada</option>
+                                    <option value="+61" data-code="AU"><span class="fi fi-au"></span> +61 Australien</option>
+                                    <option value="+31" data-code="NL"><span class="fi fi-nl"></span> +31 Nederländerna</option>
+                                    <option value="+32" data-code="BE"><span class="fi fi-be"></span> +32 Belgien</option>
+                                    <option value="+41" data-code="CH"><span class="fi fi-ch"></span> +41 Schweiz</option>
                                 </select>
                                 <input type="tel" class="form-control phone-number" id="phone" placeholder="70-123 45 67" required>
                             </div>
@@ -118,19 +128,22 @@
                             </label>
                             <select class="form-control" id="country" required>
                                 <option value="">Välj land</option>
-                                <option value="SE" selected>🇸🇪 Sverige</option>
-                                <option value="NO">🇳🇴 Norge</option>
-                                <option value="DK">🇩🇰 Danmark</option>
-                                <option value="FI">🇫🇮 Finland</option>
-                                <option value="DE">🇩🇪 Tyskland</option>
-                                <option value="GB">🇬🇧 Storbritannien</option>
-                                <option value="FR">🇫🇷 Frankrike</option>
-                                <option value="ES">🇪🇸 Spanien</option>
-                                <option value="IT">🇮🇹 Italien</option>
-                                <option value="NL">🇳🇱 Nederländerna</option>
-                                <option value="BE">🇧🇪 Belgien</option>
-                                <option value="PL">🇵🇱 Polen</option>
-                            </select>
+                                    <option value="US"><span class="fi fi-us"></span> USA</option>
+                                        <option value="GB"><span class="fi fi-gb"></span> Storbritannien</option>
+                                        <option value="DE"><span class="fi fi-de"></span> Tyskland</option>
+                                        <option value="FR"><span class="fi fi-fr"></span> Frankrike</option>
+                                        <option value="IT"><span class="fi fi-it"></span> Italien</option>
+                                        <option value="ES"><span class="fi fi-es"></span> Spanien</option>
+                                        <option value="SE" selected><span class="fi fi-se"></span> Sverige</option>
+                                        <option value="NO"><span class="fi fi-no"></span> Norge</option>
+                                        <option value="DK"><span class="fi fi-dk"></span> Danmark</option>
+                                        <option value="FI"><span class="fi fi-fi"></span> Finland</option>
+                                        <option value="CA"><span class="fi fi-ca"></span> Kanada</option>
+                                        <option value="AU"><span class="fi fi-au"></span> Australien</option>
+                                        <option value="NL"><span class="fi fi-nl"></span> Nederländerna</option>
+                                        <option value="BE"><span class="fi fi-be"></span> Belgien</option>
+                                        <option value="CH"><span class="fi fi-ch"></span> Schweiz</option>
+                            </select>     
                         </div>
 
                         <!-- Lösenord -->
@@ -224,5 +237,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/register.js"></script>
 </body>
 </html>

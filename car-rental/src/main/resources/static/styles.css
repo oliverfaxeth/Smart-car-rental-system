@@ -1274,4 +1274,51 @@ body {
     .auth-icon {
         font-size: 3rem;
     }
+
+    .phone-input-group {
+    display: flex;
+    gap: 10px;
+    }
+
+    .phone-prefix {
+        flex: 0 0 130px;
+        font-size: 1rem;
+    }
+
+    .phone-number {
+        flex: 1;
+    }
+
+    /* Lägg till mellanrum för flaggor */
+    select option {
+        padding-left: 10px;
+    }
+
+    .phone-prefix option,
+    .country option {
+        display: flex;
+        align-items: center;
+    }
+
+    .phone-prefix option span,
+    .country option span {
+        margin-right: 10px;
+    }
+
+    .phone-input-group .phone-prefix {
+        width: 200px;
+    }
+
+    
+
+    .form-control option {
+    display: flex;
+    align-items: center;
+    }
+
+    .fi {
+        margin-right: 10px;
+        width: 20px;  /* Justera storlek efter behov */
+        height: 15px; /* Justera storlek efter behov */
+    }
 }
