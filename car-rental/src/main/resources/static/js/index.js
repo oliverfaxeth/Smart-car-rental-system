@@ -9,20 +9,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const gridContainer = document.getElementById("gridContainer");
 
     // Funktioner för att hantera sökresultat med sessionStorage
-    function saveSearchResults(results, startDate, endDate) {
+    function saveSearchResults(results, startDate, endDate, sort) {
+        console.log('Saving search results:', { 
+                resultsLength: results.length, 
+                startDate, 
+                endDate, 
+                sort 
+            });
+
         sessionStorage.setItem('searchResults', JSON.stringify(results));
         sessionStorage.setItem('startDate', startDate);
         sessionStorage.setItem('endDate', endDate);
+        sessionStorage.setItem('sortOrder', sort);
     }
 
     function loadSearchResults() {
         const results = sessionStorage.getItem('searchResults');
         const startDate = sessionStorage.getItem('startDate');
         const endDate = sessionStorage.getItem('endDate');
+        const sortOrder = sessionStorage.getItem('sortOrder') || 'price-asc';
+
+
+        console.log('Loading search results:', { 
+        resultsExists: !!results, 
+        startDate, 
+        endDate, 
+        sortOrder 
+    });
+
         return { 
             results: results ? JSON.parse(results) : null, 
             startDate, 
-            endDate 
+            endDate,
+            sortOrder 
         };
     }
 
@@ -33,7 +52,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Funktion för att rendera sökresultat
-    function renderSearchResults(results, startDate, endDate) {
+    function renderSearchResults(results, startDate, endDate, initialSortOrder = 'price-asc') {
+        
     // Dölj carousel, visa grid och filterbar
     carouselView.classList.add('hidden');
     gridView.classList.add('active');
@@ -52,6 +72,23 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("resultsCount").innerHTML = `Visar <strong>${results.length} bilar</strong> för <strong>${calculateDays(startDate, endDate)} dagar</strong>`;
 
     const sortSelect = document.getElementById("sortSelect");
+    
+    console.log('Current sortSelect options:', 
+        Array.from(sortSelect.options).map(option => option.value)
+    );
+    console.log('Attempting to set sort to:', initialSortOrder);
+    
+    // Kontrollera att värdet finns i select-elementet
+    const optionExists = Array.from(sortSelect.options)
+        .some(option => option.value === initialSortOrder);
+    
+    if (optionExists) {
+        sortSelect.value = initialSortOrder;
+        console.log('Sort value set successfully');
+    } else {
+        console.warn('Sort value not found in options, defaulting to price-asc');
+        sortSelect.value = 'price-asc';
+    }
     
     // Funktion för att sortera och rendera bilar
     const sortAndRenderCars = (cars, sortOrder) => {
@@ -111,13 +148,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Initial rendering med standard sortering
-    sortAndRenderCars(results, "price-asc");
+    sortAndRenderCars(results, initialSortOrder);
+
+    // Uppdatera sorteringsknappen baserat på sparad ordning
+    sortSelect.value = initialSortOrder;
 }
 
     // Kontrollera om det finns sparade sökresultat när sidan laddas
     const savedResults = loadSearchResults();
     if (savedResults.results) {
-        renderSearchResults(savedResults.results, savedResults.startDate, savedResults.endDate);
+        console.log('Rendering saved results with sort:', savedResults.sortOrder);
+
+        renderSearchResults(savedResults.results, savedResults.startDate, savedResults.endDate, savedResults.sortOrder);
         
         // Fyll i datumfälten med sparade datum
         startDateInput.value = savedResults.startDate;
@@ -160,8 +202,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const availableCars = await response.json();
 
             // Spara och rendera sökresultat
-            saveSearchResults(availableCars, startDate, endDate);
-            renderSearchResults(availableCars, startDate, endDate);
+            saveSearchResults(availableCars, startDate, endDate, sortSelect.value);
+            renderSearchResults(availableCars, startDate, endDate, sortSelect.value);
 
         } catch (error) {
             console.error("Fel vid sökning:", error);
