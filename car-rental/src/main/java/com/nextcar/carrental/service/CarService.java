@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +45,7 @@ public class CarService {
     }
 
     // Hitta tillgängliga bilar baserat på datumintervall OCH kategori
-    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate, Integer categoryId) {
+    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate, Integer categoryId, String sort) {
         // 1. Hämta alla bilar
         List<Car> allCars = carRepository.findAll();
 
@@ -62,12 +64,33 @@ public class CarService {
                 .filter(car -> isCarAvailable(car.getId(), startDate, endDate, allRentals))
                 .collect(Collectors.toList());
 
+
+        // Om sort är specificerat, sortera bilarna
+        if (sort != null && !sort.isEmpty()) {
+            availableCars = sortCars(availableCars, sort);
+        }
+
         return availableCars;
+    }
+
+    public List<Car> sortCars(List<Car> cars, String sort) {
+
+        List<Car> sortedCars = new ArrayList<>(cars);
+
+        // Sortera bilar efter pris
+        if ("desc".equalsIgnoreCase(sort)) {
+            sortedCars.sort((a, b) -> b.getPrice().compareTo(a.getPrice()));
+        } else {
+            // Default är stigande ordning (lägsta först)
+            sortedCars.sort(Comparator.comparing(Car::getPrice));
+        }
+
+        return sortedCars;
     }
 
     // Overload: Om inget categoryId anges, visa alla kategorier
     public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate) {
-        return getAvailableCars(startDate, endDate, null);
+        return getAvailableCars(startDate, endDate, null, "asc");
     }
 
     // Hjälpmetod: Kolla om en bil är tillgänglig

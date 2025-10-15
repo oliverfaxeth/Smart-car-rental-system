@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const carsContainer = document.querySelector(".row.g-4");
 
   try {
-    const response = await fetch("/cars"); // Spring Boot endpoint
+    // const response = await fetch("/cars"); // Spring Boot endpoint
+    const response = await fetch("http://localhost:8080/cars");     // Ändrade för kommunikation med backend
     const cars = await response.json();
 
     carsContainer.innerHTML = ""; // clear placeholders (just in case)

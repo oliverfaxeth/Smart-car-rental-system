@@ -32,7 +32,8 @@ public class CarController {
     public ResponseEntity<?> getAvailableCars(
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate,
-            @RequestParam(required = false) Integer categoryId) {
+            @RequestParam(required = false) Integer categoryId,
+            @RequestParam(required = false, defaultValue = "asc") String sort){
 
         // Validering 1: Kolla att parametrarna inte är null eller tomma
         if (startDate == null || startDate.isEmpty() || endDate == null || endDate.isEmpty()) {
@@ -66,7 +67,7 @@ public class CarController {
         }
 
         // Om alla valideringar är OK, hämta tillgängliga bilar (med eller utan kategorifilter)
-        List<Car> availableCars = carService.getAvailableCars(start, end, categoryId);
+        List<Car> availableCars = carService.getAvailableCars(start, end, categoryId, sort);
 
         return ResponseEntity.ok(availableCars);
     }
