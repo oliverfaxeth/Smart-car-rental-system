@@ -1,3 +1,25 @@
+// Gör handleBooking global så den kan anropas från HTML
+function handleBooking(carId, startDate, endDate) {
+    const token = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken');
+    
+    if (!token) {
+        // Spara bokningsinformation i sessionStorage
+        sessionStorage.setItem('pendingBooking', JSON.stringify({
+            carId: carId,
+            startDate: startDate,
+            endDate: endDate
+        }));
+
+        // Visa meddelande och redirecta till login
+        alert('Du måste logga in för att boka');
+        window.location.href = '/login.html';
+        return false;
+    }
+
+    // Fortsätt med normal bokningsprocess om inloggad
+    return true;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const searchForm = document.getElementById("searchForm");
     const startDateInput = document.getElementById("startDate");
@@ -7,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const filterBar = document.getElementById("filterBar");
     const noResultsMessage = document.getElementById("noResults");
     const gridContainer = document.getElementById("gridContainer");
+    const sortSelect = document.getElementById("sortSelect"); // ✅ Flytta hit
 
     // Funktioner för att hantera sökresultat med sessionStorage
     function saveSearchResults(results, startDate, endDate, sort) {
@@ -28,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const startDate = sessionStorage.getItem('startDate');
         const endDate = sessionStorage.getItem('endDate');
         const sortOrder = sessionStorage.getItem('sortOrder') || 'price-asc';
-
 
         console.log('Loading search results:', { 
         resultsExists: !!results, 
@@ -72,8 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("resultsCount").innerHTML = 
     `Visar <strong>${results.length} bilar</strong> för <strong>${calculateDays(startDate, endDate)} dagar</strong>`;
 
-    const sortSelect = document.getElementById("sortSelect");
-    
     console.log('Current sortSelect options:', 
         Array.from(sortSelect.options).map(option => option.value)
     );
@@ -130,13 +150,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span class="small-text">Totalt ${calculateDays(startDate, endDate)} dagar</span>
                                 <span class="price-large">${calculateTotalPrice(car.price, startDate, endDate)} kr</span>
                             </div>
-                        
+
                             <div class="price-right">
-                            <a href="#" class="btn-book-now" onclick="handleBooking(${car.id}, '${startDate}', '${endDate}')">
-                                Boka nu
-                            </a>
+                                <a href="#" class="btn-book-now" onclick="return handleBooking(${car.id}, '${startDate}', '${endDate}')">
+                                    Boka nu
+                                </a>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
@@ -156,38 +175,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Uppdatera sorteringsknappen baserat på sparad ordning
     sortSelect.value = initialSortOrder;
-
-
-    // results.forEach((car) => {
-    //     const carCard = document.createElement("div");
-    //     carCard.classList.add("col-md-6", "col-lg-4");
-    //     carCard.innerHTML = `
-    //     <div class="car-card-grid">
-    //         <div class="car-img-section">
-    //             <img src="/images/${car.imageUrl}" alt="${car.brand} ${car.model}" class="img-fluid">
-    //         </div>
-    //         <div class="car-info">
-    //             <!-- Befintlig bilkortsinformation -->
-    //             <div class="car-footer">
-    //                 <div class="price-info">
-    //                     <div class="price-left">
-    //                         <span class="small-text">Totalt ${calculateDays(startDate, endDate)} dagar</span>
-    //                         <span class="price-large">${calculateTotalPrice(car.price, startDate, endDate)} kr</span>
-    //                     </div>
-    //                     <div class="price-right">
-    //                         <a href="#" class="btn-book-now" onclick="handleBooking(${car.id}, '${startDate}', '${endDate}')">
-    //                             Boka
-    //                         </a>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-    //     `;
-    //     gridContainer.appendChild(carCard);
-    // });
-
-
     }
 
     // Kontrollera om det finns sparade sökresultat när sidan laddas
@@ -229,6 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
+            // ✅ Nu finns sortSelect definierat här
             const response = await fetch(`http://localhost:8080/cars/available?startDate=${startDate}&endDate=${endDate}&sort=${sortSelect.value}`);
             
             if (!response.ok) {
@@ -247,29 +235,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Funktion för att hantera bokning
-    function handleBooking(carId, startDate, endDate) {
-    // Kontrollera om användaren är inloggad
-    const token = localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken');
-    
-    if (!token) {
-        // Spara bokningsinformation i sessionStorage
-        sessionStorage.setItem('pendingBooking', JSON.stringify({
-            carId: carId,
-            startDate: startDate,
-            endDate: endDate
-        }));
-
-        // Visa meddelande och redirecta till login
-        alert('Du måste logga in för att boka');
-        window.location.href = '/login.html';
-        return;
-    }
-
-    // Fortsätt med normal bokningsprocess om inloggad
-    return true;
-}
-
     // Hjälpfunktioner
     function calculateDays(startDate, endDate) {
         const start = new Date(startDate);
@@ -281,4 +246,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const days = calculateDays(startDate, endDate);
         return (dailyPrice * days).toFixed(2);
     }
+
+    
 });
