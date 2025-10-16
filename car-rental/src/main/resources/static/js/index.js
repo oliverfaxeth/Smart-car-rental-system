@@ -130,10 +130,13 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <span class="small-text">Totalt ${calculateDays(startDate, endDate)} dagar</span>
                                 <span class="price-large">${calculateTotalPrice(car.price, startDate, endDate)} kr</span>
                             </div>
+                        
                             <div class="price-right">
-                                <div class="availability-badge"><i class="bi bi-check-circle-fill"></i> Tillgänglig</div>
-                                <div class="price-per-day">${car.price} kr / dag</div>
+                            <a href="#" class="btn-book-now" onclick="handleBooking(${car.id}, '${startDate}', '${endDate}')">
+                                Boka nu
+                            </a>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -155,34 +158,34 @@ document.addEventListener("DOMContentLoaded", () => {
     sortSelect.value = initialSortOrder;
 
 
-    results.forEach((car) => {
-        const carCard = document.createElement("div");
-        carCard.classList.add("col-md-6", "col-lg-4");
-        carCard.innerHTML = `
-        <div class="car-card-grid">
-            <div class="car-img-section">
-                <img src="/images/${car.imageUrl}" alt="${car.brand} ${car.model}" class="img-fluid">
-            </div>
-            <div class="car-info">
-                <!-- Befintlig bilkortsinformation -->
-                <div class="car-footer">
-                    <div class="price-info">
-                        <div class="price-left">
-                            <span class="small-text">Totalt ${calculateDays(startDate, endDate)} dagar</span>
-                            <span class="price-large">${calculateTotalPrice(car.price, startDate, endDate)} kr</span>
-                        </div>
-                        <div class="price-right">
-                            <a href="#" class="btn-book-now" onclick="handleBooking(${car.id}, '${startDate}', '${endDate}')">
-                                Boka
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        `;
-        gridContainer.appendChild(carCard);
-    });
+    // results.forEach((car) => {
+    //     const carCard = document.createElement("div");
+    //     carCard.classList.add("col-md-6", "col-lg-4");
+    //     carCard.innerHTML = `
+    //     <div class="car-card-grid">
+    //         <div class="car-img-section">
+    //             <img src="/images/${car.imageUrl}" alt="${car.brand} ${car.model}" class="img-fluid">
+    //         </div>
+    //         <div class="car-info">
+    //             <!-- Befintlig bilkortsinformation -->
+    //             <div class="car-footer">
+    //                 <div class="price-info">
+    //                     <div class="price-left">
+    //                         <span class="small-text">Totalt ${calculateDays(startDate, endDate)} dagar</span>
+    //                         <span class="price-large">${calculateTotalPrice(car.price, startDate, endDate)} kr</span>
+    //                     </div>
+    //                     <div class="price-right">
+    //                         <a href="#" class="btn-book-now" onclick="handleBooking(${car.id}, '${startDate}', '${endDate}')">
+    //                             Boka
+    //                         </a>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     </div>
+    //     `;
+    //     gridContainer.appendChild(carCard);
+    // });
 
 
     }
