@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <div class="price-display">
                         <span class="price-per-day-large">${car.price} kr / dag</span>
                     </div>
-                    <a href="#" class="btn-book-now">Välj datum & Boka</a>
+                    <a href="/index.html" class="btn-book-now">Välj datum & Boka</a>
                 </div>
             </div>
         </div>

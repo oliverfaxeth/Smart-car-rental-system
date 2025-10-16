@@ -32,9 +32,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())  // Inaktivera CSRF för API
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/customers/register", "/login").permitAll()
-                        .requestMatchers("/cars/available", "/cars", "/categories").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll() // Everything is open for now
                 )
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
@@ -56,9 +54,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000",
-                "http://localhost:5500",   // Live Server
-                "http://127.0.0.1:5500"   // Lägg till båda varianterna
+                "http://localhost:3000", // frontend-port
+                "http://localhost:8080" // backend-port
 
         )); // Anpassa efter frontend-port
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
