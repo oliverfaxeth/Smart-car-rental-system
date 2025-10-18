@@ -1,0 +1,648 @@
+/* ===== Bokningshanteringsformulär ===== */
+.booking-search-form {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+}
+
+.booking-search-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.booking-search-field {
+    flex: 1;
+    min-width: 200px;
+}
+
+.booking-search-field input,
+.booking-search-field select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--primary-blue);
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.booking-search-button {
+    background: linear-gradient(90deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+    color: var(--white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.booking-search-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Knapp för att skapa bokning */
+.create-booking-button {
+    background: linear-gradient(135deg, var(--bright-yellow) 0%, var(--golden-yellow) 100%);
+    color: var(--dark-blue);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.create-booking-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Filter dropdown */
+.filter-dropdown {
+    display: inline-block;
+    position: relative;
+    margin-right: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-dropdown select {
+    padding: 10px 35px 10px 12px;
+    border: 2px solid var(--primary-blue);
+    border-radius: 8px;
+    background-color: var(--white);
+    font-size: 0.95rem;
+    appearance: none;
+    cursor: pointer;
+}
+
+.filter-dropdown:after {
+    content: '▼';
+    font-size: 0.8rem;
+    color: var(--dark-gray);
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}/* ===== Admin CSS Variables ===== */
+/* Denna CSS-fil innehåller alla stilar för admin-sidor */
+:root {
+    --primary-blue: #1e40af;
+    --dark-blue: #1e3a8a;
+    --bright-red: #dc2626;
+    --dark-red: #991b1b;
+    --golden-yellow: #fbbf24;
+    --bright-yellow: #fde047;
+    --white: #ffffff;
+    --light-gray: #f9fafb;
+    --dark-gray: #374151;
+    --success-green: #22c55e;
+    --warning-orange: #f59e0b;
+}
+
+/* ===== Admin General Styles ===== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-gray);
+}
+
+/* ===== Admin Navigation ===== */
+.navbar-custom {
+    background: linear-gradient(90deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+    padding: 15px 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--golden-yellow) !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.nav-link {
+    color: var(--white) !important;
+    margin: 0 15px;
+    font-weight: 500;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--golden-yellow);
+    transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+.btn-logout {
+    background: linear-gradient(135deg, var(--bright-red) 0%, var(--dark-red) 100%);
+    color: var(--white) !important;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-logout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 38, 38, 0.3);
+}
+
+/* ===== Admin Section Layout ===== */
+.admin-section {
+    padding: 40px 20px;
+    background: var(--light-gray);
+    min-height: calc(100vh - 80px);
+}
+
+.admin-header {
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 3px solid var(--primary-blue);
+}
+
+.admin-header h1 {
+    color: var(--primary-blue);
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-header h1 i {
+    color: var(--golden-yellow);
+    font-size: 2.8rem;
+}
+
+.admin-header p {
+    color: var(--dark-gray);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.admin-content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-divider {
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-blue) 0%, var(--light-gray) 100%);
+    margin: 30px 0;
+    border: none;
+}
+
+/* ===== Admin Stat Cards ===== */
+.stat-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border-left: 5px solid var(--primary-blue);
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    transition: all 0.3s;
+    height: 100%;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.stat-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+/* Färgsättning för olika statistikikoner */
+.stat-icon.cars-icon {
+    background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+    color: var(--primary-blue);
+}
+
+.stat-icon.customers-icon {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: #166534;
+}
+
+.stat-icon.bookings-icon {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+}
+
+.stat-icon.revenue-icon {
+    background: linear-gradient(135deg, #ffe4e6 0%, #fbcfe8 100%);
+    color: var(--bright-red);
+}
+
+.stat-content h5 {
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-number {
+    color: var(--primary-blue);
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.stat-subtitle {
+    color: #9ca3af;
+    font-size: 0.85rem;
+    display: block;
+}
+
+/* ===== Quick Actions & Recent Activity ===== */
+.quick-actions-card,
+.recent-activity-card,
+.system-status-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border-top: 4px solid var(--primary-blue);
+    height: 100%;
+}
+
+.quick-actions-card h4,
+.recent-activity-card h4,
+.system-status-card h4 {
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quick-actions-card h4 i,
+.recent-activity-card h4 i,
+.system-status-card h4 i {
+    color: var(--golden-yellow);
+}
+
+/* ===== Action Buttons ===== */
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    color: var(--dark-gray);
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.action-btn i {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.action-btn.btn-add {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: #166534;
+}
+
+.action-btn.btn-create {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+}
+
+.action-btn.btn-view {
+    background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+    color: var(--primary-blue);
+}
+
+/* ===== Activity List ===== */
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--light-gray) 0%, #f3f4f6 100%);
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.activity-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.activity-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.activity-icon.booking-icon {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+}
+
+.activity-icon.customer-icon {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: #166534;
+}
+
+.activity-icon.car-icon {
+    background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+    color: var(--primary-blue);
+}
+
+.activity-icon.payment-icon {
+    background: linear-gradient(135deg, #ffe4e6 0%, #fbcfe8 100%);
+    color: var(--bright-red);
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-title {
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: 5px;
+}
+
+.activity-time {
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+/* ===== System Status ===== */
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.status-item {
+    background: linear-gradient(135deg, var(--light-gray) 0%, #f3f4f6 100%);
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-indicator {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+.status-indicator.online {
+    background-color: var(--success-green);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}
+
+.status-indicator.offline {
+    background-color: var(--bright-red);
+    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+}
+
+.status-indicator.warning {
+    background-color: var(--warning-orange);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+.status-item span {
+    font-weight: 600;
+    color: var(--dark-gray);
+}
+
+.status-item small {
+    color: #9ca3af;
+    font-size: 0.8rem;
+}
+
+/* ===== Admin Table Styles ===== */
+.admin-table-card {
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    overflow: hidden;
+    margin-bottom: 30px;
+    margin-top: 30px; /* Lägg till extra utrymme ovanför tabellen */
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.admin-table thead {
+    background: linear-gradient(90deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+    color: var(--white);
+}
+
+.admin-table thead th {
+    padding: 18px;
+    font-weight: 700;
+    text-align: left;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.admin-table tbody tr {
+    border-bottom: 1px solid var(--light-gray);
+    transition: all 0.3s;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.admin-table tbody td {
+    padding: 15px 18px;
+    color: var(--dark-gray);
+    font-size: 0.95rem;
+    vertical-align: middle;
+}
+
+.loading-message {
+    text-align: center;
+    padding: 30px;
+    font-style: italic;
+    color: var(--dark-gray);
+}
+
+.customer-count {
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin: 20px 0;
+}
+
+/* Rubrikstil med ikon */
+.page-title-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    color: var(--primary-blue);
+}
+
+.page-title-with-icon i,
+.page-title-with-icon svg,
+.page-title-with-icon img {
+    font-size: 2.5rem;
+    color: var(--golden-yellow);
+}
+
+/* ===== Admin Footer ===== */
+.footer {
+    background: var(--white);
+    padding: 20px 0;
+    border-top: 1px solid #e5e7eb;
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+    margin-top: 40px;
+}
+
+/* ===== Responsiv design ===== */
+/* Dessa media queries ska ENDAST LÄGGA TILL eller MODIFIERA befintliga stilar för mindre skärmar */
+
+@media (max-width: 991px) {
+    .status-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .admin-header h1 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stat-content {
+        width: 100%;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 575px) {
+    .admin-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+    }
+    
+    .status-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .admin-table thead {
+        display: none;
+    }
+    
+    .admin-table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 2px solid var(--light-gray);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .admin-table tbody td {
+        display: block;
+        text-align: right;
+        padding: 10px 12px;
+        position: relative;
+        padding-left: 50%;
+    }
+    
+    .admin-table tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        font-weight: 600;
+        color: var(--primary-blue);
+    }
+}
