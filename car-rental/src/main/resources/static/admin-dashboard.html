@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextCar - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin-dashboard.html"><i class="bi bi-car-front-fill"></i> NextCar Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="admin-dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin-cars.html"><i class="bi bi-car-front"></i> Bilar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin-bookings.html"><i class="bi bi-calendar-check"></i> Bokningar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin-customers.html"><i class="bi bi-people"></i> Kunder</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin-payments.html"><i class="bi bi-credit-card"></i> Betalningar</a></li>
+                    <li class="nav-item ms-3">
+                        <a href="index.html" class="btn-logout" style="text-decoration: none;"><i class="bi bi-box-arrow-right"></i> Logga ut</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Dashboard Section -->
+    <section class="admin-section">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="admin-header">
+                <h1><i class="bi bi-speedometer2"></i> Admin Dashboard</h1>
+                <p>Välkommen tillbaka! Här är en överblick över systemet.</p>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row g-4 mb-5">
+                <!-- Total Cars -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="stat-icon cars-icon">
+                            <i class="bi bi-car-front-fill"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5>Totala Bilar</h5>
+                            <p class="stat-number" id="totalCars">0</p>
+                            <small class="stat-subtitle"><span id="activeCars">0</span> aktiva</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Customers -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="stat-icon customers-icon">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5>Registrerade Kunder</h5>
+                            <p class="stat-number" id="totalCustomers">0</p>
+                            <small class="stat-subtitle">Senaste 30 dagar</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Bookings -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="stat-icon bookings-icon">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5>Bokningar</h5>
+                            <p class="stat-number" id="totalBookings">0</p>
+                            <small class="stat-subtitle"><span id="pendingBookings">0</span> väntar</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Revenue -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card">
+                        <div class="stat-icon revenue-icon">
+                            <i class="bi bi-cash-coin"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5>Total Intäkt</h5>
+                            <p class="stat-number" id="totalRevenue">0 kr</p>
+                            <small class="stat-subtitle">Denna månad</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions and Recent Activity -->
+            <div class="row g-4 mb-5">
+                <!-- Quick Actions -->
+                <div class="col-lg-6">
+                    <div class="quick-actions-card">
+                        <h4><i class="bi bi-lightning-fill"></i> Snabbåtgärder</h4>
+                        <div class="action-buttons">
+                            <a href="admin-cars.html?action=add" class="action-btn btn-add">
+                                <i class="bi bi-plus-circle"></i>
+                                <span>Lägg till Bil</span>
+                            </a>
+                            <a href="admin-bookings.html?action=create" class="action-btn btn-create">
+                                <i class="bi bi-calendar-plus"></i>
+                                <span>Skapa Bokning</span>
+                            </a>
+                            <a href="admin-customers.html" class="action-btn btn-view">
+                                <i class="bi bi-eye"></i>
+                                <span>Se Alla Kunder</span>
+                            </a>
+                            <a href="admin-payments.html" class="action-btn btn-view">
+                                <i class="bi bi-list-check"></i>
+                                <span>Se Betalningar</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="col-lg-6">
+                    <div class="recent-activity-card">
+                        <h4><i class="bi bi-activity"></i> Senaste aktivitet</h4>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon booking-icon">
+                                    <i class="bi bi-calendar-check"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Ny bokning skapad</p>
+                                    <small class="activity-time">För 2 timmar sedan</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon customer-icon">
+                                    <i class="bi bi-person-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Ny kund registrerad</p>
+                                    <small class="activity-time">För 5 timmar sedan</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon car-icon">
+                                    <i class="bi bi-car-front"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Ny bil tillagd</p>
+                                    <small class="activity-time">För 1 dag sedan</small>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon payment-icon">
+                                    <i class="bi bi-credit-card"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-title">Betalning mottagen</p>
+                                    <small class="activity-time">För 1 dag sedan</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Status -->
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="system-status-card">
+                        <h4><i class="bi bi-cpu"></i> Systemstatus</h4>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <div class="status-indicator online"></div>
+                                <span>Backend</span>
+                                <small>Online</small>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-indicator online"></div>
+                                <span>Database</span>
+                                <small>Online</small>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-indicator online"></div>
+                                <span>Frontend</span>
+                                <small>Online</small>
+                            </div>
+                            <div class="status-item">
+                                <div class="status-indicator online"></div>
+                                <span>API</span>
+                                <small>Responsive</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <p>&copy; 2025 NextCar Admin Panel. Alla rättigheter reserverade.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
