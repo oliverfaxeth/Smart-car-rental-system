@@ -3,7 +3,6 @@ package com.nextcar.carrental.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -18,13 +17,20 @@ public class JwtTokenUtil {
     // Token giltig i 24 timmar
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 timmar
 
-    public String generateToken(String email, String role) {
+    /**
+     * Generates a JWT token containing user ID and role.
+     * @param customer Customer entity
+     * @return JWT token as String
+     */
+
+    public String generateToken(com.nextcar.carrental.entity.Customer customer) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
+        claims.put("role", "CUSTOMER");
+        claims.put("userId", customer.getId());
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(email)
+                .setSubject(customer.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
@@ -50,6 +56,15 @@ public class JwtTokenUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public Integer getUserIdFromToken(String token) {
+        return (Integer) Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("userId");
     }
 
     public String getRoleFromToken(String token) {
