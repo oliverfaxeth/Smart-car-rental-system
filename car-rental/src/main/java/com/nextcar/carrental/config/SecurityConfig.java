@@ -32,7 +32,10 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())  // Inaktivera CSRF för API
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // Everything is open for now
+                        // .anyRequest().permitAll() // Everything is open for now
+                        .requestMatchers("/customers/register", "/auth/login").permitAll()
+                        .requestMatchers("/cars/available", "/cars", "/categories").permitAll()
+                        .anyRequest().permitAll() //Tillfälligt lösning
                 )
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
@@ -50,6 +53,7 @@ public class SecurityConfig {
 
     // Konfigurerar CORS för att tillåta frontend-anslutningar.
     // Säkerställer säker kommunikation mellan frontend och backend.
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -59,8 +63,11 @@ public class SecurityConfig {
 
         )); // Anpassa efter frontend-port
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        // configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
