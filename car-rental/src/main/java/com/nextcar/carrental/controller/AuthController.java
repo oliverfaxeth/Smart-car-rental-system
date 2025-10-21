@@ -11,8 +11,15 @@ import org.springframework.web.bind.annotation.*;
 
 import com.nextcar.carrental.security.JwtTokenUtil;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
 
@@ -27,8 +34,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login (@RequestBody LoginDTO loginDTO) {
-
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         // Hämta kund från databas
         Optional<Customer> customerOptional = customerRepository.findByEmail(loginDTO.getEmail());
 
@@ -38,14 +44,22 @@ public class AuthController {
             // Verifiera lösenord
             if (passwordEncoder.matches(loginDTO.getPassword(), customer.getPassword())) {
                 // Generera JWT-token
-                String token = jwtTokenUtil.generateToken(customer.getEmail(), "CUSTOMER");
-                return ResponseEntity.ok(token);
-            }
+                String token = jwtTokenUtil.generateToken(customer.getEmail(), "CUSTOMER", customer.getId());
 
+                // Skapa svarsobjekt med token och användarinformation
+                Map<String, Object> response = new HashMap<>();
+                response.put("token", token);
+                response.put("userId", customer.getId());
+                response.put("role", "CUSTOMER");
+                response.put("firstName", customer.getFirstName());
+                response.put("lastName", customer.getLastName());
+
+                return ResponseEntity.ok(response);
+            }
         }
 
         // Felaktig inloggning
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Felaktig mejl eler lösenord");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Fel e-post eller lösenord");
     }
 
 }

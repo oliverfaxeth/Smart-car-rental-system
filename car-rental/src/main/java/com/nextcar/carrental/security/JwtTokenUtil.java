@@ -18,9 +18,11 @@ public class JwtTokenUtil {
     // Token giltig i 24 timmar
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 timmar
 
-    public String generateToken(String email, String role) {
+    // Inkludera userID i JWT token
+    public String generateToken(String email, String role, Integer userId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
+        claims.put("userId", userId);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -59,5 +61,15 @@ public class JwtTokenUtil {
                 .parseClaimsJws(token)
                 .getBody()
                 .get("role");
+    }
+
+    // Vi hämtar UserID från Token
+    public Integer getUserIdFromToken(String token) {
+        return ((Number) Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("userId")).intValue();
     }
 }
