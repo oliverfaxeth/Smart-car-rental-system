@@ -58,33 +58,49 @@ const logout = () => {
 };
 
 // Uppdaterar gränssnittet baserat på användarens inloggningsstatus
+// Uppdaterar gränssnittet baserat på användarens inloggningsstatus
 const updateLoginUI = () => {
+    const authContainer = document.getElementById('authButtons');
+    
+    if (!authContainer) return;
+
+     if (!authContainer) {
+        console.log('❌ authButtons hittas inte på denna sida!'); // 👈 Debug
+        return;
+    }
+    
+    console.log('✅ authButtons hittad, isAuthenticated:', isAuthenticated()); // 👈 Debug
+    
     if (isAuthenticated()) {
         const firstName = localStorage.getItem('firstName') || sessionStorage.getItem('firstName');
         const userRole = getUserRole();
         
-        // Hitta login/register-knapparna
-        const loginBtn = document.querySelector('.btn-login-red');
-        const registerBtn = document.querySelector('.btn-register');
+        // Rendera inloggade knappar
+        authContainer.innerHTML = `
+            <a href="${userRole === 'ADMIN' ? 'admin/dashboard.html' : 'profile.html'}" class="btn-profile" style="text-decoration: none;">
+                <i class="bi bi-person-circle"></i> ${firstName || (userRole === 'ADMIN' ? 'Admin' : 'Profil')}
+            </a>
+            <a href="#" id="logoutBtn" class="btn-logout" style="text-decoration: none; margin-left: 10px;">
+                <i class="bi bi-box-arrow-right"></i> Logga ut
+            </a>
+        `;
         
-        if (loginBtn && registerBtn) {
-            // Byt ut mot profilknapp och logga ut-knapp
-            const navContainer = loginBtn.parentElement;
-            navContainer.innerHTML = `
-                <a href="${userRole === 'ADMIN' ? 'admin/dashboard.html' : 'profile.html'}" class="btn-profile" style="text-decoration: none;">
-                    <i class="bi bi-person-circle"></i> ${firstName || (userRole === 'ADMIN' ? 'Admin' : 'Profil')}
-                </a>
-                <a href="#" id="logoutBtn" class="btn-logout" style="text-decoration: none; margin-left: 10px;">
-                    <i class="bi bi-box-arrow-right"></i> Logga ut
-                </a>
-            `;
-            
-            // Lägg till utloggningsfunktion
-            document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        // Lägg till utloggningsfunktion
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 logout();
             });
         }
+    } else {
+        // Rendera login/register knappar
+        authContainer.innerHTML = `
+            <a href="register.html" class="btn-register" style="text-decoration: none;">Registrera</a>
+            <a href="login.html" class="btn-login-red" style="text-decoration: none;">
+                <i class="bi bi-box-arrow-in-right"></i> Logga in
+            </a>
+        `;
     }
 };
 
