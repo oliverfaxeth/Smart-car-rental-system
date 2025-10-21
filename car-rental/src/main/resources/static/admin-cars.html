@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextCar - Admin Bilhantering</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="admin-dashboard.html"><i class="bi bi-car-front-fill"></i> NextCar Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="admin-dashboard.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin-cars.html"><i class="bi bi-car-front"></i> Bilar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin-bookings.html"><i class="bi bi-calendar-check"></i> Bokningar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin-customers.html"><i class="bi bi-people"></i> Kunder</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin-payments.html"><i class="bi bi-credit-card"></i> Betalningar</a></li>
+                    <li class="nav-item ms-3">
+                        <a href="index.html" class="btn-logout" style="text-decoration: none;"><i class="bi bi-box-arrow-right"></i> Logga ut</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Cars Section -->
+    <section class="admin-section">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="admin-header">
+                <h1><i class="bi bi-car-front"></i> Hantera Bilar</h1>
+                <p>Lägg till, redigera eller inaktivera bilar i systemet</p>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="admin-toolbar">
+                <div class="toolbar-left">
+                    <button class="btn-action btn-add" id="addCarBtn">
+                        <i class="bi bi-plus-circle"></i> Lägg till Bil
+                    </button>
+                </div>
+                <div class="toolbar-right">
+                    <select class="form-select" id="statusFilter" style="width: 200px;">
+                        <option value="">Alla bilar</option>
+                        <option value="ACTIVE">Endast aktiva</option>
+                        <option value="INACTIVE">Endast inaktiva</option>
+                    </select>
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" class="form-control" id="carSearch" placeholder="Sök bilar...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cars Table -->
+            <div class="admin-table-card">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Bild</th>
+                            <th>Märke & Modell</th>
+                            <th>År</th>
+                            <th>Kategori</th>
+                            <th>Pris/dag</th>
+                            <th>Status</th>
+                            <th>Åtgärder</th>
+                        </tr>
+                    </thead>
+                    <tbody id="carsTableBody">
+                        <!-- Cars will be loaded here -->
+                        <tr class="placeholder-row">
+                            <td colspan="7" class="text-center">Laddar bilar...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="admin-pagination">
+                <small id="paginationInfo">Visar 0 av 0 bilar</small>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination" id="paginationControls">
+                        <li class="page-item"><a class="page-link" href="#">Föregående</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Nästa</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add/Edit Car Modal -->
+    <div class="modal fade" id="carModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="carModalTitle">Lägg till Bil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="carForm">
+                        <div class="row g-3">
+                            <!-- Brand -->
+                            <div class="col-md-6">
+                                <label for="carBrand" class="form-label">Märke <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="carBrand" placeholder="t.ex. Toyota" required>
+                            </div>
+
+                            <!-- Model -->
+                            <div class="col-md-6">
+                                <label for="carModel" class="form-label">Modell <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="carModel" placeholder="t.ex. Corolla" required>
+                            </div>
+
+                            <!-- Year -->
+                            <div class="col-md-6">
+                                <label for="carYear" class="form-label">År <span class="required">*</span></label>
+                                <input type="number" class="form-control" id="carYear" min="2015" max="2030" placeholder="t.ex. 2023" required>
+                            </div>
+
+                            <!-- Category -->
+                            <div class="col-md-6">
+                                <label for="carCategory" class="form-label">Kategori <span class="required">*</span></label>
+                                <select class="form-select" id="carCategory" required>
+                                    <option value="">Välj kategori</option>
+                                    <option value="1">Sedan</option>
+                                    <option value="2">SUV</option>
+                                    <option value="3">Kombi</option>
+                                    <option value="4">Sportvagn</option>
+                                </select>
+                            </div>
+
+                            <!-- Fuel -->
+                            <div class="col-md-6">
+                                <label for="carFuel" class="form-label">Bränsle <span class="required">*</span></label>
+                                <select class="form-select" id="carFuel" required>
+                                    <option value="">Välj bränsle</option>
+                                    <option value="Bensin">Bensin</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="Hybrid">Hybrid</option>
+                                    <option value="Eldrivna">Eldrivna</option>
+                                </select>
+                            </div>
+
+                            <!-- Transmission -->
+                            <div class="col-md-6">
+                                <label for="carTransmission" class="form-label">Växellåda <span class="required">*</span></label>
+                                <select class="form-select" id="carTransmission" required>
+                                    <option value="">Välj växellåda</option>
+                                    <option value="Manuell">Manuell</option>
+                                    <option value="Automat">Automat</option>
+                                </select>
+                            </div>
+
+                            <!-- Seats -->
+                            <div class="col-md-6">
+                                <label for="carSeats" class="form-label">Säten <span class="required">*</span></label>
+                                <input type="number" class="form-control" id="carSeats" min="2" max="9" placeholder="t.ex. 5" required>
+                            </div>
+
+                            <!-- Registration Number -->
+                            <div class="col-md-6">
+                                <label for="carRegNr" class="form-label">Registreringsnummer <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="carRegNr" placeholder="t.ex. ABC123" required>
+                            </div>
+
+                            <!-- Price per Day -->
+                            <div class="col-md-6">
+                                <label for="carPrice" class="form-label">Pris per dag (kr) <span class="required">*</span></label>
+                                <input type="number" class="form-control" id="carPrice" min="0" step="0.01" placeholder="t.ex. 499.50" required>
+                            </div>
+
+                            <!-- Image URL -->
+                            <div class="col-md-6">
+                                <label for="carImageUrl" class="form-label">Bild-URL <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="carImageUrl" placeholder="t.ex. toyota-corolla.jpg" required>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12">
+                                <label for="carDescription" class="form-label">Beskrivning</label>
+                                <textarea class="form-control" id="carDescription" rows="3" placeholder="Valfritt: Beskrivning av bilen"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
+                    <button type="button" class="btn btn-primary" id="saveCarBtn">Spara Bil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bekräfta Åtgärd</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="deleteMessage">Är du säker på att du vill inaktivera denna bil?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Avbryt</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Bekräfta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <p>&copy; 2025 NextCar Admin Panel. Alla rättigheter reserverade.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
