@@ -55,9 +55,9 @@ public class CarController {
 
         // Validering 2: Startdatum kan inte vara tidigare än dagens datum
         LocalDate today = LocalDate.now();
-        if (start.isBefore(today)) {
+        if (start.isBefore(today)) { // BLOCKERAR TIDIGARE DATUM & IDAG
             return ResponseEntity.badRequest()
-                    .body("Startdatum kan inte vara tidigare än dagens datum");
+                    .body("Startdatum måste vara efter dagens datum");
         }
 
         // Validering 3: Slutdatum måste vara minst 1 dag efter startdatum
