@@ -12,27 +12,27 @@ public class Rental {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "customersId", nullable = false)
+    @JoinColumn(name = "customer_id", nullable = false) // customer_id i db
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "carsId", nullable = false)
+    @JoinColumn(name = "car_id", nullable = false) // car_id i db
     private Car car;
 
     @ManyToOne
-    @JoinColumn(name = "paymentId", nullable = false)
+    @JoinColumn(name = "payment_id", nullable = false)
     private Payment payment;
 
-    @Column(nullable = false)
+    @Column(name = "rental_date", nullable = false)
     private LocalDate rentalDate;
 
-    @Column(nullable = false)
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @Column(nullable = false)
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    // Getters and setters
+    // Getters och setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
