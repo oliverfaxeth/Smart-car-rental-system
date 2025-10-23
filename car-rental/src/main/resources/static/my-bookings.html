@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NextCar - Mina bokningar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><i class="bi bi-car-front-fill"></i> NextCar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
+        <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Hem</a></li>
+          <li class="nav-item"><a class="nav-link" href="all-cars.html">Våra Bilar</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">Om Oss</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Kontakt</a></li>
+          <li class="nav-item ms-3" id="authButtons"><!-- Fylls av JS --></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- My Bookings -->
+  <section class="profile-section py-5">
+    <div class="container">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 mb-4">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <div class="text-center mb-4">
+                <i class="bi bi-person-circle profile-icon"></i>
+                <h5 class="mt-2 user-name">Mina bokningar</h5>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <a href="profile.html" class="nav-link">
+                    <i class="bi bi-person"></i> Min profil
+                  </a>
+                </li>
+                <li class="list-group-item active" aria-current="page">
+                  <i class="bi bi-calendar-check"></i> Mina bokningar
+                </li>
+                <li class="list-group-item">
+                  <a href="#" id="logoutBtnSidebar" class="nav-link text-danger">
+                    <i class="bi bi-box-arrow-right"></i> Logga ut
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="col-md-9">
+          <div class="card shadow-sm">
+            <div class="card-header bg-light">
+              <h4 class="mb-1"><i class="bi bi-calendar-check"></i> Mina bokningar</h4>
+              <p class="mb-0">Full överblick över dina pågående och tidigare hyror</p>
+            </div>
+            <div class="card-body">
+              <!-- Alerts -->
+              <div id="feedbackContainer" class="mb-3"></div>
+
+              <!-- Tabs -->
+              <ul class="nav nav-pills mb-3" id="bookingTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="ongoing-tab" data-bs-toggle="pill" data-bs-target="#ongoing-pane" type="button" role="tab" aria-controls="ongoing-pane" aria-selected="true">
+                    Pågående <span class="badge text-bg-secondary ms-1" id="ongoingCount">0</span>
+                  </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="history-tab" data-bs-toggle="pill" data-bs-target="#history-pane" type="button" role="tab" aria-controls="history-pane" aria-selected="false">
+                    Historik <span class="badge text-bg-secondary ms-1" id="historyCount">0</span>
+                  </button>
+                </li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content" id="bookingTabsContent">
+                <!-- Ongoing -->
+                <div class="tab-pane fade show active" id="ongoing-pane" role="tabpanel" aria-labelledby="ongoing-tab" tabindex="0">
+                  <div id="ongoingList" class="vstack gap-3"></div>
+                </div>
+                <!-- History -->
+                <div class="tab-pane fade" id="history-pane" role="tabpanel" aria-labelledby="history-tab" tabindex="0">
+                  <div id="historyList" class="vstack gap-3"></div>
+                </div>
+              </div>
+
+              <!-- Empty state -->
+              <div id="emptyState" class="text-center py-5 d-none">
+                <i class="bi bi-calendar-x display-5 d-block mb-3"></i>
+                <h5>Du har inga bokningar ännu</h5>
+                <p class="text-muted mb-0">Besök <a href="all-cars.html">Våra bilar</a> för att komma igång.</p>
+              </div>
+
+              <!-- Loading -->
+              <div id="loadingState" class="text-center py-5">
+                <div class="spinner-border" role="status" aria-hidden="true"></div>
+                <span class="ms-2">Laddar bokningar...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <h5><i class="bi bi-car-front-fill"></i> NextCar</h5>
+          <p style="line-height: 1.8;">Din pålitliga partner för biluthyrning. Alla rättigheter reserverade. | <a href="#">Integritetspolicy</a> | <a href="#">Användarvillkor</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/my-bookings.js"></script>
+</body>
+</html>
