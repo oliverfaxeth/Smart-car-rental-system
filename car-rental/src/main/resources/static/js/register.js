@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 // Registrering lyckades
                 alert('Registrering lyckades! Du kan nu logga in.');
-                window.location.href = '/login.html';
+                window.location.href = '/login';
             } else {
                 // Hantera felaktigt svar
                 const errorMessage = await response.text();

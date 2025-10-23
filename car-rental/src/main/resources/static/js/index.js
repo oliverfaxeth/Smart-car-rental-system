@@ -12,7 +12,7 @@ function handleBooking(carId, startDate, endDate) {
 
         // Visa meddelande och redirecta till login
         alert('Du måste logga in för att boka');
-        window.location.href = '/login.html';
+        window.location.href = '/login';
         return false;
     }
 
@@ -21,6 +21,63 @@ function handleBooking(carId, startDate, endDate) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    /*
+     * Laddar och visar bilar i carousel när sidan öppnas
+     * Detta är startpunkten för hela carousel-funktionaliteten
+     */
+    async function initializeCarousel() {
+        console.log('Initierar carousel med data från databas...');
+        
+        try {
+            // Steg 1: Hämta alla bilar från backend via vår service
+            const cars = await getAllCars();
+            
+            // Steg 2: Rendera bilarna i carousel med vår komponent
+            renderCarousel(cars);
+            
+            // Steg 3: Initiera carousel-navigation (pilar för att scrolla)
+            initializeCarouselNavigation();
+            
+        } catch (error) {
+            console.error('Fel vid initiering av carousel:', error);
+        }
+    }
+
+    /**
+     * Aktiverar pilknapparna för att navigera i carousel
+     * Gör så att användaren kan klicka på vänster/höger-pilarna
+     */
+    function initializeCarouselNavigation() {
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const carouselTrack = document.getElementById('carouselTrack');
+        
+        // Om knapparna inte finns, avsluta funktionen
+        if (!prevBtn || !nextBtn || !carouselTrack) return;
+        
+        // När användaren klickar på "föregående"-pilen
+        prevBtn.addEventListener('click', () => {
+            // Scrolla åt vänster med 400 pixlar
+            carouselTrack.scrollBy({
+                left: -400,
+                behavior: 'smooth' // Gör scrollningen mjuk och snygg
+            });
+        });
+        
+        // När användaren klickar på "nästa"-pilen
+        nextBtn.addEventListener('click', () => {
+            // Scrolla åt höger med 400 pixlar
+            carouselTrack.scrollBy({
+                left: 400,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    // Anropa funktionen för att starta allt när sidan har laddats
+    initializeCarousel();
+
     const searchForm = document.getElementById("searchForm");
     const startDateInput = document.getElementById("startDate");
     const endDateInput = document.getElementById("endDate");
