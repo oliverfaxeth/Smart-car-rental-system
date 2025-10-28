@@ -27,7 +27,7 @@ public class PageController {
     }
 
     // Alla bilar - /cars istället för /all-cars.html
-    @GetMapping("/cars")
+    @GetMapping("/all-cars")
     public String allCars() {
         return "all-cars.html";
     }
