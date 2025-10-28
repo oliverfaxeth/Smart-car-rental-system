@@ -32,6 +32,12 @@ public class Rental {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
+    @Column(name = "status", nullable = false)
+    private String status;
+
+    @Column(name = "booking_number", nullable = false)
+    private String bookingNumber;
+
     // Getters och setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -53,4 +59,20 @@ public class Rental {
 
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getBookingNumber() {
+        return bookingNumber;
+    }
+
+    public void setBookingNumber(String bookingNumber) {
+        this.bookingNumber = bookingNumber;
+    }
 }
