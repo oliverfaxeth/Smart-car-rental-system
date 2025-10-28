@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mina Bokningar - NextCar</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Befintlig styles.css -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Ny customer-styles.css -->
+    <link rel="stylesheet" href="customer-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-car-front-fill"></i> NextCar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Hem</a></li>
+                    <li class="nav-item"><a class="nav-link" href="all-cars.html">Våra Bilar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Om Oss</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Kontakt</a></li>
+                    <li class="nav-item ms-3">
+                        <!-- Dessa knappar ersätts av JavaScript baserat på inloggningsstatus -->
+                        <a href="register.html" class="btn-register" style="text-decoration: none;">Registrera</a>
+                        <a href="login.html" class="btn-login-red" style="text-decoration: none;"><i class="bi bi-box-arrow-in-right"></i> Logga in</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="customer-header">
+            <h1><i class="bi bi-calendar-check"></i>Mina Bokningar</h1>
+            <p>Hantera dina pågående och tidigare bilbokningar</p>
+        </div>
+
+        <!-- Navigation Toggle Buttons -->
+        <div class="nav-toggle-buttons">
+            <button class="nav-toggle-btn active" id="btnOngoing" onclick="showBookings('ongoing')">
+                <i class="bi bi-clock-history"></i> Pågående Bokningar
+            </button>
+            <button class="nav-toggle-btn" id="btnHistory" onclick="showBookings('history')">
+                <i class="bi bi-archive"></i> Historik
+            </button>
+        </div>
+
+        <!-- Booking Lists Container -->
+        <div class="bookings-container">
+            <!-- Pågående Bokningar -->
+            <div id="ongoingBookings" class="bookings-list active">
+                <h3 style="color: var(--primary-blue); margin-bottom: 25px; font-weight: 700;">
+                    <i class="bi bi-clock-history" style="color: var(--golden-yellow);"></i> Pågående Bokningar
+                </h3>
+                
+                <!-- Exempel på pågående bokning -->
+                <div class="booking-card">
+                    <div class="booking-card-header">
+                        <div class="booking-id">Bokning #2024-001</div>
+                        <div class="booking-status confirmed">Bekräftad</div>
+                    </div>
+                    
+                    <div class="car-info-section">
+                        <div class="car-info-header">
+                            <i class="bi bi-car-front"></i>
+                            <h4>Toyota Camry Hybrid</h4>
+                        </div>
+                        <div class="car-details-grid">
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Reg.Nr</span>
+                                <span class="booking-detail-value">ABC 123</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Modell</span>
+                                <span class="booking-detail-value">2024</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Bränsle</span>
+                                <span class="booking-detail-value">Hybrid</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Växellåda</span>
+                                <span class="booking-detail-value">Automat</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Platser</span>
+                                <span class="booking-detail-value">5 personer</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-details">
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Från datum</span>
+                            <span class="booking-detail-value">2024-11-15</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Till datum</span>
+                            <span class="booking-detail-value">2024-11-22</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Antal dagar</span>
+                            <span class="booking-detail-value">7 dagar</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Totalt pris</span>
+                            <span class="booking-detail-value highlight">4 200 kr</span>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-actions">
+                        <button class="btn-booking-action btn-cancel">
+                            <i class="bi bi-x-circle"></i> Avboka
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Exempel på väntande bokning -->
+                <div class="booking-card">
+                    <div class="booking-card-header">
+                        <div class="booking-id">Bokning #2024-002</div>
+                        <div class="booking-status pending">Väntar</div>
+                    </div>
+                    
+                    <div class="car-info-section">
+                        <div class="car-info-header">
+                            <i class="bi bi-car-front"></i>
+                            <h4>BMW X3</h4>
+                        </div>
+                        <div class="car-details-grid">
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Reg.Nr</span>
+                                <span class="booking-detail-value">DEF 456</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Modell</span>
+                                <span class="booking-detail-value">2023</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Bränsle</span>
+                                <span class="booking-detail-value">Bensin</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Växellåda</span>
+                                <span class="booking-detail-value">Automat</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Platser</span>
+                                <span class="booking-detail-value">5 personer</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-details">
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Från datum</span>
+                            <span class="booking-detail-value">2024-12-01</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Till datum</span>
+                            <span class="booking-detail-value">2024-12-05</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Antal dagar</span>
+                            <span class="booking-detail-value">4 dagar</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Totalt pris</span>
+                            <span class="booking-detail-value highlight">3 600 kr</span>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-actions">
+                        <button class="btn-booking-action btn-cancel">
+                            <i class="bi bi-x-circle"></i> Avboka
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historik -->
+            <div id="historyBookings" class="bookings-list">
+                <h3 style="color: var(--primary-blue); margin-bottom: 25px; font-weight: 700;">
+                    <i class="bi bi-archive" style="color: var(--golden-yellow);"></i> Bokningshistorik
+                </h3>
+                
+                <!-- Exempel på slutförd bokning -->
+                <div class="booking-card">
+                    <div class="booking-card-header">
+                        <div class="booking-id">Bokning #2024-000</div>
+                        <div class="booking-status completed">Slutförd</div>
+                    </div>
+                    
+                    <div class="car-info-section">
+                        <div class="car-info-header">
+                            <i class="bi bi-car-front"></i>
+                            <h4>Volvo XC60</h4>
+                        </div>
+                        <div class="car-details-grid">
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Reg.Nr</span>
+                                <span class="booking-detail-value">GHI 789</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Modell</span>
+                                <span class="booking-detail-value">2023</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Bränsle</span>
+                                <span class="booking-detail-value">Bensin</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Växellåda</span>
+                                <span class="booking-detail-value">Automat</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Platser</span>
+                                <span class="booking-detail-value">5 personer</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-details">
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Från datum</span>
+                            <span class="booking-detail-value">2024-10-01</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Till datum</span>
+                            <span class="booking-detail-value">2024-10-08</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Antal dagar</span>
+                            <span class="booking-detail-value">7 dagar</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Totalt pris</span>
+                            <span class="booking-detail-value highlight">5 250 kr</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Inga knappar för historik enligt önskemål -->
+                </div>
+
+                <!-- Exempel på avbokad bokning -->
+                <div class="booking-card">
+                    <div class="booking-card-header">
+                        <div class="booking-id">Bokning #2024-003</div>
+                        <div class="booking-status cancelled">Avbokad</div>
+                    </div>
+                    
+                    <div class="car-info-section">
+                        <div class="car-info-header">
+                            <i class="bi bi-car-front"></i>
+                            <h4>Audi A4</h4>
+                        </div>
+                        <div class="car-details-grid">
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Reg.Nr</span>
+                                <span class="booking-detail-value">JKL 012</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Modell</span>
+                                <span class="booking-detail-value">2023</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Bränsle</span>
+                                <span class="booking-detail-value">Bensin</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Växellåda</span>
+                                <span class="booking-detail-value">Automat</span>
+                            </div>
+                            <div class="booking-detail-item">
+                                <span class="booking-detail-label">Platser</span>
+                                <span class="booking-detail-value">5 personer</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-details">
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Från datum</span>
+                            <span class="booking-detail-value">2024-09-15</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Till datum</span>
+                            <span class="booking-detail-value">2024-09-20</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Antal dagar</span>
+                            <span class="booking-detail-value">5 dagar</span>
+                        </div>
+                        <div class="booking-detail-item">
+                            <span class="booking-detail-label">Avbokningsdatum</span>
+                            <span class="booking-detail-value">2024-09-10</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Inga knappar för historik enligt önskemål -->
+                </div>
+
+                <!-- Tom historik meddelande -->
+                <div class="empty-state" style="display: none;" id="emptyHistory">
+                    <i class="bi bi-calendar-x"></i>
+                    <h3>Ingen bokningshistorik</h3>
+                    <p>Du har inga tidigare bokningar att visa.</p>
+                    <a href="all-cars.html" class="btn-browse-cars">
+                        <i class="bi bi-car-front"></i> Bläddra bland bilar
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tom pågående meddelande -->
+            <div class="empty-state" style="display: none;" id="emptyOngoing">
+                <i class="bi bi-calendar-plus"></i>
+                <h3>Inga pågående bokningar</h3>
+                <p>Du har inga aktiva bokningar för tillfället.</p>
+                <a href="all-cars.html" class="btn-browse-cars">
+                    <i class="bi bi-car-front"></i> Boka en bil nu
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4" style="background-color: var(--primary-blue); color: var(--white);">
+        <div class="container text-center">
+            <p>&copy; 2024 NextCar. Alla rättigheter förbehållna.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Funktion för att växla mellan pågående och historik
+        function showBookings(type) {
+            const ongoingBtn = document.getElementById('btnOngoing');
+            const historyBtn = document.getElementById('btnHistory');
+            const ongoingList = document.getElementById('ongoingBookings');
+            const historyList = document.getElementById('historyBookings');
+            
+            if (type === 'ongoing') {
+                ongoingBtn.classList.add('active');
+                historyBtn.classList.remove('active');
+                ongoingList.classList.add('active');
+                historyList.classList.remove('active');
+            } else {
+                historyBtn.classList.add('active');
+                ongoingBtn.classList.remove('active');
+                historyList.classList.add('active');
+                ongoingList.classList.remove('active');
+            }
+        }
+
+        // Funktion för utloggning
+        function logout() {
+            if (confirm('Är du säker på att du vill logga ut?')) {
+                localStorage.removeItem('token');
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
