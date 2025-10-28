@@ -1,7 +1,6 @@
 // Gör handleBooking global så den kan anropas från HTML
 function handleBooking(carId, startDate, endDate) {
-  const token =
-    localStorage.getItem("jwtToken") || sessionStorage.getItem("jwtToken");
+  const token = sessionStorage.getItem("jwtToken");
 
   if (!token) {
     // Spara bokningsinformation i sessionStorage innan redirect
@@ -384,7 +383,7 @@ async function bookingConfirmation() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("jwtToken") || ""}`,
+          Authorization: `Bearer ${sessionStorage.getItem("jwtToken") || ""}`,
         },
         body: JSON.stringify({
           carId: car.id,

@@ -2,12 +2,15 @@ package com.nextcar.carrental.service;
 
 import com.nextcar.carrental.entity.*;
 import com.nextcar.carrental.repository.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@PersistenceContext // För att kunna hämta booking number från db till backend direkt med hjälp av entityManager
 @Service
 public class RentalService {
 
@@ -15,13 +18,15 @@ public class RentalService {
     private final CarRepository carRepository;
     private final CustomerRepository customerRepository;
     private final PaymentRepository paymentRepository;
+    private final EntityManager entityManager;
 
     public RentalService(RentalRepository rentalRepository, CarRepository carRepository,
-                         CustomerRepository customerRepository, PaymentRepository paymentRepository) {
+                         CustomerRepository customerRepository, PaymentRepository paymentRepository, EntityManager entityManager) {
         this.rentalRepository = rentalRepository;
         this.carRepository = carRepository;
         this.customerRepository = customerRepository;
         this.paymentRepository = paymentRepository;
+        this.entityManager = entityManager;
     }
 
     @Transactional
@@ -53,8 +58,12 @@ public class RentalService {
         rental.setRentalDate(LocalDate.now());
         rental.setStartDate(startDate);
         rental.setEndDate(endDate);
+        rental.setStatus("ACTIVE");
+        // Databasen genererar automatiskt ett booking_number med dagensdatum + 001 (upp till 999)
 
-        return rentalRepository.save(rental);
+        Rental savedRental = rentalRepository.save(rental);
+        entityManager.refresh(savedRental); // Refreshar från databasen den CREATEADE BOOKING
+        return savedRental; // Lämnar tillbaka bokningen med automatiskt genererad booking_number
     }
 
     private long calculateDays(LocalDate start, LocalDate end) {
