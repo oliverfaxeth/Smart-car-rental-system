@@ -4,10 +4,16 @@ import com.nextcar.carrental.dto.CustomerRegistrationDTO;
 
 import com.nextcar.carrental.entity.Customer;
 import com.nextcar.carrental.service.CustomerService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,4 +60,22 @@ public class CustomerController {
             return ResponseEntity.badRequest().body(result);
         }
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<Customer> getLoggedInCustomer(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String email = authentication.getName(); // Här hämtar du email/username
+        Customer customer = customerService.findByEmail(email);
+
+        if (customer == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(customer);
+    }
+
+
 }
