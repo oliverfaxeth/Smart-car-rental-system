@@ -281,6 +281,8 @@ body {
     display: flex;
     transition: transform 0.4s ease-in-out;
     gap: 20px;
+    overflow-x: auto;  
+    scroll-behavior: smooth;  
 }
 
 .carousel-nav-btn {
@@ -305,11 +307,11 @@ body {
 }
 
 .carousel-nav-btn.prev {
-    left: -25px;
+    left: 10px;
 }
 
 .carousel-nav-btn.next {
-    right: -25px;
+    right: 10px;
 }
 
 /* ===== Grid View (efter sökning) ===== */
@@ -348,8 +350,8 @@ body {
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     transition: all 0.4s;
     border: 3px solid var(--golden-yellow);
-    flex: 0 0 calc(33.333% - 14px);
-    min-width: calc(33.333% - 14px);
+    flex: 0 0 calc(25% - 15px);
+    min-width: calc(25% - 15px);
 }
 
 .car-card-carousel:hover {
@@ -366,7 +368,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 30px;
-    min-height: 180px;
+    min-height: 320px;
     position: relative;
 }
 
@@ -1323,6 +1325,10 @@ body {
     }
 
 
+
+    
+
+
     /* ===== ADMIN PANEL STYLES ===== */
 
 /* Admin Section Layout */
@@ -2169,4 +2175,68 @@ body {
         margin: 10px;
     }
 }
+
+
+}
+/* ===== RESPONSIV CAROUSEL - PLACERA DESSA ALLRA SIST I FILEN ===== */
+
+/* Surfplattor i liggande läge och mindre desktop: 3 kort */
+@media (max-width: 1200px) {
+    .car-card-carousel {
+        flex: 0 0 calc(33.333% - 14px) !important;
+        min-width: calc(33.333% - 14px) !important;
+    }
+}
+
+/* Surfplattor i stående läge: 2 kort */
+@media (max-width: 968px) {
+    .car-card-carousel {
+        flex: 0 0 calc(50% - 10px) !important;
+        min-width: calc(50% - 10px) !important;
+    }
+    
+    .car-img-section {
+        min-height: 280px !important;
+        padding: 20px !important;
+    }
+}
+
+/* Mobiltelefoner: 1 kort */
+@media (max-width: 768px) {
+    .car-card-carousel {
+        flex: 0 0 calc(100% - 20px) !important;
+        min-width: calc(100% - 20px) !important;
+    }
+    
+    .car-img-section {
+        min-height: 320px !important;
+        padding: 15px !important;
+    }
+    
+    .carousel-nav-btn {
+        display: none !important;
+    }
+    
+    .carousel-track {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .car-card-carousel {
+        scroll-snap-align: center;
+    }
+}
+
+/* Extra små mobiler */
+@media (max-width: 480px) {
+    .car-card-carousel {
+        flex: 0 0 calc(100% - 10px) !important;
+        min-width: calc(100% - 10px) !important;
+    }
+    
+    .car-img-section {
+        min-height: 280px !important;
+        padding: 10px !important;
+    }
 }

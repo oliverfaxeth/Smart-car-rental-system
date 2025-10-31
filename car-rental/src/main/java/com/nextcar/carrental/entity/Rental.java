@@ -37,7 +37,10 @@ public class Rental {
     @Column(nullable = false, length = 20)
     private String status = "ACTIVE"; // Default-värde för nya bokningar
 
-    // Befintliga getters och setters
+    @Column(name = "booking_number", nullable = false)
+    private String bookingNumber;
+
+    // Getters och setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -80,5 +83,14 @@ public class Rental {
     public boolean canBeCancelled() {
         LocalDate today = LocalDate.now();
         return isActive() && startDate.isAfter(today);
+    }
+
+
+    public String getBookingNumber() {
+        return bookingNumber;
+    }
+
+    public void setBookingNumber(String bookingNumber) {
+        this.bookingNumber = bookingNumber;
     }
 }
