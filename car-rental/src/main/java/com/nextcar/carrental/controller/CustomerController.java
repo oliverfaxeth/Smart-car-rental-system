@@ -4,10 +4,17 @@ import com.nextcar.carrental.dto.CustomerRegistrationDTO;
 import com.nextcar.carrental.dto.CustomerUpdateDTO;
 import com.nextcar.carrental.entity.Customer;
 import com.nextcar.carrental.service.CustomerService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
+
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

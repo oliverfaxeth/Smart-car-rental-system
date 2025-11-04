@@ -32,6 +32,14 @@ public class Rental {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
+    // Status-fält för att hantera bokningens tillstånd
+    // ACTIVE = pågående bokning, CANCELLED = avbokad, COMPLETED = genomförd
+    @Column(nullable = false, length = 20)
+    private String status = "ACTIVE"; // Default-värde för nya bokningar
+
+    @Column(name = "booking_number", nullable = false)
+    private String bookingNumber;
+
     // Getters och setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -53,4 +61,36 @@ public class Rental {
 
     public LocalDate getEndDate() { return endDate; }
     public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    // Hjälpmetoder för att kontrollera bokningsstatus
+    public boolean isActive() {
+        return "ACTIVE".equals(this.status);
+    }
+
+    public boolean isCancelled() {
+        return "CANCELLED".equals(this.status);
+    }
+
+    public boolean isCompleted() {
+        return "COMPLETED".equals(this.status);
+    }
+
+    // Kontrollerar om bokningen kan avbokas
+    // En bokning kan endast avbokas om den är aktiv OCH startdatumet har inte passerat
+    public boolean canBeCancelled() {
+        LocalDate today = LocalDate.now();
+        return isActive() && startDate.isAfter(today);
+    }
+
+
+    public String getBookingNumber() {
+        return bookingNumber;
+    }
+
+    public void setBookingNumber(String bookingNumber) {
+        this.bookingNumber = bookingNumber;
+    }
 }
