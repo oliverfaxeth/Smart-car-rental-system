@@ -289,7 +289,7 @@ async function getCurrentCustomer() {
     });
 
     if (!res.ok) throw new Error("Kunde inte hämta kund");
-    
+
     const customer = await res.json();
     sessionStorage.setItem("currentCustomer", JSON.stringify(customer));
     console.log(customer);

@@ -77,7 +77,7 @@ const updateLoginUI = () => {
         
         // Rendera inloggade knappar
         authContainer.innerHTML = `
-            <a href="${userRole === 'ADMIN' ? 'admin/dashboard.html' : 'profile.html'}" class="btn-profile" style="text-decoration: none;">
+            <a href="${userRole === 'ADMIN' ? 'admin/dashboard' : '/profile'}" class="btn-profile" style="text-decoration: none;">
                 <i class="bi bi-person-circle"></i> ${firstName || (userRole === 'ADMIN' ? 'Admin' : 'Profil')}
             </a>
             <a href="#" id="logoutBtn" class="btn-logout" style="text-decoration: none; margin-left: 10px;">
@@ -96,8 +96,8 @@ const updateLoginUI = () => {
     } else {
         // Rendera login/register knappar
         authContainer.innerHTML = `
-            <a href="register.html" class="btn-register" style="text-decoration: none;">Registrera</a>
-            <a href="login.html" class="btn-login-red" style="text-decoration: none;">
+            <a href="/register" class="btn-register" style="text-decoration: none;">Registrera</a>
+            <a href="/login" class="btn-login-red" style="text-decoration: none;">
                 <i class="bi bi-box-arrow-in-right"></i> Logga in
             </a>
         `;
@@ -110,14 +110,14 @@ const protectPage = (requiredRole = null) => {
         // Spara nuvarande URL för att kunna återvända efter inloggning
         sessionStorage.setItem('referrer', window.location.href);
         // Omdirigera till inloggningssidan
-        window.location.href = 'login.html';
+        window.location.href = '/login';
         return false;
     }
     
     // Om en specifik roll krävs, kontrollera denna
     if (requiredRole && getUserRole() !== requiredRole) {
         // Omdirigera till startsidan om användaren inte har rätt roll
-        window.location.href = 'index.html';
+        window.location.href = '/';
         return false;
     }
     

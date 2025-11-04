@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mina Bokningar - NextCar</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- NextCar Core Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Enhanced Customer Styles - Complete modulär CSS-arkitektur -->
+    <link rel="stylesheet" href="customer-styles.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Ren navigationsstruktur som förlitar sig helt på CSS-klasser -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-car-front-fill"></i> NextCar
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
+                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Hem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="all-cars.html">Våra Bilar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Om Oss</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Kontakt</a>
+                    </li>
+                    <li class="nav-item ms-3" id="authButtons">
+                        <!-- BookingsManager uppdaterar detta med .btn-profile och .btn-logout klasser -->
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-border spinner-border-sm text-light me-2" role="status">
+                                <span class="visually-hidden">Laddar...</span>
+                            </div>
+                            <small class="text-light">Laddar...</small>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Huvudinnehåll med ren struktur -->
+    <div class="container flex-grow-1" style="padding-top: 2rem;">
+        <!-- Customer header som använder CSS-modulen -->
+        <div class="customer-header">
+            <h1>
+                <i class="bi bi-calendar-check"></i> Mina Bokningar
+            </h1>
+            <p>Hantera dina pågående och tidigare bilbokningar</p>
+        </div>
+
+        <!-- Navigation buttons som använder förbättrade CSS-klasser -->
+        <div class="nav-toggle-buttons">
+            <button class="nav-toggle-btn active" id="btnConfirmed" onclick="switchBookingView('confirmed')">
+                <i class="bi bi-check-circle"></i> Bekräftade
+            </button>
+            <button class="nav-toggle-btn" id="btnActive" onclick="switchBookingView('active')">
+                <i class="bi bi-play-circle"></i> Aktiva
+            </button>
+            <button class="nav-toggle-btn" id="btnCompleted" onclick="switchBookingView('completed')">
+                <i class="bi bi-check-square"></i> Avslutade
+            </button>
+            <button class="nav-toggle-btn" id="btnCancelled" onclick="switchBookingView('cancelled')">
+                <i class="bi bi-x-circle"></i> Avbokade
+            </button>
+        </div>
+
+        <!-- Bokningscontainer med modulär struktur -->
+        <div class="bookings-container">
+            <!-- Bekräftade bokningar sektion -->
+            <div id="confirmedBookings" class="bookings-list active">
+                <h3>
+                    <i class="bi bi-check-circle"></i> Bekräftade Bokningar
+                </h3>
+                <!-- BookingsManager fyller i innehållet dynamiskt -->
+            </div>
+
+            <!-- Aktiva bokningar sektion -->
+            <div id="activeBookings" class="bookings-list">
+                <h3>
+                    <i class="bi bi-play-circle"></i> Aktiva Bokningar
+                </h3>
+                <!-- BookingsManager fyller i innehållet dynamiskt -->
+            </div>
+
+            <!-- Avslutade bokningar sektion -->
+            <div id="completedBookings" class="bookings-list">
+                <h3>
+                    <i class="bi bi-check-square"></i> Avslutade Bokningar
+                </h3>
+                <!-- BookingsManager fyller i innehållet dynamiskt -->
+            </div>
+
+            <!-- Avbokade bokningar sektion -->
+            <div id="cancelledBookings" class="bookings-list">
+                <h3>
+                    <i class="bi bi-x-circle"></i> Avbokade Bokningar
+                </h3>
+                <!-- BookingsManager fyller i innehållet dynamiskt -->
+            </div>
+
+            <!-- Empty states som använder CSS-modulerna -->
+            <div class="empty-state" style="display: none;" id="emptyConfirmed">
+                <i class="bi bi-calendar-plus"></i>
+                <h3>Inga bekräftade bokningar</h3>
+                <p>Du har inga bekräftade bokningar för tillfället.</p>
+                <a href="all-cars.html" class="btn-browse-cars">
+                    <i class="bi bi-car-front"></i> Boka en bil nu
+                </a>
+            </div>
+
+            <div class="empty-state" style="display: none;" id="emptyActive">
+                <i class="bi bi-calendar-check"></i>
+                <h3>Inga aktiva bokningar</h3>
+                <p>Du har inga pågående uthyrningar just nu.</p>
+                <a href="all-cars.html" class="btn-browse-cars">
+                    <i class="bi bi-car-front"></i> Boka en bil nu
+                </a>
+            </div>
+
+            <div class="empty-state" style="display: none;" id="emptyCompleted">
+                <i class="bi bi-calendar-x"></i>
+                <h3>Inga avslutade bokningar</h3>
+                <p>Du har inga tidigare bokningar att visa ännu.</p>
+                <a href="all-cars.html" class="btn-browse-cars">
+                    <i class="bi bi-car-front"></i> Bläddra bland våra bilar
+                </a>
+            </div>
+
+            <div class="empty-state" style="display: none;" id="emptyCancelled">
+                <i class="bi bi-x-circle"></i>
+                <h3>Inga avbokade bokningar</h3>
+                <p>Du har inga avbokade bokningar.</p>
+                <a href="all-cars.html" class="btn-browse-cars">
+                    <i class="bi bi-car-front"></i> Bläddra bland våra bilar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidfot med ren struktur -->
+    <footer class="mt-auto py-4" style="background: linear-gradient(135deg, var(--primary-blue) 0%, #2c5282 100%); color: var(--white);">
+        <div class="container text-center">
+            <p style="margin: 0; font-weight: 500;">&copy; 2024 NextCar. Alla rättigheter förbehållna.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 
+        REN JAVASCRIPT-FUNKTIONALITET
+        
+        Denna sektion innehåller enbart den JavaScript-kod som behövs för
+        användargränssnittsinteraktioner. All CSS-hantering sker via klasser
+        definierade i customer-styles.css för perfekt separation of concerns.
+    -->
+    <script>
+        // Funktion för att växla mellan bokningsvyer med ren klassbaserad logik
+        function switchBookingView(viewType) {
+            console.log(`🔄 Växlar till vy: ${viewType}`);
+            
+            // Hämta alla knappar och containers
+            const buttons = ['btnConfirmed', 'btnActive', 'btnCompleted', 'btnCancelled'];
+            const containers = ['confirmedBookings', 'activeBookings', 'completedBookings', 'cancelledBookings'];
+            
+            // Reset alla knappar och containers
+            buttons.forEach(id => document.getElementById(id)?.classList.remove('active'));
+            containers.forEach(id => document.getElementById(id)?.classList.remove('active'));
+            
+            // Aktivera vald vy
+            const activeButton = `btn${viewType.charAt(0).toUpperCase() + viewType.slice(1)}`;
+            const activeContainer = `${viewType}Bookings`;
+            
+            document.getElementById(activeButton)?.classList.add('active');
+            document.getElementById(activeContainer)?.classList.add('active');
+            
+            // Smooth scroll till bokningscontainer (CSS scroll-behavior: smooth)
+            const bookingsContainer = document.querySelector('.bookings-container');
+            bookingsContainer?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // DOM-ready event listener för initial setup
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎯 Ren HTML med modulär CSS-arkitektur är redo');
+            
+            // Initialisering av interaktiva element sker här om behövs
+            // All stilhantering sker via CSS-klasser i customer-styles.css
+        });
+        
+        console.log('✅ Skalvar HTML-arkitektur laddad');
+    </script>
+    
+    <!-- Ladda den förbättrade BookingsManager -->
+    <script src="js/my-bookings.js"></script>
+</body>
+</html>
