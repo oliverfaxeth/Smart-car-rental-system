@@ -1,15 +1,14 @@
 /*
- * SJÄLVSTÄNDIG MY-BOOKINGS.JS
+ * NEXTCAR BOKNINGSHANTERARE (v2.0)
  * 
- * Denna version innehåller all nödvändig funktionalitet direkt i filen
- * för att undvika beroenden på externa script-filer och timing-problem.
- * 
- * Den använder en enkel, direkt approach som läser autentiseringsdata
- * direkt från localStorage/sessionStorage och hanterar alla API-anrop
- * självständigt.
+ * Komplett omskriven version med 4-kategori bokningssystem:
+ * - BEKRÄFTADE: Bokade men inte startade än
+ * - AKTIVA: Pågående uthyrningar
+ * - AVSLUTADE: Genomförda bokningar
+ * - AVBOKADE: Cancelled bokningar
  */
 
-console.log('🚀 Självständig my-bookings.js startar...');
+console.log('🚀 NextCar BookingsManager v2.0 startar...');
 
 // Konfiguration för API-anrop
 const CONFIG = {
@@ -24,48 +23,45 @@ const CONFIG = {
 };
 
 // Huvudklass som hanterar alla bokningsrelaterade funktioner
-class BookingsManager {
+class NextCarBookingsManager {
     constructor() {
         this.currentUserId = null;
         this.currentUserName = null;
         this.authToken = null;
         this.isInitialized = false;
+        this.allBookings = [];
     }
 
-    // Initialiserar bokningshanteraren när DOM är redo
+    // ===== INITIALISERING =====
+    
     async initialize() {
-        console.log('📱 BookingsManager: Startar initialisering...');
+        console.log('📱 NextCarBookingsManager: Startar initialisering...');
         
         try {
-            // Hämta autentiseringsdata direkt från webbläsarens lagring
             this.loadAuthenticationData();
             
-            // Kontrollera om användaren är autentiserad
             if (!this.isUserAuthenticated()) {
                 this.redirectToLogin();
                 return;
             }
             
-            // Uppdatera användargränssnittet
             this.updateNavigationUI();
-            
-            // Ladda och visa bokningar
-            await this.loadAndDisplayBookings();
+            await this.loadAndCategorizeBookings();
             
             this.isInitialized = true;
-            console.log('✅ BookingsManager: Initialisering slutförd framgångsrikt');
+            console.log('✅ NextCarBookingsManager: Initialisering slutförd');
             
         } catch (error) {
-            console.error('❌ BookingsManager: Fel under initialisering:', error);
+            console.error('❌ NextCarBookingsManager: Fel under initialisering:', error);
             this.showErrorMessage('Ett fel uppstod under laddningen. Försök ladda om sidan.');
         }
     }
 
-    // Läser autentiseringsdata direkt från webbläsarens lagring
+    // ===== AUTENTISERING =====
+
     loadAuthenticationData() {
-        console.log('🔑 BookingsManager: Hämtar autentiseringsdata...');
+        console.log('🔑 Hämtar autentiseringsdata...');
         
-        // Försök hämta från localStorage först, sedan sessionStorage
         this.currentUserId = this.getFromStorage(CONFIG.STORAGE_KEYS.USER_ID);
         this.currentUserName = this.getFromStorage(CONFIG.STORAGE_KEYS.FIRST_NAME);
         this.authToken = this.getFromStorage(CONFIG.STORAGE_KEYS.JWT_TOKEN);
@@ -73,16 +69,8 @@ class BookingsManager {
         console.log('🆔 Användar-ID:', this.currentUserId);
         console.log('👤 Användarnamn:', this.currentUserName);
         console.log('🎫 Token finns:', !!this.authToken);
-        
-        // Validera att vi har nödvändig data
-        if (this.currentUserId && this.authToken) {
-            console.log('✅ Autentiseringsdata hämtad framgångsrikt');
-        } else {
-            console.log('⚠️ Ofullständig autentiseringsdata');
-        }
     }
 
-    // Hjälpfunktion för att hämta värden från localStorage eller sessionStorage
     getFromStorage(key) {
         let value = localStorage.getItem(key);
         if (!value || value === 'null' || value === 'undefined') {
@@ -91,42 +79,35 @@ class BookingsManager {
         return (value && value !== 'null' && value !== 'undefined') ? value : null;
     }
 
-    // Kontrollerar om användaren är korrekt autentiserad
     isUserAuthenticated() {
         const isAuthenticated = !!(this.currentUserId && this.authToken);
         console.log('🔍 Autentiseringsstatus:', isAuthenticated ? 'Autentiserad' : 'Ej autentiserad');
         return isAuthenticated;
     }
 
-    // Omdirigerar till inloggningssidan om användaren inte är autentiserad
     redirectToLogin() {
         console.log('🔄 Omdirigerar till inloggningssida...');
         alert('Du måste logga in för att se dina bokningar.');
         window.location.href = 'login.html';
     }
 
-    // Uppdaterar navigationsmenyn för att visa användarens namn och utloggningsknapp
     updateNavigationUI() {
         console.log('🎨 Uppdaterar navigations-UI...');
         
         const authButtons = document.getElementById('authButtons');
-        if (!authButtons) {
-            console.log('⚠️ authButtons element hittas inte');
-            return;
-        }
+        if (!authButtons) return;
 
         const userName = this.currentUserName || 'Användare';
         
         authButtons.innerHTML = `
-            <a href="profile.html" class="btn-profile" style="text-decoration: none;">
+            <a href="profile.html" class="btn-profile">
                 <i class="bi bi-person-circle"></i> ${userName}
             </a>
-            <a href="#" id="logoutBtn" class="btn-logout" style="text-decoration: none; margin-left: 10px;">
+            <a href="#" id="logoutBtn" class="btn-logout">
                 <i class="bi bi-box-arrow-right"></i> Logga ut
             </a>
         `;
         
-        // Lägg till utloggningsfunktionalitet
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', (e) => {
@@ -134,39 +115,35 @@ class BookingsManager {
                 this.logout();
             });
         }
-        
-        console.log('✅ Navigations-UI uppdaterat med användarnamn:', userName);
     }
 
-    // Hanterar utloggning genom att rensa all lagrad data
     logout() {
         console.log('🚪 Loggar ut användare...');
         
-        // Rensa all data från localStorage
         Object.values(CONFIG.STORAGE_KEYS).forEach(key => {
             localStorage.removeItem(key);
             sessionStorage.removeItem(key);
         });
         
-        // Omdirigera till startsidan
         window.location.href = 'index.html';
     }
 
-    // Huvudfunktion för att hämta och visa bokningar
-    async loadAndDisplayBookings() {
-        console.log('📚 Startar laddning av bokningar...');
+    // ===== BOKNINGSHANTERING =====
+
+    async loadAndCategorizeBookings() {
+        console.log('📚 Startar laddning och kategorisering av bokningar...');
         
         try {
             this.showLoadingState();
             
-            // Gör API-anrop för att hämta bokningar
-            const bookings = await this.fetchBookingsFromAPI();
+            // Hämta alla bokningar från API
+            this.allBookings = await this.fetchBookingsFromAPI();
             
             // Kategorisera bokningarna
-            const categorizedBookings = this.categorizeBookings(bookings);
+            const categories = this.categorizeBookings(this.allBookings);
             
-            // Rendera bokningarna i användargränssnittet
-            this.renderBookings(categorizedBookings);
+            // Rendera alla kategorier
+            this.renderAllCategories(categories);
             
             this.hideLoadingState();
             
@@ -177,7 +154,6 @@ class BookingsManager {
         }
     }
 
-    // Gör API-anrop för att hämta bokningar från servern
     async fetchBookingsFromAPI() {
         const apiUrl = `${CONFIG.API_BASE_URL}/rentals/customer/${this.currentUserId}`;
         console.log('🌐 API-anrop till:', apiUrl);
@@ -190,59 +166,73 @@ class BookingsManager {
             }
         });
         
-        console.log('📊 API-svar status:', response.status);
-        
         if (!response.ok) {
             throw new Error(`API-anrop misslyckades med status ${response.status}`);
         }
         
         const bookings = await response.json();
         console.log('📦 Antal bokningar mottagna:', bookings.length);
-        console.log('📋 Bokningsdata:', bookings);
         
         return bookings;
     }
 
-    // Kategoriserar bokningar i pågående och historiska
     categorizeBookings(bookings) {
-        console.log('📂 Kategoriserar bokningar...');
+        console.log('📂 Kategoriserar bokningar i 4 kategorier...');
         
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         
-        const ongoing = bookings.filter(booking => {
-            const endDate = new Date(booking.endDate);
-            return endDate >= today && booking.status === 'ACTIVE';
+        const confirmed = bookings.filter(booking => {
+            const startDate = new Date(booking.startDate);
+            return booking.status === 'ACTIVE' && startDate > today;
         });
         
-        const history = bookings.filter(booking => {
+        const active = bookings.filter(booking => {
+            const startDate = new Date(booking.startDate);
             const endDate = new Date(booking.endDate);
-            return endDate < today || booking.status !== 'ACTIVE';
+            return booking.status === 'ACTIVE' && startDate <= today && endDate >= today;
         });
         
-        console.log('📅 Pågående bokningar:', ongoing.length);
-        console.log('📚 Historiska bokningar:', history.length);
+        const completed = bookings.filter(booking => {
+            const endDate = new Date(booking.endDate);
+            return booking.status === 'COMPLETED' || 
+                   (booking.status === 'ACTIVE' && endDate < today);
+        });
         
-        return { ongoing, history };
+        const cancelled = bookings.filter(booking => {
+            return booking.status === 'CANCELLED';
+        });
+        
+        console.log('✅ Bekräftade:', confirmed.length);
+        console.log('🚗 Aktiva:', active.length);
+        console.log('📋 Avslutade:', completed.length);
+        console.log('❌ Avbokade:', cancelled.length);
+        
+        return { confirmed, active, completed, cancelled };
     }
 
-    // Renderar bokningar i användargränssnittet
-    renderBookings({ ongoing, history }) {
-        console.log('🎨 Renderar bokningar i UI...');
+    // ===== RENDERING =====
+
+    renderAllCategories({ confirmed, active, completed, cancelled }) {
+        console.log('🎨 Renderar alla bokningskategorier...');
         
-        this.renderOngoingBookings(ongoing);
-        this.renderHistoryBookings(history);
+        this.renderBookingCategory('confirmed', confirmed, true);  // Kan avbokas
+        this.renderBookingCategory('active', active, false);      // Kan ej avbokas (pågående)
+        this.renderBookingCategory('completed', completed, false); // Kan ej avbokas (avslutad)
+        this.renderBookingCategory('cancelled', cancelled, false); // Kan ej avbokas (redan avbokad)
         
-        console.log('✅ Alla bokningar renderade');
+        console.log('✅ Alla kategorier renderade');
     }
 
-    // Renderar pågående bokningar
-    renderOngoingBookings(bookings) {
-        const container = document.getElementById('ongoingBookings');
-        const emptyState = document.getElementById('emptyOngoing');
+    renderBookingCategory(categoryName, bookings, canCancel) {
+        const containerId = `${categoryName}Bookings`;
+        const emptyStateId = `empty${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}`;
+        
+        const container = document.getElementById(containerId);
+        const emptyState = document.getElementById(emptyStateId);
         
         if (!container) {
-            console.error('❌ ongoingBookings container hittas inte');
+            console.error(`❌ ${containerId} container hittas inte`);
             return;
         }
         
@@ -254,7 +244,7 @@ class BookingsManager {
         }
         
         if (bookings.length === 0) {
-            console.log('📭 Inga pågående bokningar att visa');
+            console.log(`📭 Inga ${categoryName} bokningar att visa`);
             if (emptyState) {
                 emptyState.style.display = 'block';
                 container.appendChild(emptyState);
@@ -267,111 +257,36 @@ class BookingsManager {
         }
         
         bookings.forEach((booking, index) => {
-            console.log(`🚗 Renderar pågående bokning ${index + 1}: ${booking.car.brand} ${booking.car.model}`);
-            const bookingElement = this.createBookingElement(booking, true);
+            console.log(`📄 Renderar ${categoryName} bokning ${index + 1}: ${booking.car.brand} ${booking.car.model}`);
+            const bookingElement = this.createBookingCard(booking, canCancel);
             container.appendChild(bookingElement);
         });
     }
 
-    // Renderar historiska bokningar
-    renderHistoryBookings(bookings) {
-        const container = document.getElementById('historyBookings');
-        const emptyState = document.getElementById('emptyHistory');
-        
-        if (!container) {
-            console.error('❌ historyBookings container hittas inte');
-            return;
-        }
-        
-        // Behåll headern men rensa övrigt innehåll
-        const header = container.querySelector('h3');
-        container.innerHTML = '';
-        if (header) {
-            container.appendChild(header);
-        }
-        
-        if (bookings.length === 0) {
-            console.log('📭 Inga historiska bokningar att visa');
-            if (emptyState) {
-                emptyState.style.display = 'block';
-                container.appendChild(emptyState);
-            }
-            return;
-        }
-        
-        if (emptyState) {
-            emptyState.style.display = 'none';
-        }
-        
-        bookings.forEach((booking, index) => {
-            console.log(`🚗 Renderar historisk bokning ${index + 1}: ${booking.car.brand} ${booking.car.model}`);
-            const bookingElement = this.createBookingElement(booking, false);
-            container.appendChild(bookingElement);
-        });
-    }
-
-    // Skapar ett HTML-element för en enskild bokning med förbättrad design
-    createBookingElement(booking, canCancel) {
+    createBookingCard(booking, canCancel) {
         const bookingDiv = document.createElement('div');
         bookingDiv.className = 'booking-card';
-        bookingDiv.style.cssText = `
-            border: 1px solid #e0e6ed;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        `;
         
-        // Lägg till hover-effekt
-        bookingDiv.addEventListener('mouseenter', () => {
-            bookingDiv.style.transform = 'translateY(-2px)';
-            bookingDiv.style.boxShadow = '0 8px 20px rgba(0,0,0,0.12)';
-        });
+        // Bestäm VERKLIG status baserat på datum och databas-status
+        const actualStatus = this.determineActualStatus(booking);
+        const { statusText, statusBg } = this.getStatusStyle(actualStatus);
         
-        bookingDiv.addEventListener('mouseleave', () => {
-            bookingDiv.style.transform = 'translateY(0)';
-            bookingDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.08)';
-        });
-        
-        // Bestäm status och färg med förbättrade färgscheman
-        let statusText, statusColor, statusBg;
-        switch (booking.status) {
-            case 'ACTIVE':
-                statusText = 'AKTIV';
-                statusColor = '#ffffff';
-                statusBg = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-                break;
-            case 'CANCELLED':
-                statusText = 'AVBOKAD';
-                statusColor = '#ffffff';
-                statusBg = 'linear-gradient(135deg, #dc3545 0%, #e74c3c 100%)';
-                break;
-            default:
-                statusText = 'GENOMFÖRD';
-                statusColor = '#ffffff';
-                statusBg = 'linear-gradient(135deg, #6c757d 0%, #495057 100%)';
-        }
-        
-        // Kontrollera om bokningen kan avbokas
+        // Kontrollera om bokningen faktiskt kan avbokas
         const canActuallyCancel = canCancel && 
             booking.status === 'ACTIVE' && 
             new Date(booking.startDate) > new Date();
         
-        // Formatera datum med bättre presentation
+        // Formatera datum
         const startDate = new Date(booking.startDate).toLocaleDateString('sv-SE');
         const endDate = new Date(booking.endDate).toLocaleDateString('sv-SE');
         
-        // Beräkna antalet dagar för bokningen
+        // Beräkna antal dagar
         const startDateObj = new Date(booking.startDate);
         const endDateObj = new Date(booking.endDate);
         const daysDifference = Math.ceil((endDateObj - startDateObj) / (1000 * 60 * 60 * 24));
         
         bookingDiv.innerHTML = `
-            <!-- Dekorativ accent-linje -->
+            <!-- Status accent-linje -->
             <div style="
                 position: absolute;
                 top: 0;
@@ -394,7 +309,7 @@ class BookingsManager {
                 </div>
                 <span style="
                     background: ${statusBg}; 
-                    color: ${statusColor}; 
+                    color: white; 
                     padding: 8px 16px; 
                     border-radius: 25px; 
                     font-size: 0.85rem; 
@@ -407,10 +322,10 @@ class BookingsManager {
                 </span>
             </div>
             
-            <!-- Informationsraster med förbättrad layout -->
+            <!-- Informationsraster -->
             <div style="display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-                    <!-- Period information -->
+                    <!-- Period -->
                     <div style="
                         background: rgba(13, 110, 253, 0.05);
                         border-left: 4px solid #0d6efd;
@@ -429,7 +344,7 @@ class BookingsManager {
                         </p>
                     </div>
                     
-                    <!-- Bokningsnummer och registreringsnummer -->
+                    <!-- Bokningsnummer -->
                     <div style="
                         background: rgba(111, 66, 193, 0.05);
                         border-left: 4px solid #6f42c1;
@@ -445,7 +360,7 @@ class BookingsManager {
                         </p>
                     </div>
                     
-                    <!-- Pris information -->
+                    <!-- Pris -->
                     <div style="
                         background: rgba(25, 135, 84, 0.05);
                         border-left: 4px solid #198754;
@@ -484,12 +399,12 @@ class BookingsManager {
                     </div>
                 </div>
                 
-                <!-- Åtgärdssektion med förbättrad design -->
+                <!-- Åtgärdssektion -->
                 <div style="text-align: center; min-width: 140px;">
                     ${canActuallyCancel ? `
                         <button 
                             class="btn btn-danger" 
-                            onclick="bookingsManager.cancelBooking(${booking.id})"
+                            onclick="nextCarBookingsManager.cancelBooking(${booking.id})"
                             style="
                                 white-space: nowrap;
                                 padding: 12px 20px;
@@ -499,6 +414,7 @@ class BookingsManager {
                                 background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
                                 box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
                                 transition: all 0.3s ease;
+                                color: white;
                             "
                             onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(220, 53, 69, 0.4)'"
                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(220, 53, 69, 0.3)'"
@@ -518,7 +434,7 @@ class BookingsManager {
                         ">
                             <i class="bi bi-info-circle" style="color: #6c757d; font-size: 1.2rem; display: block; margin-bottom: 8px;"></i>
                             <span style="color: #6c757d; font-style: italic; font-size: 0.9rem;">
-                                ${booking.status === 'ACTIVE' ? 'Kan inte avbokas' : 'Bokning avslutad'}
+                                ${this.getCancelReasonText(booking)}
                             </span>
                         </div>
                     `}
@@ -529,7 +445,87 @@ class BookingsManager {
         return bookingDiv;
     }
 
-    // Hanterar avbokning av en bokning
+    getStatusStyle(status) {
+        switch (status) {
+            case 'ACTIVE':
+                return {
+                    statusText: 'AKTIV',
+                    statusBg: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)'
+                };
+            case 'CANCELLED':
+                return {
+                    statusText: 'AVBOKAD',
+                    statusBg: 'linear-gradient(135deg, #dc3545 0%, #e74c3c 100%)'
+                };
+            case 'COMPLETED':
+                return {
+                    statusText: 'AVSLUTAD',
+                    statusBg: 'linear-gradient(135deg, #6c757d 0%, #495057 100%)'
+                };
+            case 'CONFIRMED':
+                return {
+                    statusText: 'BEKRÄFTAD',
+                    statusBg: 'linear-gradient(135deg, #ffc107 0%, #e6a800 100%)'
+                };
+            default:
+                return {
+                    statusText: 'OKÄND',
+                    statusBg: 'linear-gradient(135deg, #6c757d 0%, #495057 100%)'
+                };
+        }
+    }
+
+    // Bestämmer verklig status för visning baserat på databas-status och datum
+    determineActualStatus(booking) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const startDate = new Date(booking.startDate);
+        const endDate = new Date(booking.endDate);
+        
+        // Om bokad i databasen som CANCELLED, visa som CANCELLED
+        if (booking.status === 'CANCELLED') {
+            return 'CANCELLED';
+        }
+        
+        // Om bokad i databasen som COMPLETED, visa som COMPLETED
+        if (booking.status === 'COMPLETED') {
+            return 'COMPLETED';
+        }
+        
+        // Om ACTIVE i databasen, bestäm baserat på datum
+        if (booking.status === 'ACTIVE') {
+            if (endDate < today) {
+                // Slutdatum har passerat = AVSLUTAD
+                return 'COMPLETED';
+            } else if (startDate <= today && endDate >= today) {
+                // Pågående = AKTIV
+                return 'ACTIVE';
+            } else if (startDate > today) {
+                // Framtida = BEKRÄFTAD
+                return 'CONFIRMED';
+            }
+        }
+        
+        // Fallback
+        return booking.status;
+    }
+
+    getCancelReasonText(booking) {
+        if (booking.status === 'CANCELLED') {
+            return 'Redan avbokad';
+        } else if (booking.status === 'COMPLETED') {
+            return 'Bokning genomförd';
+        } else if (booking.status === 'ACTIVE' && new Date(booking.endDate) < new Date()) {
+            return 'Bokning avslutad';
+        } else if (booking.status === 'ACTIVE' && new Date(booking.startDate) <= new Date()) {
+            return 'Pågående uthyrning';
+        } else {
+            return 'Kan inte avbokas';
+        }
+    }
+
+    // ===== AVBOKNING =====
+
     async cancelBooking(rentalId) {
         console.log(`🚫 Försöker avboka bokning ID: ${rentalId}`);
         
@@ -550,12 +546,10 @@ class BookingsManager {
                 }
             });
             
-            console.log('📊 Avboknings-API svar status:', response.status);
-            
             if (response.ok) {
                 console.log('✅ Bokning avbokad framgångsrikt');
                 alert('Bokningen har avbokats framgångsrikt.');
-                await this.loadAndDisplayBookings(); // Ladda om bokningarna
+                await this.loadAndCategorizeBookings(); // Ladda om alla bokningar
             } else {
                 const errorText = await response.text();
                 console.error('❌ Avbokning misslyckades:', errorText);
@@ -567,12 +561,10 @@ class BookingsManager {
         }
     }
 
-    // Visar laddningstillstånd
+    // ===== UI TILLSTÅND =====
+
     showLoadingState() {
         console.log('⏳ Visar laddningstillstånd...');
-        
-        const ongoingContainer = document.getElementById('ongoingBookings');
-        const historyContainer = document.getElementById('historyBookings');
         
         const loadingHtml = `
             <div class="text-center py-4">
@@ -583,28 +575,24 @@ class BookingsManager {
             </div>
         `;
         
-        if (ongoingContainer) {
-            const header = ongoingContainer.querySelector('h3');
-            ongoingContainer.innerHTML = '';
-            if (header) ongoingContainer.appendChild(header);
-            ongoingContainer.insertAdjacentHTML('beforeend', loadingHtml);
-        }
+        const containers = ['confirmedBookings', 'activeBookings', 'completedBookings', 'cancelledBookings'];
         
-        if (historyContainer) {
-            const header = historyContainer.querySelector('h3');
-            historyContainer.innerHTML = '';
-            if (header) historyContainer.appendChild(header);
-            historyContainer.insertAdjacentHTML('beforeend', loadingHtml);
-        }
+        containers.forEach(containerId => {
+            const container = document.getElementById(containerId);
+            if (container) {
+                const header = container.querySelector('h3');
+                container.innerHTML = '';
+                if (header) container.appendChild(header);
+                container.insertAdjacentHTML('beforeend', loadingHtml);
+            }
+        });
     }
 
-    // Döljer laddningstillstånd
     hideLoadingState() {
         console.log('✅ Döljer laddningstillstånd...');
         // Laddningstillståndet försvinner automatiskt när nytt innehåll renderas
     }
 
-    // Visar felmeddelande
     showErrorMessage(message) {
         console.error('❌ Visar felmeddelande:', message);
         
@@ -619,63 +607,58 @@ class BookingsManager {
             </div>
         `;
         
-        const ongoingContainer = document.getElementById('ongoingBookings');
-        const historyContainer = document.getElementById('historyBookings');
+        // Visa fel i den aktiva containern
+        const activeContainer = document.querySelector('.bookings-list.active') || 
+                               document.getElementById('confirmedBookings');
         
-        if (ongoingContainer) {
-            const header = ongoingContainer.querySelector('h3');
-            ongoingContainer.innerHTML = '';
-            if (header) ongoingContainer.appendChild(header);
-            ongoingContainer.insertAdjacentHTML('beforeend', errorHtml);
-        }
-        
-        if (historyContainer) {
-            const header = historyContainer.querySelector('h3');
-            historyContainer.innerHTML = '';
-            if (header) historyContainer.appendChild(header);
-            historyContainer.insertAdjacentHTML('beforeend', `
-                <div class="alert alert-warning text-center">
-                    <p>Historik kunde inte laddas på grund av samma fel.</p>
-                </div>
-            `);
+        if (activeContainer) {
+            const header = activeContainer.querySelector('h3');
+            activeContainer.innerHTML = '';
+            if (header) activeContainer.appendChild(header);
+            activeContainer.insertAdjacentHTML('beforeend', errorHtml);
         }
     }
 }
 
-// Globala variabler och funktioner
-let bookingsManager;
+// ===== GLOBAL VARIABEL OCH FUNKTIONER =====
 
-// Funktion för att växla mellan pågående och historik (används av HTML onclick)
-function showBookings(type) {
-    const ongoingBtn = document.getElementById('btnOngoing');
-    const historyBtn = document.getElementById('btnHistory');
-    const ongoingList = document.getElementById('ongoingBookings');
-    const historyList = document.getElementById('historyBookings');
+let nextCarBookingsManager;
+
+// Funktion för att växla mellan bokningsvyer (används av HTML onclick)
+function switchBookingView(viewType) {
+    console.log(`🔄 Växlar till vy: ${viewType}`);
     
-    if (type === 'ongoing') {
-        ongoingBtn?.classList.add('active');
-        historyBtn?.classList.remove('active');
-        ongoingList?.classList.add('active');
-        historyList?.classList.remove('active');
-    } else {
-        historyBtn?.classList.add('active');
-        ongoingBtn?.classList.remove('active');
-        historyList?.classList.add('active');
-        ongoingList?.classList.remove('active');
-    }
+    const buttons = ['btnConfirmed', 'btnActive', 'btnCompleted', 'btnCancelled'];
+    const containers = ['confirmedBookings', 'activeBookings', 'completedBookings', 'cancelledBookings'];
+    
+    // Reset alla knappar och containers
+    buttons.forEach(id => document.getElementById(id)?.classList.remove('active'));
+    containers.forEach(id => document.getElementById(id)?.classList.remove('active'));
+    
+    // Aktivera vald vy
+    const activeButton = `btn${viewType.charAt(0).toUpperCase() + viewType.slice(1)}`;
+    const activeContainer = `${viewType}Bookings`;
+    
+    document.getElementById(activeButton)?.classList.add('active');
+    document.getElementById(activeContainer)?.classList.add('active');
+    
+    // Smooth scroll
+    const bookingsContainer = document.querySelector('.bookings-container');
+    bookingsContainer?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// Initialisering när DOM är redo
+// ===== INITIALISERING =====
+
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🎯 DOM är redo, startar BookingsManager...');
+    console.log('🎯 DOM är redo, startar NextCarBookingsManager v2.0...');
     
     try {
-        bookingsManager = new BookingsManager();
-        await bookingsManager.initialize();
+        nextCarBookingsManager = new NextCarBookingsManager();
+        await nextCarBookingsManager.initialize();
     } catch (error) {
         console.error('💥 Kritiskt fel vid initialisering:', error);
         alert('Ett allvarligt fel uppstod. Försök ladda om sidan.');
     }
 });
 
-console.log('📄 Självständig my-bookings.js laddad framgångsrikt');
+console.log('📄 NextCar BookingsManager v2.0 laddad framgångsrikt');

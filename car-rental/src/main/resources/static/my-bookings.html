@@ -65,46 +65,86 @@
 
         <!-- Navigation buttons som använder förbättrade CSS-klasser -->
         <div class="nav-toggle-buttons">
-            <button class="nav-toggle-btn active" id="btnOngoing" onclick="switchBookingView('ongoing')">
-                <i class="bi bi-clock-history"></i> Pågående Bokningar
+            <button class="nav-toggle-btn active" id="btnConfirmed" onclick="switchBookingView('confirmed')">
+                <i class="bi bi-check-circle"></i> Bekräftade
             </button>
-            <button class="nav-toggle-btn" id="btnHistory" onclick="switchBookingView('history')">
-                <i class="bi bi-archive"></i> Historik
+            <button class="nav-toggle-btn" id="btnActive" onclick="switchBookingView('active')">
+                <i class="bi bi-play-circle"></i> Aktiva
+            </button>
+            <button class="nav-toggle-btn" id="btnCompleted" onclick="switchBookingView('completed')">
+                <i class="bi bi-check-square"></i> Avslutade
+            </button>
+            <button class="nav-toggle-btn" id="btnCancelled" onclick="switchBookingView('cancelled')">
+                <i class="bi bi-x-circle"></i> Avbokade
             </button>
         </div>
 
         <!-- Bokningscontainer med modulär struktur -->
         <div class="bookings-container">
-            <!-- Pågående bokningar sektion -->
-            <div id="ongoingBookings" class="bookings-list active">
+            <!-- Bekräftade bokningar sektion -->
+            <div id="confirmedBookings" class="bookings-list active">
                 <h3>
-                    <i class="bi bi-clock-history"></i> Pågående Bokningar
+                    <i class="bi bi-check-circle"></i> Bekräftade Bokningar
                 </h3>
                 <!-- BookingsManager fyller i innehållet dynamiskt -->
             </div>
 
-            <!-- Historik sektion -->
-            <div id="historyBookings" class="bookings-list">
+            <!-- Aktiva bokningar sektion -->
+            <div id="activeBookings" class="bookings-list">
                 <h3>
-                    <i class="bi bi-archive"></i> Bokningshistorik
+                    <i class="bi bi-play-circle"></i> Aktiva Bokningar
+                </h3>
+                <!-- BookingsManager fyller i innehållet dynamiskt -->
+            </div>
+
+            <!-- Avslutade bokningar sektion -->
+            <div id="completedBookings" class="bookings-list">
+                <h3>
+                    <i class="bi bi-check-square"></i> Avslutade Bokningar
+                </h3>
+                <!-- BookingsManager fyller i innehållet dynamiskt -->
+            </div>
+
+            <!-- Avbokade bokningar sektion -->
+            <div id="cancelledBookings" class="bookings-list">
+                <h3>
+                    <i class="bi bi-x-circle"></i> Avbokade Bokningar
                 </h3>
                 <!-- BookingsManager fyller i innehållet dynamiskt -->
             </div>
 
             <!-- Empty states som använder CSS-modulerna -->
-            <div class="empty-state" style="display: none;" id="emptyOngoing">
+            <div class="empty-state" style="display: none;" id="emptyConfirmed">
                 <i class="bi bi-calendar-plus"></i>
-                <h3>Inga pågående bokningar</h3>
-                <p>Du har inga aktiva bokningar för tillfället.</p>
+                <h3>Inga bekräftade bokningar</h3>
+                <p>Du har inga bekräftade bokningar för tillfället.</p>
                 <a href="all-cars.html" class="btn-browse-cars">
                     <i class="bi bi-car-front"></i> Boka en bil nu
                 </a>
             </div>
 
-            <div class="empty-state" style="display: none;" id="emptyHistory">
+            <div class="empty-state" style="display: none;" id="emptyActive">
+                <i class="bi bi-calendar-check"></i>
+                <h3>Inga aktiva bokningar</h3>
+                <p>Du har inga pågående uthyrningar just nu.</p>
+                <a href="all-cars.html" class="btn-browse-cars">
+                    <i class="bi bi-car-front"></i> Boka en bil nu
+                </a>
+            </div>
+
+            <div class="empty-state" style="display: none;" id="emptyCompleted">
                 <i class="bi bi-calendar-x"></i>
-                <h3>Ingen bokningshistorik</h3>
+                <h3>Inga avslutade bokningar</h3>
                 <p>Du har inga tidigare bokningar att visa ännu.</p>
+                <a href="all-cars.html" class="btn-browse-cars">
+                    <i class="bi bi-car-front"></i> Bläddra bland våra bilar
+                </a>
+            </div>
+
+            <div class="empty-state" style="display: none;" id="emptyCancelled">
+                <i class="bi bi-x-circle"></i>
+                <h3>Inga avbokade bokningar</h3>
+                <p>Du har inga avbokade bokningar.</p>
                 <a href="all-cars.html" class="btn-browse-cars">
                     <i class="bi bi-car-front"></i> Bläddra bland våra bilar
                 </a>
@@ -134,25 +174,20 @@
         function switchBookingView(viewType) {
             console.log(`🔄 Växlar till vy: ${viewType}`);
             
-            // Hämta DOM-element
-            const ongoingBtn = document.getElementById('btnOngoing');
-            const historyBtn = document.getElementById('btnHistory');
-            const ongoingList = document.getElementById('ongoingBookings');
-            const historyList = document.getElementById('historyBookings');
+            // Hämta alla knappar och containers
+            const buttons = ['btnConfirmed', 'btnActive', 'btnCompleted', 'btnCancelled'];
+            const containers = ['confirmedBookings', 'activeBookings', 'completedBookings', 'cancelledBookings'];
             
-            if (viewType === 'ongoing') {
-                // Aktivera pågående bokningar genom CSS-klasser
-                ongoingBtn?.classList.add('active');
-                historyBtn?.classList.remove('active');
-                ongoingList?.classList.add('active');
-                historyList?.classList.remove('active');
-            } else if (viewType === 'history') {
-                // Aktivera historik genom CSS-klasser
-                historyBtn?.classList.add('active');
-                ongoingBtn?.classList.remove('active');
-                historyList?.classList.add('active');
-                ongoingList?.classList.remove('active');
-            }
+            // Reset alla knappar och containers
+            buttons.forEach(id => document.getElementById(id)?.classList.remove('active'));
+            containers.forEach(id => document.getElementById(id)?.classList.remove('active'));
+            
+            // Aktivera vald vy
+            const activeButton = `btn${viewType.charAt(0).toUpperCase() + viewType.slice(1)}`;
+            const activeContainer = `${viewType}Bookings`;
+            
+            document.getElementById(activeButton)?.classList.add('active');
+            document.getElementById(activeContainer)?.classList.add('active');
             
             // Smooth scroll till bokningscontainer (CSS scroll-behavior: smooth)
             const bookingsContainer = document.querySelector('.bookings-container');
