@@ -1,6 +1,7 @@
 package com.nextcar.carrental.service;
 
 import com.nextcar.carrental.dto.CustomerRegistrationDTO;
+import com.nextcar.carrental.dto.CustomerUpdateDTO;
 import com.nextcar.carrental.entity.Customer;
 import com.nextcar.carrental.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,4 +97,50 @@ public class CustomerService {
 
         return "SUCCESS";
     }
+
+        // Metod för att uppdatera kunduppgifter
+        public Customer updateCustomer (Integer userId, CustomerUpdateDTO customerUpdateDTO) {
+
+            // 1. Hitta kunden genom Id
+            Optional<Customer> optionalCustomer = customerRepository.findById(Long.valueOf(userId));
+
+            if (optionalCustomer.isEmpty()) {
+                    throw new RuntimeException("Kund med detta Id kan ej hittas");
+                }
+
+            Customer customer = optionalCustomer.get();
+
+            //2. Validera input
+            if (customerUpdateDTO.getFirstName() == null || customerUpdateDTO.getFirstName().isEmpty() ||
+                    customerUpdateDTO.getLastName() == null || customerUpdateDTO.getLastName().isEmpty() ||
+                    customerUpdateDTO.getPhone() == null || customerUpdateDTO.getPhone().isEmpty() ||
+                    customerUpdateDTO.getAddress() == null || customerUpdateDTO.getAddress().isEmpty() ||
+                    customerUpdateDTO.getPostalCode() == null || customerUpdateDTO.getPostalCode().isEmpty() ||
+                    customerUpdateDTO.getCity() == null || customer.getCity().isEmpty() ||
+                    customerUpdateDTO.getCountry() == null || customer.getCountry().isEmpty()) {
+
+                throw new RuntimeException("Du måste ange alla uppgifter");
+            }
+
+            //3. Uppdatera fält
+            customer.setFirstName(customerUpdateDTO.getFirstName());
+            customer.setLastName(customerUpdateDTO.getLastName());
+            customer.setPhone(customerUpdateDTO.getPhone());
+            customer.setAddress(customerUpdateDTO.getAddress());
+            customer.setPostalCode(customerUpdateDTO.getPostalCode());
+            customer.setCity(customerUpdateDTO.getCity());
+            customer.setCountry(customerUpdateDTO.getCountry());
+
+            //4. Spara uppgifter
+            return customerRepository.save(customer);
+        }
+
+
+
+
+
+
+
+
+
 }
