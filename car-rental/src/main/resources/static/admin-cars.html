@@ -41,21 +41,23 @@
             </div>
 
             <!-- Toolbar -->
-            <div class="admin-toolbar">
-                <div class="toolbar-left">
-                    <button class="btn-action btn-add" id="addCarBtn">
-                        <i class="bi bi-plus-circle"></i> Lägg till Bil
-                    </button>
-                </div>
-                <div class="toolbar-right">
-                    <select class="form-select" id="statusFilter" style="width: 200px;">
-                        <option value="">Alla bilar</option>
-                        <option value="ACTIVE">Endast aktiva</option>
-                        <option value="INACTIVE">Endast inaktiva</option>
-                    </select>
-                    <div class="search-box">
-                        <i class="bi bi-search"></i>
-                        <input type="text" class="form-control" id="carSearch" placeholder="Sök bilar...">
+            <div class="admin-toolbar mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="toolbar-left">
+                        <button class="btn btn-primary btn-lg" id="addCarBtn">
+                            <i class="bi bi-plus-circle me-2"></i>Lägg till Bil
+                        </button>
+                    </div>
+                    <div class="toolbar-right d-flex align-items-center gap-3">
+                        <select class="form-select" id="statusFilter" style="width: 200px;">
+                            <option value="">Alla bilar</option>
+                            <option value="ACTIVE">Endast aktiva</option>
+                            <option value="INACTIVE">Endast inaktiva</option>
+                        </select>
+                        <div class="search-box position-relative">
+                            <i class="bi bi-search position-absolute" style="left: 12px; top: 50%; transform: translateY(-50%); color: #6c757d;"></i>
+                            <input type="text" class="form-control ps-5" id="carSearch" placeholder="Sök bilar..." style="min-width: 250px;">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,6 +69,7 @@
                         <tr>
                             <th>Bild</th>
                             <th>Märke & Modell</th>
+                            <th>Reg.Nr</th>
                             <th>År</th>
                             <th>Kategori</th>
                             <th>Pris/dag</th>
@@ -77,7 +80,7 @@
                     <tbody id="carsTableBody">
                         <!-- Cars will be loaded here -->
                         <tr class="placeholder-row">
-                            <td colspan="7" class="text-center">Laddar bilar...</td>
+                            <td colspan="8" class="text-center">Laddar bilar...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -122,19 +125,16 @@
 
                             <!-- Year -->
                             <div class="col-md-6">
-                                <label for="carYear" class="form-label">År <span class="required">*</span></label>
+                                <label for="carYear" class="form-label">Årsmodell <span class="required">*</span></label>
                                 <input type="number" class="form-control" id="carYear" min="2015" max="2030" placeholder="t.ex. 2023" required>
                             </div>
 
-                            <!-- Category -->
+                            <!-- Category (will be populated dynamically) -->
                             <div class="col-md-6">
                                 <label for="carCategory" class="form-label">Kategori <span class="required">*</span></label>
                                 <select class="form-select" id="carCategory" required>
                                     <option value="">Välj kategori</option>
-                                    <option value="1">Sedan</option>
-                                    <option value="2">SUV</option>
-                                    <option value="3">Kombi</option>
-                                    <option value="4">Sportvagn</option>
+                                    <!-- Categories will be loaded dynamically from API -->
                                 </select>
                             </div>
 
@@ -178,13 +178,14 @@
                                 <input type="number" class="form-control" id="carPrice" min="0" step="0.01" placeholder="t.ex. 499.50" required>
                             </div>
 
-                            <!-- Image URL -->
+                            <!-- Image URL (NICE TO HAVE - inte obligatorisk) -->
                             <div class="col-md-6">
-                                <label for="carImageUrl" class="form-label">Bild-URL <span class="required">*</span></label>
-                                <input type="text" class="form-control" id="carImageUrl" placeholder="t.ex. toyota-corolla.jpg" required>
+                                <label for="carImageUrl" class="form-label">Bild-URL</label>
+                                <input type="text" class="form-control" id="carImageUrl" placeholder="t.ex. toyota-corolla.jpg">
+                                <div class="form-text">Valfritt: URL till bilens bild</div>
                             </div>
 
-                            <!-- Description -->
+                            <!-- Description (inte obligatorisk enligt acceptanskriterier) -->
                             <div class="col-12">
                                 <label for="carDescription" class="form-label">Beskrivning</label>
                                 <textarea class="form-control" id="carDescription" rows="3" placeholder="Valfritt: Beskrivning av bilen"></textarea>
@@ -226,6 +227,10 @@
         </div>
     </footer>
 
+    <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Admin Cars JavaScript -->
+    <script src="js/admin-cars.js"></script>
 </body>
 </html>
