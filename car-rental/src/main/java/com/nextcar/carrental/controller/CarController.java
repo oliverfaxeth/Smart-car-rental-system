@@ -110,11 +110,6 @@ public class CarController {
         }
 
         try {
-            // Säkerställ att status är ACTIVE för nya bilar (enligt acceptanskriterier)
-            if (car.getStatus() == null || car.getStatus().isEmpty()) {
-                car.setStatus("ACTIVE");
-            }
-
             // Spara bilen via service
             Car savedCar = carService.saveCar(car);
 
@@ -176,6 +171,46 @@ public class CarController {
     public ResponseEntity<Void> deleteCar(@PathVariable Integer id) {
         carService.deleteCar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // PATCH /cars/5/status - Uppdatera bil-status (ACTIVE/INACTIVE)
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<?> updateCarStatus(@PathVariable Integer id, @RequestBody Map<String, String> statusUpdate) {
+        try {
+            String newStatus = statusUpdate.get("status");
+
+            // Validera status
+            if (!"ACTIVE".equals(newStatus) && !"INACTIVE".equals(newStatus)) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "success", false,
+                        "message", "Status måste vara ACTIVE eller INACTIVE"
+                ));
+            }
+
+            // Hämta bil
+            Car car = carService.getCarById(id);
+            if (car == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Uppdatera status
+            car.setStatus(newStatus);
+            Car updatedCar = carService.saveCar(car);
+
+            String message = "ACTIVE".equals(newStatus) ? "Bil aktiverad" : "Bil inaktiverad";
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", message,
+                    "car", updatedCar
+            ));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                    "success", false,
+                    "message", "Ett fel uppstod när bilens status skulle uppdateras: " + e.getMessage()
+            ));
+        }
     }
 
     // Global felhantering för validation-exceptions (backup)

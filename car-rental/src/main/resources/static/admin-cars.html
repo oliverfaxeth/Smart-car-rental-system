@@ -150,6 +150,20 @@
                                 </select>
                             </div>
 
+                            <!-- Status (visar endast vid redigering) -->
+                            <div class="col-md-6" id="statusFieldContainer" style="display: none;">
+                                <label for="carStatus" class="form-label">Status <span class="required">*</span></label>
+                                <select class="form-select" id="carStatus" required>
+                                    <option value="">Välj status</option>
+                                    <option value="ACTIVE" style="color: #22c55e; font-weight: bold;">✓ Aktiv</option>
+                                    <option value="INACTIVE" style="color: #ef4444; font-weight: bold;">✗ Inaktiv</option>
+                                </select>
+                                <div class="form-text">
+                                    <span class="text-success">Aktiv:</span> Bilen är tillgänglig för bokning &nbsp;|&nbsp; 
+                                    <span class="text-danger">Inaktiv:</span> Bilen är inte tillgänglig
+                                </div>
+                            </div>
+
                             <!-- Transmission -->
                             <div class="col-md-6">
                                 <label for="carTransmission" class="form-label">Växellåda <span class="required">*</span></label>
