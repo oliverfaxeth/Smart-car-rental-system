@@ -72,8 +72,12 @@ const updateLoginUI = () => {
     console.log('✅ authButtons hittad, isAuthenticated:', isAuthenticated()); // 👈 Debug
     
     if (isAuthenticated()) {
-        const firstName = localStorage.getItem('firstName') || sessionStorage.getItem('firstName');
+        let firstName = localStorage.getItem('firstName') || sessionStorage.getItem('firstName');
         const userRole = getUserRole();
+
+        if (userRole === 'ADMIN') {   
+            firstName = 'Admin';
+        }
         
         // Rendera inloggade knappar
         authContainer.innerHTML = `
