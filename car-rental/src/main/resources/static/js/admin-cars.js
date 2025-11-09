@@ -12,6 +12,169 @@ class AdminCarsManager {
         this.initializeEventListeners();
         this.loadCategories();
         this.loadCars();
+        this.createNotificationContainer();
+        this.createConfirmationModal();
+    }
+
+    // ===== NOTIFICATION SYSTEM =====
+    createNotificationContainer() {
+        // Skapa container för toast-meddelanden
+        if (!document.getElementById('toastContainer')) {
+            const container = document.createElement('div');
+            container.id = 'toastContainer';
+            container.className = 'position-fixed top-0 end-0 p-3';
+            container.style.zIndex = '9999';
+            document.body.appendChild(container);
+        }
+    }
+
+    createConfirmationModal() {
+        // Skapa bekräftelse-modal om den inte finns
+        if (!document.getElementById('confirmModal')) {
+            const modalHTML = `
+                <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmModalLabel">
+                                    <i class="bi bi-question-circle text-warning me-2"></i>
+                                    Bekräfta åtgärd
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p id="confirmModalMessage">Är du säker på att du vill fortsätta?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="bi bi-x-circle me-1"></i>Avbryt
+                                </button>
+                                <button type="button" class="btn btn-danger" id="confirmModalBtn">
+                                    <i class="bi bi-check-circle me-1"></i>Bekräfta
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+    }
+
+    // ===== FÖRBÄTTRADE NOTIFICATION-METODER =====
+    showToast(message, type = 'info', duration = 5000) {
+        const toastContainer = document.getElementById('toastContainer');
+        if (!toastContainer) return;
+
+        // Skapa toast-element
+        const toastId = 'toast_' + Date.now();
+        const toastHTML = `
+            <div class="toast align-items-center text-white bg-${this.getBootstrapColor(type)} border-0" 
+                 id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi ${this.getToastIcon(type)} me-2"></i>
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" 
+                            data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        `;
+
+        toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+
+        // Visa toast med Bootstrap
+        const toastElement = document.getElementById(toastId);
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: duration
+        });
+        toast.show();
+
+        // Ta bort element efter att det försvunnit
+        toastElement.addEventListener('hidden.bs.toast', () => {
+            toastElement.remove();
+        });
+    }
+
+    getBootstrapColor(type) {
+        const colors = {
+            'success': 'success',
+            'error': 'danger',
+            'warning': 'warning',
+            'info': 'info'
+        };
+        return colors[type] || 'info';
+    }
+
+    getToastIcon(type) {
+        const icons = {
+            'success': 'bi-check-circle',
+            'error': 'bi-exclamation-triangle',
+            'warning': 'bi-exclamation-circle',
+            'info': 'bi-info-circle'
+        };
+        return icons[type] || 'bi-info-circle';
+    }
+
+    async showConfirm(title, message, confirmText = 'Bekräfta', confirmButtonClass = 'btn-danger') {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('confirmModal');
+            const messageElement = document.getElementById('confirmModalMessage');
+            const confirmBtn = document.getElementById('confirmModalBtn');
+            const titleElement = document.getElementById('confirmModalLabel');
+
+            // Sätt innehåll
+            if (titleElement) titleElement.innerHTML = `<i class="bi bi-question-circle text-warning me-2"></i>${title}`;
+            if (messageElement) messageElement.innerHTML = message;
+            if (confirmBtn) {
+                confirmBtn.textContent = confirmText;
+                confirmBtn.className = `btn ${confirmButtonClass}`;
+            }
+
+            // Visa modal
+            const bsModal = new bootstrap.Modal(modal);
+            bsModal.show();
+
+            // Hantera svar
+            const handleConfirm = () => {
+                cleanup();
+                resolve(true);
+                bsModal.hide();
+            };
+
+            const handleCancel = () => {
+                cleanup();
+                resolve(false);
+                bsModal.hide();
+            };
+
+            const cleanup = () => {
+                confirmBtn.removeEventListener('click', handleConfirm);
+                modal.removeEventListener('hidden.bs.modal', handleCancel);
+            };
+
+            confirmBtn.addEventListener('click', handleConfirm);
+            modal.addEventListener('hidden.bs.modal', handleCancel, { once: true });
+        });
+    }
+
+    // Uppdaterade meddelande-metoder
+    showSuccessMessage(message) {
+        this.showToast(message, 'success');
+    }
+
+    showErrorMessage(message) {
+        this.showToast(message, 'error');
+    }
+
+    showWarningMessage(message) {
+        this.showToast(message, 'warning');
+    }
+
+    showInfoMessage(message) {
+        this.showToast(message, 'info');
     }
 
     // ===== INITIALIZATION =====
@@ -180,8 +343,8 @@ class AdminCarsManager {
             tableBody.innerHTML = `
                 <tr>
                     <td colspan="8" class="text-center">
-                        <i class="bi bi-car-front text-muted"></i>
-                        <p class="mt-2 mb-0">Inga bilar hittades</p>
+                        <i class="bi bi-car-front text-muted fs-2"></i>
+                        <p class="mt-2 mb-1 fw-bold">Inga bilar hittades</p>
                         <small class="text-muted">Prova att ändra sök- eller filterinställningar</small>
                     </td>
                 </tr>
@@ -191,37 +354,41 @@ class AdminCarsManager {
 
         // Rendera bil-rader med ny struktur
         tableBody.innerHTML = cars.map(car => `
-            <tr>
+            <tr class="align-middle">
                 <td>
                     ${car.imageUrl ? 
                         `<img src="/images/${car.imageUrl}" alt="${car.brand} ${car.model}" 
-                             style="width: 60px; height: 40px; object-fit: cover; border-radius: 5px;">` : 
-                        `<div style="width: 60px; height: 40px; background: #f8f9fa; border-radius: 5px; 
-                                    display: flex; align-items: center; justify-content: center;">
+                             class="rounded" style="width: 60px; height: 40px; object-fit: cover;">` : 
+                        `<div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                             style="width: 60px; height: 40px;">
                             <i class="bi bi-car-front text-muted"></i>
                          </div>`
                     }
                 </td>
                 <td>
-                    <strong>${car.brand} ${car.model}</strong>
+                    <div class="fw-bold">${car.brand} ${car.model}</div>
                 </td>
                 <td>
                     <span class="badge bg-light text-dark">${car.regNr}</span>
                 </td>
-                <td>${car.year}</td>
+                <td class="fw-medium">${car.year}</td>
                 <td>
-                    ${car.category ? car.category.name : 'Okänd'}
+                    <span class="badge bg-primary bg-opacity-10 text-primary">
+                        ${car.category ? car.category.name : 'Okänd'}
+                    </span>
                 </td>
                 <td>
-                    <strong>${car.price} kr</strong><br>
+                    <div class="fw-bold text-success">${car.price} kr</div>
                     <small class="text-muted">per dag</small>
                 </td>
                 <td>
                     ${this.renderStatusBadge(car.status || 'ACTIVE')}
                 </td>
                 <td>
-                    <div class="action-icons d-flex gap-2 justify-content-center">
-                        <button class="btn btn-outline-primary btn-sm" title="Redigera bil" onclick="adminCarsManager.editCar(${car.id})">
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-outline-primary btn-sm" 
+                                title="Redigera bil" 
+                                onclick="adminCarsManager.editCar(${car.id})">
                             <i class="bi bi-pencil me-1"></i>Redigera
                         </button>
                     </div>
@@ -237,15 +404,15 @@ class AdminCarsManager {
         const statusUpper = status.toUpperCase();
         
         if (statusUpper === 'ACTIVE') {
-            return `<span class="badge" style="background-color: #22c55e; color: white; padding: 6px 12px; border-radius: 6px;">
-                        <i class="bi bi-check-circle me-1"></i>ACTIVE
+            return `<span class="badge d-flex align-items-center gap-1" style="background-color: #22c55e; color: white; padding: 8px 12px; border-radius: 8px; font-weight: 500;">
+                        <i class="bi bi-check-circle"></i>ACTIVE
                     </span>`;
         } else if (statusUpper === 'INACTIVE') {
-            return `<span class="badge" style="background-color: #ef4444; color: white; padding: 6px 12px; border-radius: 6px;">
-                        <i class="bi bi-x-circle me-1"></i>INACTIVE
+            return `<span class="badge d-flex align-items-center gap-1" style="background-color: #ef4444; color: white; padding: 8px 12px; border-radius: 8px; font-weight: 500;">
+                        <i class="bi bi-x-circle"></i>INACTIVE
                     </span>`;
         } else {
-            return `<span class="badge bg-secondary">
+            return `<span class="badge bg-secondary d-flex align-items-center gap-1" style="padding: 8px 12px; border-radius: 8px;">
                         ${statusUpper}
                     </span>`;
         }
@@ -257,9 +424,10 @@ class AdminCarsManager {
 
         tableBody.innerHTML = `
             <tr>
-                <td colspan="8" class="text-center text-danger">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    <p class="mt-2 mb-0">${message}</p>
+                <td colspan="8" class="text-center text-danger py-5">
+                    <i class="bi bi-exclamation-triangle fs-2 mb-2"></i>
+                    <p class="mt-2 mb-0 fw-bold">${message}</p>
+                    <small class="text-muted">Kontrollera att backend-servern körs</small>
                 </td>
             </tr>
         `;
@@ -269,9 +437,9 @@ class AdminCarsManager {
         const paginationInfo = document.getElementById('paginationInfo');
         if (paginationInfo) {
             if (displayedCars === this.allCars.length) {
-                paginationInfo.textContent = `Visar ${displayedCars} av ${this.allCars.length} bilar`;
+                paginationInfo.innerHTML = `<i class="bi bi-info-circle me-1"></i>Visar ${displayedCars} av ${this.allCars.length} bilar`;
             } else {
-                paginationInfo.textContent = `Visar ${displayedCars} av ${this.allCars.length} bilar (filtrerat)`;
+                paginationInfo.innerHTML = `<i class="bi bi-funnel me-1"></i>Visar ${displayedCars} av ${this.allCars.length} bilar (filtrerat)`;
             }
         }
     }
@@ -283,13 +451,13 @@ class AdminCarsManager {
         // Sätt modal-titel
         const modalTitle = document.getElementById('carModalTitle');
         if (modalTitle) {
-            modalTitle.textContent = 'Lägg till Bil';
+            modalTitle.innerHTML = '<i class="bi bi-plus-circle me-2 text-success"></i>Lägg till Bil';
         }
 
         // Sätt knapp-text
         const saveBtn = document.getElementById('saveCarBtn');
         if (saveBtn) {
-            saveBtn.textContent = 'Spara Bil';
+            saveBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Spara Bil';
         }
 
         // Dölj status-fält för nya bilar (får automatiskt ACTIVE)
@@ -378,12 +546,12 @@ class AdminCarsManager {
         // Uppdatera modal-titel och knapp-text
         const modalTitle = document.getElementById('carModalTitle');
         if (modalTitle) {
-            modalTitle.textContent = `Redigera Bil: ${car.brand} ${car.model}`;
+            modalTitle.innerHTML = `<i class="bi bi-pencil me-2 text-primary"></i>Redigera Bil: ${car.brand} ${car.model}`;
         }
 
         const saveBtn = document.getElementById('saveCarBtn');
         if (saveBtn) {
-            saveBtn.textContent = 'Uppdatera Bil';
+            saveBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Uppdatera Bil';
         }
 
         // Visa status-fält för redigering
@@ -488,7 +656,7 @@ class AdminCarsManager {
                     },
                     body: JSON.stringify(formData)
                 });
-                successMessage = 'Bil uppdaterad';
+                successMessage = 'Bil uppdaterad framgångsrikt!';
             } else {
                 // CREATE - Skapa ny bil
                 response = await fetch(`${this.apiBaseUrl}/cars`, {
@@ -498,7 +666,7 @@ class AdminCarsManager {
                     },
                     body: JSON.stringify(formData)
                 });
-                successMessage = 'Bil tillagd';
+                successMessage = 'Bil tillagd framgångsrikt!';
             }
 
             const result = await response.json();
@@ -507,7 +675,7 @@ class AdminCarsManager {
                 // SUCCESS
                 console.log('✅ Bil sparad framgångsrikt:', result);
                 
-                // Visa bekräftelse
+                // Visa bekräftelse med toast
                 this.showSuccessMessage(result.message || successMessage);
                 
                 // Stäng modal
@@ -617,41 +785,32 @@ class AdminCarsManager {
 
         if (isLoading) {
             saveBtn.disabled = true;
-            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Sparar...';
+            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Sparar...';
         } else {
             saveBtn.disabled = false;
-            saveBtn.innerHTML = this.currentEditingCarId ? 'Uppdatera Bil' : 'Spara Bil';
+            if (this.currentEditingCarId) {
+                saveBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Uppdatera Bil';
+            } else {
+                saveBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Spara Bil';
+            }
         }
     }
 
-    showSuccessMessage(message) {
-        this.showAlert(message, 'success');
-    }
+    // Exempel på hur man kan använda bekräftelse-modal för framtida funktioner
+    async confirmDeleteCar(carId) {
+        const confirmed = await this.showConfirm(
+            'Ta bort bil',
+            'Är du säker på att du vill ta bort denna bil permanent? <br><strong>Denna åtgärd kan inte ångras.</strong>',
+            'Ta bort',
+            'btn-danger'
+        );
 
-    showErrorMessage(message) {
-        this.showAlert(message, 'danger');
-    }
-
-    showAlert(message, type) {
-        // Skapa alert-element
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-        alertDiv.style.position = 'fixed';
-        alertDiv.style.top = '20px';
-        alertDiv.style.right = '20px';
-        alertDiv.style.zIndex = '9999';
-        alertDiv.style.maxWidth = '400px';
-        alertDiv.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        `;
-
-        document.body.appendChild(alertDiv);
-
-        // Auto-remove efter 5 sekunder
-        setTimeout(() => {
-            alertDiv.remove();
-        }, 5000);
+        if (confirmed) {
+            console.log('Bil skulle tas bort:', carId);
+            this.showSuccessMessage('Bil borttagen!');
+        } else {
+            console.log('Borttagning avbröts');
+        }
     }
 }
 
@@ -668,4 +827,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-console.log('📁 admin-cars.js laddad');
+console.log('📁 admin-cars.js laddad med professionella notifikationer');
