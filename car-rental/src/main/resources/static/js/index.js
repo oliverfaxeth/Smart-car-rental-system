@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!response.ok) throw new Error("Kunde inte hämta bilar");
         cars = await response.json();
       } else {
-        const response = await fetch(`http://localhost:8080/cars`);
+        const response = await fetch(`http://localhost:8080/cars/active`);  //Visa bara aktiva bilar
         if (!response.ok) throw new Error("Kunde inte hämta bilar");
         cars = await response.json();
       }
@@ -147,6 +147,19 @@ document.addEventListener("DOMContentLoaded", () => {
       sessionStorage.setItem("startDate", startDate);
       sessionStorage.setItem("endDate", endDate);
       renderSearchResults(availableCars, startDate, endDate, sortSelect.value);
+
+      // 🎯 UX FÖRBÄTTRING: Automatisk scroll till resultaten
+      setTimeout(() => {
+        const filterBar = document.getElementById('filterBar');
+        if (filterBar) {
+          // Scroll till filter-bar som är precis efter subtitle
+          filterBar.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 150); // Liten delay för att säkerställa rendering är klar
+      
     } catch (error) {
       console.error("Fel vid sökning:", error);
       alert("Ett fel inträffade vid sökning av bilar. Försök igen.");

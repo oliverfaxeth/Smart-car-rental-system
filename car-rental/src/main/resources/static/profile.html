@@ -7,24 +7,41 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="styles.css">
+    <!-- Enhanced Customer Styles - För konsistent styling på alla inloggade sidor -->
     <link rel="stylesheet" href="customer-styles.css">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="/"><i class="bi bi-car-front-fill"></i> NextCar</a>
+            <a class="navbar-brand" href="index.html">
+                <i class="bi bi-car-front-fill"></i> NextCar
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--golden-yellow);">
                 <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="/">Hem</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/all-cars">Våra Bilar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/about">Om Oss</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact">Kontakt</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Hem</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="all-cars.html">Våra Bilar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Om Oss</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Kontakt</a>
+                    </li>
                     <li class="nav-item ms-3" id="authButtons">
-                        <!-- JavaScript fyller detta -->
+                        <!-- BookingsManager uppdaterar detta med .btn-profile och .btn-logout klasser -->
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-border spinner-border-sm text-light me-2" role="status">
+                                <span class="visually-hidden">Laddar...</span>
+                            </div>
+                            <small class="text-light">Laddar...</small>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -35,101 +52,123 @@
     <section class="profile-section py-5">
         <div class="container">
             <div class="row">
-                <!-- Sidebar -->
+                <!-- Sidebar med snygga knappar -->
                 <div class="col-md-3 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <div class="text-center mb-4">
-                                <i class="bi bi-person-circle profile-icon"></i>
-                                <h5 class="mt-2 user-name">Laddar...</h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item active">
-                                    <i class="bi bi-person"></i> Min profil
-                                </li>
-                                <li class="list-group-item">
-                                    <a href="my-bookings.html" class="nav-link">
-                                        <i class="bi bi-calendar-check"></i> Mina bokningar
-                                    </a>
-                                </li>
-                                <li class="list-group-item">
-                                    <a href="#" id="logoutBtnSidebar" class="nav-link text-danger">
-                                        <i class="bi bi-box-arrow-right"></i> Logga ut
-                                    </a>
-                                </li>
-                            </ul>
+                    <div class="profile-sidebar-card">
+                        <div class="profile-user-info">
+                            <i class="bi bi-person-circle profile-avatar"></i>
+                            <h5 class="profile-username user-name">Laddar...</h5>
+                        </div>
+                        
+                        <!-- Snygga navigations-knappar med CSS-klasser -->
+                        <div class="profile-sidebar-menu">
+                            <!-- Min profil - Active knapp -->
+                            <button class="profile-menu-btn active" disabled>
+                                <i class="bi bi-person-fill"></i>
+                                <span>Min profil</span>
+                            </button>
+                            
+                            <!-- Mina bokningar - Boknings-knapp -->
+                            <a href="my-bookings.html" class="profile-menu-btn bookings">
+                                <i class="bi bi-calendar-check"></i>
+                                <span>Mina bokningar</span>
+                            </a>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Main Content -->
                 <div class="col-md-9">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-light">
-                            <h4><i class="bi bi-person"></i> Min profil</h4>
-                            <p class="mb-0">Här kan du uppdatera dina personuppgifter</p>
+                    <div class="profile-content-card">
+                        <div class="profile-content-header">
+                            <h4>
+                                <i class="bi bi-person-gear"></i>
+                                Redigera profil
+                            </h4>
                         </div>
-                        <div class="card-body">
-                            <form id="profileForm">
-                                <div class="row g-3">
-                                    <!-- Feedback alert -->
-                                    <div class="col-12" id="feedbackContainer"></div>
-                                    
-                                    <!-- Förnamn -->
-                                    <div class="col-md-6">
-                                        <label for="firstName" class="form-label">Förnamn</label>
-                                        <input type="text" class="form-control" id="firstName" required>
-                                    </div>
-                                    
-                                    <!-- Efternamn -->
-                                    <div class="col-md-6">
-                                        <label for="lastName" class="form-label">Efternamn</label>
-                                        <input type="text" class="form-control" id="lastName" required>
-                                    </div>
-                                    
-                                    <!-- E-post (icke redigerbar) -->
-                                    <div class="col-md-6">
-                                        <label for="email" class="form-label">E-post</label>
-                                        <input type="email" class="form-control" id="email" readonly disabled>
-                                        <small class="text-muted">E-post kan inte ändras</small>
-                                    </div>
-                                    
-                                    <!-- Telefon -->
-                                    <div class="col-md-6">
-                                        <label for="phone" class="form-label">Telefon</label>
-                                        <input type="tel" class="form-control" id="phone">
-                                    </div>
-                                    
-                                    <!-- Adress -->
-                                    <div class="col-12">
-                                        <label for="address" class="form-label">Adress</label>
-                                        <input type="text" class="form-control" id="address">
-                                    </div>
-                                    
-                                    <!-- Postnummer -->
-                                    <div class="col-md-4">
-                                        <label for="postalCode" class="form-label">Postnummer</label>
-                                        <input type="text" class="form-control" id="postalCode">
-                                    </div>
-                                    
-                                    <!-- Stad -->
-                                    <div class="col-md-4">
-                                        <label for="city" class="form-label">Stad</label>
-                                        <input type="text" class="form-control" id="city">
-                                    </div>
-                                    
-                                    <!-- Land -->
-                                    <div class="col-md-4">
-                                        <label for="country" class="form-label">Land</label>
-                                        <input type="text" class="form-control" id="country">
-                                    </div>
-                                    
-                                    <!-- Spara-knapp -->
-                                    <div class="col-12 mt-4">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="bi bi-check-circle"></i> Spara ändringar
-                                        </button>
-                                    </div>
+                        <div class="profile-content-body">
+                            <form id="profileForm" class="row g-3">
+                                <!-- Förnamn -->
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">
+                                        <i class="bi bi-person"></i>
+                                        Förnamn
+                                    </label>
+                                    <input type="text" class="form-control" id="firstName" required>
+                                </div>
+
+                                <!-- Efternamn -->
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">
+                                        <i class="bi bi-person"></i>
+                                        Efternamn
+                                    </label>
+                                    <input type="text" class="form-control" id="lastName" required>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="col-12">
+                                    <label for="email" class="form-label">
+                                        <i class="bi bi-envelope"></i>
+                                        E-post
+                                    </label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+
+                                <!-- Telefon -->
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">
+                                        <i class="bi bi-telephone"></i>
+                                        Telefon
+                                    </label>
+                                    <input type="tel" class="form-control" id="phone">
+                                </div>
+
+                                <!-- Födelsedag -->
+                                <div class="col-md-6">
+                                    <label for="dateOfBirth" class="form-label">
+                                        <i class="bi bi-calendar"></i>
+                                        Födelsedag
+                                    </label>
+                                    <input type="date" class="form-control" id="dateOfBirth">
+                                </div>
+
+                                <!-- Adress -->
+                                <div class="col-12">
+                                    <label for="address" class="form-label">
+                                        <i class="bi bi-house"></i>
+                                        Adress
+                                    </label>
+                                    <input type="text" class="form-control" id="address">
+                                </div>
+
+                                <!-- Stad och Postnummer -->
+                                <div class="col-md-8">
+                                    <label for="city" class="form-label">
+                                        <i class="bi bi-geo-alt"></i>
+                                        Stad
+                                    </label>
+                                    <input type="text" class="form-control" id="city">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="postalCode" class="form-label">
+                                        <i class="bi bi-mailbox"></i>
+                                        Postnummer
+                                    </label>
+                                    <input type="text" class="form-control" id="postalCode">
+                                </div>
+
+                                <!-- Knappar -->
+                                <div class="col-12 profile-form-actions">
+                                    <button type="button" class="btn btn-secondary btn-lg profile-cancel-btn">
+                                        <i class="bi bi-x-circle"></i>
+                                        <span>Avbryt</span>
+                                    </button>
+                                    <button type="submit" class="btn btn-success btn-lg profile-save-btn">
+                                        <i class="bi bi-check-circle"></i>
+                                        <span>Spara ändringar</span>
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -140,19 +179,22 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer mt-auto">
         <div class="container">
             <div class="row">
-                <div class="col-md-4 mb-4">
+                <div class="col-md-6">
                     <h5><i class="bi bi-car-front-fill"></i> NextCar</h5>
-                    <p style="line-height: 1.8;">Din pålitliga partner för biluthyrning. Alla rättigheter reserverade. | <a href="#">Integritetspolicy</a> | <a href="#">Användarvillkor</a></p>
+                    <p>Din pålitliga partner för biluthyrning.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>&copy; 2025 NextCar. Alla rättigheter reserverade.</p>
                 </div>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/profile.js"></script>
+    <script src="profile.js"></script>
+    <script src="auth.js"></script>
 </body>
 </html>

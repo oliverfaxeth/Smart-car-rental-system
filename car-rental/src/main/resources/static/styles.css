@@ -2240,3 +2240,58 @@ body {
         padding: 10px !important;
     }
 }
+
+/* ===== UX FÖRBÄTTRING: Smooth scroll för bättre användarupplevelse ===== */
+/* Lägg till detta i slutet av styles.css */
+
+/* Global smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Extra smooth scroll för webkit-baserade webbläsare */
+@supports (scroll-behavior: smooth) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Säkerställ att cars-section har korrekt scroll-margin för bättre positioning */
+.cars-section {
+    scroll-margin-top: 80px; /* Justera efter navbar-höjd */
+}
+
+/* Visa en subtle animation när resultaten visas */
+.grid-view.active {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.filter-bar {
+    scroll-margin-top: 20px; /* Perfekt positionering */
+}
+
+.filter-bar.active {
+    animation: slideDown 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

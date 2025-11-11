@@ -27,11 +27,18 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    // GET /cars - Hämta alla bilar
+    // GET /cars - Hämta alla bilar (ink. inaktiva - bara för admin)
     @GetMapping
     public ResponseEntity<List<Car>> getAllCars() {
         List<Car> cars = carService.getAllCars();
         return ResponseEntity.ok(cars);
+    }
+
+    // GET /cars/active - Hämta endast aktiva bilar (för kunder)
+    @GetMapping("/active")
+    public ResponseEntity<List<Car>> getActiveCars() {
+        List<Car> activeCars = carService.getActiveCars();
+        return ResponseEntity.ok(activeCars);
     }
 
     // GET /cars/available?startDate=2024-10-15&endDate=2024-10-20&categoryId=1

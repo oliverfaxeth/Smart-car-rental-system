@@ -29,6 +29,13 @@ public class CarService {
         return carRepository.findAll();
     }
 
+    // Hämta endast AKTIVA bilar (för kunder)
+    public List<Car> getActiveCars() {
+        return carRepository.findAll().stream()
+                .filter(car -> "ACTIVE".equalsIgnoreCase(car.getStatus()))
+                .collect(Collectors.toList());
+    }
+
     // Hämta en bil via ID
     public Car getCarById(Integer id) {
         return carRepository.findById(id).orElse(null);
@@ -46,8 +53,11 @@ public class CarService {
 
     // Hitta tillgängliga bilar baserat på datumintervall OCH kategori
     public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate, Integer categoryId, String sort) {
-        // 1. Hämta alla bilar
-        List<Car> allCars = carRepository.findAll();
+        // 1. Hämta endast AKTIVA bilar (KRITISK SÄKERHETSFIX)
+        // INAKTIVA bilar (på reparation, underhåll, etc.) ska ALDRIG visas som tillgängliga
+        List<Car> allCars = carRepository.findAll().stream()
+                .filter(car -> "ACTIVE".equalsIgnoreCase(car.getStatus()))
+                .collect(Collectors.toList());
 
         // 2. Filtrera på kategori (om categoryId anges)
         if (categoryId != null) {
@@ -97,11 +107,20 @@ public class CarService {
     private boolean isCarAvailable(Integer carId, LocalDate startDate, LocalDate endDate, List<Rental> allRentals) {
         // Kolla om det finns någon bokning som överlappar
         for (Rental rental : allRentals) {
+            // Hoppa över bokningar som inte är aktiva eller bekräftade
+            if (!"ACTIVE".equals(rental.getStatus()) && !"CONFIRMED".equals(rental.getStatus())) {
+                continue;
+            }
+
+            // Kontrollera om det är samma bil
             if (rental.getCar().getId().equals(carId)) {
-                // Kolla om datumen överlappar
-                boolean overlaps = !(endDate.isBefore(rental.getStartDate()) || startDate.isAfter(rental.getEndDate()));
-                if (overlaps) {
-                    return false; // Bilen är INTE tillgänglig
+                LocalDate rentalStart = rental.getStartDate();
+                LocalDate rentalEnd = rental.getEndDate();
+
+                // Kontrollera om datumintervallen överlappar
+                // Överlappning sker om: startDate < rentalEnd OCH endDate > rentalStart
+                if (startDate.isBefore(rentalEnd) && endDate.isAfter(rentalStart)) {
+                    return false; // Bilen är redan bokad
                 }
             }
         }

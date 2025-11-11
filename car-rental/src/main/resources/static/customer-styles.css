@@ -519,6 +519,211 @@
     }
 }
 
+/* Profile Section */
+.profile-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 80vh;
+}
+
+/* Profile Sidebar Card */
+.profile-sidebar-card {
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+    border: none;
+}
+
+/* Profile User Info */
+.profile-user-info {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.profile-avatar {
+    font-size: 4rem;
+    color: var(--primary-blue);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.profile-username {
+    color: var(--primary-blue);
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+/* Profile Sidebar Menu */
+.profile-sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Profile Menu Buttons - Base Styling */
+.profile-menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: 2px solid transparent;
+    width: 100%;
+    text-align: left;
+}
+
+.profile-menu-btn i {
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* Active Menu Button (Min profil) */
+.profile-menu-btn.active {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+    color: var(--white);
+    cursor: default;
+    opacity: 1;
+}
+
+/* Bookings Menu Button (Mina bokningar) */
+.profile-menu-btn.bookings {
+    background: transparent;
+    color: #28a745;
+    border-color: #28a745;
+}
+
+.profile-menu-btn.bookings:hover {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    text-decoration: none;
+}
+
+/* Profile Content Card */
+.profile-content-card {
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border: none;
+    overflow: hidden;
+}
+
+/* Profile Content Header */
+.profile-content-header {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+    color: var(--white);
+    padding: 20px 30px;
+    margin: 0;
+}
+
+.profile-content-header h4 {
+    margin: 0;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-content-header i {
+    font-size: 1.3rem;
+}
+
+/* Profile Content Body */
+.profile-content-body {
+    padding: 30px;
+}
+
+/* Profile Form Labels */
+.profile-content-body .form-label {
+    font-weight: 600;
+    color: var(--dark-blue);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.profile-content-body .form-label i {
+    color: var(--primary-blue);
+    width: 16px;
+    text-align: center;
+}
+
+/* Profile Form Actions */
+.profile-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Profile Action Buttons */
+.profile-cancel-btn,
+.profile-save-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 25px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.profile-cancel-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.profile-save-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-sidebar-card,
+    .profile-content-card {
+        border-radius: 10px;
+        padding: 20px;
+    }
+    
+    .profile-content-body {
+        padding: 20px;
+    }
+    
+    .profile-content-header {
+        padding: 15px 20px;
+    }
+    
+    .profile-menu-btn {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+    
+    .profile-form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .profile-cancel-btn,
+    .profile-save-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 /* ===== Smooth Interaction Enhancements ===== */
 /* Global förbättringar för användarupplevelse */
 
