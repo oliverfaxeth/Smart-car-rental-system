@@ -99,10 +99,10 @@ public class CustomerService {
     }
 
         // Metod för att uppdatera kunduppgifter
-        public Customer updateCustomer (Integer userId, CustomerUpdateDTO customerUpdateDTO) {
+        public Customer updateCustomer (Long userId, CustomerUpdateDTO customerUpdateDTO) {
 
             // 1. Hitta kunden genom Id
-            Optional<Customer> optionalCustomer = customerRepository.findById(Long.valueOf(userId));
+            Optional<Customer> optionalCustomer = customerRepository.findById(userId);
 
             if (optionalCustomer.isEmpty()) {
                     throw new RuntimeException("Kund med detta Id kan ej hittas");

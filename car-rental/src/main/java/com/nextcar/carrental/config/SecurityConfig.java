@@ -32,10 +32,22 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())  // Inaktivera CSRF för API
                 .authorizeHttpRequests(auth -> auth
-                        // .anyRequest().permitAll() // Everything is open for now
-                        .requestMatchers("/customers/register", "/auth/login").permitAll()
-                        .requestMatchers("/cars/available", "/cars", "/categories").permitAll()
-                        .anyRequest().permitAll() //Tillfälligt lösning
+                        .requestMatchers(
+                                "/index.html",
+                                "/login.html",
+                                "styles.css",
+                                "customer-styles.css",
+                                "/all-cars",
+                                "/auth/login",
+                                "/login",
+                                "/register",
+                                "/customers/**",
+                                "/cars",
+                                "/cars/**",
+                                "/cars/available",
+                                "/categories"
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);

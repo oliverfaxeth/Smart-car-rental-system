@@ -1,15 +1,15 @@
 package com.nextcar.carrental.dto;
 
-public class LoginDTO {
+public class LoginRequestDTO {
 
 
     private String email;
     private String password;
 
-    public LoginDTO() {
+    public LoginRequestDTO() {
     }
 
-    public LoginDTO(String email, String password) {
+    public LoginRequestDTO(String email, String password) {
         this.email = email;
         this.password = password;
     }

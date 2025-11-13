@@ -15,14 +15,13 @@ import java.util.Map;
 public class JwtTokenUtil {
     private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    // Token giltig i 24 timmar
-    private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 timmar
+    // Token giltig i 1 timme
+    private static final long EXPIRATION_TIME =  60 * 60 * 1000; // 1 timme
 
     // Inkludera userID i JWT token
-    public String generateToken(String email, String role, Integer userId) {
+    public String generateToken(String email, String role) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
-        claims.put("userId", userId);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -64,12 +63,12 @@ public class JwtTokenUtil {
     }
 
     // Vi hämtar UserID från Token
-    public Integer getUserIdFromToken(String token) {
+    public Long getUserIdFromToken(String token) {
         return ((Number) Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("userId")).intValue();
+                .get("userId")).longValue();
     }
 }

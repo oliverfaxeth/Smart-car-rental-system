@@ -39,7 +39,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(
                                 email,
                                 null,
-                                Collections.singletonList(new SimpleGrantedAuthority(role))
+                                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
+                                // "ROLE_" för att fyllas ut med ADMIN ELLER CUSTOMER
+                                // Så att Spring Security kan använda PreAuthorize("hasRole('')")
                         );
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);

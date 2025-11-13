@@ -75,7 +75,7 @@ public class CustomerController {
             String token = authHeader.substring(7);
 
             // 2. Hämta userId från token
-            Integer userId = jwtTokenUtil.getUserIdFromToken(token);
+            Long userId = jwtTokenUtil.getUserIdFromToken(token);
 
             // 3. Hämta kund från databasen med userId
             Optional<Customer> optionalCustomer = customerService.getCustomerById(Long.valueOf(userId));
@@ -113,7 +113,7 @@ public class CustomerController {
                                             @RequestHeader("Authorization") String authHeader) {
         try {
             String token = authHeader.substring(7); // remove "Bearer "
-            Integer userId = jwtTokenUtil.getUserIdFromToken(token);
+            Long userId = jwtTokenUtil.getUserIdFromToken(token);
             String role = jwtTokenUtil.getRoleFromToken(token);
 
             if (!role.equals("CUSTOMER")) {
