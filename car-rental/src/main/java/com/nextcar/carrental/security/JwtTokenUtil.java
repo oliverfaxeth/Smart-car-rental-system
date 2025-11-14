@@ -69,6 +69,6 @@ public class JwtTokenUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("userId")).longValue();
+                .get("user")).longValue();
     }
 }

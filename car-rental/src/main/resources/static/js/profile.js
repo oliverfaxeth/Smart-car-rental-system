@@ -1,6 +1,3 @@
-//Enbart inloggad Customer ska kunna nå denna sida
-protectPage("CUSTOMER");
-
 //Vänta till det att sidan är laddad
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -44,9 +41,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       
 
       } else {
-        //Om något gick fel (t.ex. 401 eller 404), skriv ut felmeddelande i konsolen
-        console.error("Failed to fetch profile");
+    console.error("Failed to fetch profile. HTTP status:", response.status);
+    const text = await response.text();
+    console.error("Backend says:", text);
       }
+
 
       } catch (error) {
         //Om det uppstod ett tekniskt fel, skriv ut det i konsolen

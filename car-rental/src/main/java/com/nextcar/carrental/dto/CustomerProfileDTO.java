@@ -1,22 +1,24 @@
 package com.nextcar.carrental.dto;
 
 
-public class CustomerUpdateDTO {
+public class CustomerProfileDTO {
 
     private String firstName;
     private String lastName;
+    private String email; // read-only
     private String phone;
     private String address;
     private String postalCode;
     private String city;
     private String country;
 
-    public CustomerUpdateDTO() {
+    public CustomerProfileDTO() {
     }
 
-    public CustomerUpdateDTO(String firstName, String lastName, String phone, String address, String postalCode, String city, String country) {
+    public CustomerProfileDTO(String firstName, String lastName, String email, String phone, String address, String postalCode, String city, String country) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.phone = phone;
         this.address = address;
         this.postalCode = postalCode;
@@ -78,5 +80,9 @@ public class CustomerUpdateDTO {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

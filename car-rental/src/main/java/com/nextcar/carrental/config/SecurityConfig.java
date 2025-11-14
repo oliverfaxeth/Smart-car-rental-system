@@ -25,6 +25,15 @@ public class SecurityConfig {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    public SecurityConfig(JwtTokenUtil jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtTokenUtil jwtTokenUtil) {
+        return new JwtAuthenticationFilter(jwtTokenUtil);
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -41,10 +50,12 @@ public class SecurityConfig {
                                 "/about.html",
                                 "/contact.html",
                                 "/customers/**",
+                                "/customers/me",
                                 "/*.css",
                                 "/js/**",
                                 "/styles.css",
-                                "customer-styles.css",
+                                "/customer-styles.css",
+                                "/images/**",
                                 "/all-cars",
                                 "/auth/login",
                                 "/auth/me",
@@ -52,15 +63,14 @@ public class SecurityConfig {
                                 "/register",
                                 "/about",
                                 "/contact",
-                                "/customers/**",
                                 "/cars",
                                 "/cars/**",
                                 "/cars/available",
                                 "/categories",
                                 "/profile/**",
-                                "profile.html"
+                                "/profile.html"
                         ).permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
 
