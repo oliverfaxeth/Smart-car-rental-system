@@ -54,7 +54,7 @@ const logout = () => {
     sessionStorage.removeItem('lastName');
     
     // Redirecta till startsidan
-    window.location.href = 'index.html';
+    window.location.href = '/';
 };
 
 // Uppdaterar gränssnittet baserat på användarens inloggningsstatus
@@ -129,7 +129,7 @@ const protectPage = (requiredRole = null) => {
 };
 
 // Funktion för att redirecta till referrer eller annan sida
-const redirectToReferrer = (defaultUrl = 'index.html') => {
+const redirectToReferrer = (defaultUrl = '/') => {
     // Kontrollera om det finns en referrer URL sparad
     const referrer = sessionStorage.getItem('referrer');
     if (referrer) {

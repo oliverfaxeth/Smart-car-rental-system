@@ -89,7 +89,8 @@ public class CustomerController {
             Customer customer = optionalCustomer.get();
 
             // 6. Skicka tillbaka kundens egen info
-            // OBS: Lösenordet skickas EJ tillbaka!
+            // OBS: Lösenordet skickas EJ tillbaka!+-
+            // Skapa en CustomerProfileDTO
             Map<String, Object> response = new HashMap<>();
             response.put("firstName", customer.getFirstName());
             response.put("lastName", customer.getLastName());

@@ -28,30 +28,41 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // .cors ser till att frontend kan göra förfrågningar
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())  // Inaktivera CSRF för API
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/",
+                                "/index",
                                 "/index.html",
                                 "/login.html",
-                                "styles.css",
+                                "/register.html",
+                                "/all-cars.html",
+                                "/about.html",
+                                "/contact.html",
+                                "/customers/**",
+                                "/*.css",
+                                "/js/**",
+                                "/styles.css",
                                 "customer-styles.css",
                                 "/all-cars",
                                 "/auth/login",
+                                "/auth/me",
                                 "/login",
                                 "/register",
+                                "/about",
+                                "/contact",
                                 "/customers/**",
                                 "/cars",
                                 "/cars/**",
                                 "/cars/available",
-                                "/categories"
+                                "/categories",
+                                "/profile/**",
+                                "profile.html"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
-
 
         return http.build();
     }

@@ -33,16 +33,17 @@ public class AuthService {
     public LoginResponseDTO authenticate(LoginRequestDTO loginRequest) {
         String email = loginRequest.getEmail();
         String rawPassword = loginRequest.getPassword();
-
+        String firstName = "";
         // 1) Try customer
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
         if (customerOpt.isPresent()) {
             Customer customer = customerOpt.get();
+            firstName = customer.getFirstName();
             if (passwordEncoder.matches(rawPassword, customer.getPassword())) {
                 // Generate token (we include userId claim inside token for server-side use,
                 // but we DO NOT return id/email in the response body)
                 String token = jwtTokenUtil.generateToken(customer.getEmail(), "CUSTOMER");
-                return new LoginResponseDTO(token, "CUSTOMER");
+                return new LoginResponseDTO(token, firstName, "CUSTOMER");
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
             }
@@ -55,7 +56,7 @@ public class AuthService {
             if (passwordEncoder.matches(rawPassword, admin.getPassword())) {
                 String token = jwtTokenUtil.generateToken(admin.getEmail(), "ADMIN");
                 // For admins we return role and token. We avoid returning id/email; returning names is optional.
-                return new LoginResponseDTO(token, "ADMIN");
+                return new LoginResponseDTO(token, "Admin", "ADMIN");
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
             }
