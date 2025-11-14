@@ -24,6 +24,13 @@ public class CustomerService {
 
     private JwtTokenUtil jwtTokenUtil;
 
+
+    public CustomerService(CustomerRepository customerRepository,
+                           JwtTokenUtil jwtTokenUtil) {
+        this.customerRepository = customerRepository;
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
+
     // Hämta alla kunder
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
@@ -42,13 +49,12 @@ public class CustomerService {
     }
 
     // Hämta profil
-    public CustomerProfileDTO getMyProfile(String token) {
+    public CustomerProfileDTO getMyProfile(String email) {
 
-        String userEmail = jwtTokenUtil.getEmailFromToken(token);
-        System.out.println(token);
+        System.out.println(email);
         System.out.println("#######################################################");
 
-        Customer customer = customerRepository.findByEmail(userEmail)
+        Customer customer = customerRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         return new CustomerProfileDTO(
