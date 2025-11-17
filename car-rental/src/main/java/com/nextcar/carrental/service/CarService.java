@@ -1,10 +1,13 @@
 package com.nextcar.carrental.service;
 
+import com.nextcar.carrental.dto.CarResponseDTO;
 import com.nextcar.carrental.entity.Car;
+import com.nextcar.carrental.entity.CarsCategory;
 import com.nextcar.carrental.entity.Rental;
 import com.nextcar.carrental.repository.CarRepository;
 import com.nextcar.carrental.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,8 +28,20 @@ public class CarService {
 
 
     // Hämta alla bilar
-    public List<Car> getAllCars() {
-        return carRepository.findAll();
+    public List<CarResponseDTO> getAllCars() {
+        List<Car> list = carRepository.findAll();
+        return list.stream().map(
+                car -> new CarResponseDTO(
+                        car.getBrand(),
+                        car.getModel(),
+                        car.getYear(),
+                        car.getFuel(),
+                        car.getTransmission(),
+                        car.getCategory(),
+                        car.getSeats(),
+                        car.getPrice(),
+                        car.getImageUrl()))
+                        .collect(Collectors.toList());
     }
 
     // Hämta en bil via ID
@@ -45,14 +60,14 @@ public class CarService {
     }
 
     // Hitta tillgängliga bilar baserat på datumintervall OCH kategori
-    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate, Integer categoryId, String sort) {
+    public List<CarResponseDTO> getAvailableCars(LocalDate startDate, LocalDate endDate, CarsCategory category, String sort) {
         // 1. Hämta alla bilar
         List<Car> allCars = carRepository.findAll();
 
         // 2. Filtrera på kategori (om categoryId anges)
-        if (categoryId != null) {
+        if (category != null) {
             allCars = allCars.stream()
-                    .filter(car -> car.getCategoryId().equals(categoryId))
+                    .filter(car -> car.getCategory().equals(category))
                     .collect(Collectors.toList());
         }
 
@@ -64,32 +79,47 @@ public class CarService {
                 .filter(car -> isCarAvailable(car.getId(), startDate, endDate, allRentals))
                 .collect(Collectors.toList());
 
+        // 5. Mappa om avaliableCars från Car -> CarResponseDTO
+        List<CarResponseDTO> availableCarsDTO = availableCars.stream().map(
+                car -> new CarResponseDTO(
+                        car.getBrand(),
+                        car.getModel(),
+                        car.getYear(),
+                        car.getFuel(),
+                        car.getTransmission(),
+                        car.getCategory(),
+                        car.getSeats(),
+                        car.getPrice(),
+                        car.getImageUrl()))
+                .collect(Collectors.toList());
+
+
 
         // Om sort är specificerat, sortera bilarna
         if (sort != null && !sort.isEmpty()) {
-            availableCars = sortCars(availableCars, sort);
+            availableCarsDTO = sortCars(availableCarsDTO, sort);
         }
 
-        return availableCars;
+        return availableCarsDTO;
     }
 
-    public List<Car> sortCars(List<Car> cars, String sort) {
+    public List<CarResponseDTO> sortCars(List<CarResponseDTO> cars, String sort) {
 
-        List<Car> sortedCars = new ArrayList<>(cars);
+        List<CarResponseDTO> sortedCars = new ArrayList<>(cars);
 
         // Sortera bilar efter pris
         if ("desc".equalsIgnoreCase(sort)) {
             sortedCars.sort((a, b) -> b.getPrice().compareTo(a.getPrice()));
         } else {
             // Default är stigande ordning (lägsta först)
-            sortedCars.sort(Comparator.comparing(Car::getPrice));
+            sortedCars.sort(Comparator.comparing(CarResponseDTO::getPrice));
         }
 
         return sortedCars;
     }
 
     // Overload: Om inget categoryId anges, visa alla kategorier
-    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate) {
+    public List<CarResponseDTO> getAvailableCars(LocalDate startDate, LocalDate endDate) {
         return getAvailableCars(startDate, endDate, null, "asc");
     }
 
@@ -106,6 +136,38 @@ public class CarService {
             }
         }
         return true; // Bilen är tillgänglig
+    }
+
+    public List<CarResponseDTO> userInputValidation(String startDate, String endDate, CarsCategory category, String sort) {
+        // Validering 1: Kolla att parametrarna inte är null eller tomma
+        if (startDate == null || startDate.isEmpty() || endDate == null || endDate.isEmpty()) {
+            //throw new RuntimeException("Både startdatum och slutdatum måste anges");
+            throw new IllegalArgumentException("Både startdatum och slutdatum måste anges");
+        }
+
+        // Konvertera String till LocalDate
+        LocalDate start;
+        LocalDate end;
+
+        try {
+            start = LocalDate.parse(startDate);
+            end = LocalDate.parse(endDate);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Ogiltigt datumformat. Använd format: YYYY-MM-DD");
+        }
+
+        // Validering 2: Startdatum kan inte vara tidigare än dagens datum
+        LocalDate today = LocalDate.now();
+        if (start.isBefore(today)) { // BLOCKERAR TIDIGARE DATUM & IDAG
+            throw new IllegalArgumentException("Startdatum måste vara efter dagens datum");
+        }
+
+        // Validering 3: Slutdatum måste vara minst 1 dag efter startdatum
+        if (!end.isAfter(start)) {
+            throw new IllegalArgumentException("Slutdatum måste vara minst 1 dag efter startdatum");
+        }
+
+        return getAvailableCars(start, end, category, sort);
     }
 
 }

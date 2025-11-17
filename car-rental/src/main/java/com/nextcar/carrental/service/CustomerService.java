@@ -94,7 +94,7 @@ public class CustomerService {
         customerRepository.save(customer);
 
         // Return updated data
-        return getMyProfile(token);
+        return getMyProfile(userEmail);
     }
 
 

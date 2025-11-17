@@ -1,6 +1,8 @@
 package com.nextcar.carrental.controller;
 
+import com.nextcar.carrental.dto.CarResponseDTO;
 import com.nextcar.carrental.entity.Car;
+import com.nextcar.carrental.entity.CarsCategory;
 import com.nextcar.carrental.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,8 @@ public class CarController {
 
     // GET /cars - Hämta alla bilar
     @GetMapping
-    public ResponseEntity<List<Car>> getAllCars() {
-        List<Car> cars = carService.getAllCars();
+    public ResponseEntity<List<CarResponseDTO>> getAllCars() {
+        List<CarResponseDTO> cars = carService.getAllCars();
         return ResponseEntity.ok(cars);
     }
 
@@ -32,44 +34,15 @@ public class CarController {
     public ResponseEntity<?> getAvailableCars(
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate,
-            @RequestParam(required = false) Integer categoryId,
+            @RequestParam(required = false) CarsCategory category,
             @RequestParam(required = false, defaultValue = "asc") String sort){
 
-        // Validering 1: Kolla att parametrarna inte är null eller tomma
-        if (startDate == null || startDate.isEmpty() || endDate == null || endDate.isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .body("Både startdatum och slutdatum måste anges");
-        }
 
-        // Konvertera String till LocalDate
-        LocalDate start;
-        LocalDate end;
-
-        try {
-            start = LocalDate.parse(startDate);
-            end = LocalDate.parse(endDate);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body("Ogiltigt datumformat. Använd format: YYYY-MM-DD");
-        }
-
-        // Validering 2: Startdatum kan inte vara tidigare än dagens datum
-        LocalDate today = LocalDate.now();
-        if (start.isBefore(today)) { // BLOCKERAR TIDIGARE DATUM & IDAG
-            return ResponseEntity.badRequest()
-                    .body("Startdatum måste vara efter dagens datum");
-        }
-
-        // Validering 3: Slutdatum måste vara minst 1 dag efter startdatum
-        if (!end.isAfter(start)) {
-            return ResponseEntity.badRequest()
-                    .body("Slutdatum måste vara minst 1 dag efter startdatum");
-        }
 
         // Om alla valideringar är OK, hämta tillgängliga bilar (med eller utan kategorifilter)
-        List<Car> availableCars = carService.getAvailableCars(start, end, categoryId, sort);
+        List<CarResponseDTO> availableCarsDTO = carService.userInputValidation(startDate, endDate, category, sort);
 
-        return ResponseEntity.ok(availableCars);
+        return ResponseEntity.ok(availableCarsDTO);
     }
 
 
