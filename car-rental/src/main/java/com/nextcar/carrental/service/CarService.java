@@ -32,6 +32,7 @@ public class CarService {
         List<Car> list = carRepository.findAll();
         return list.stream().map(
                 car -> new CarResponseDTO(
+                        car.getId(),
                         car.getBrand(),
                         car.getModel(),
                         car.getYear(),
@@ -45,7 +46,7 @@ public class CarService {
     }
 
     // Hämta en bil via ID
-    public Car getCarById(Integer id) {
+    public Car getCarById(Long id) {
         return carRepository.findById(id).orElse(null);
     }
 
@@ -55,7 +56,7 @@ public class CarService {
     }
 
     // Ta bort en bil
-    public void deleteCar(Integer id) {
+    public void deleteCar(Long id) {
         carRepository.deleteById(id);
     }
 
@@ -82,6 +83,7 @@ public class CarService {
         // 5. Mappa om avaliableCars från Car -> CarResponseDTO
         List<CarResponseDTO> availableCarsDTO = availableCars.stream().map(
                 car -> new CarResponseDTO(
+                        car.getId(),
                         car.getBrand(),
                         car.getModel(),
                         car.getYear(),
@@ -124,7 +126,7 @@ public class CarService {
     }
 
     // Hjälpmetod: Kolla om en bil är tillgänglig
-    private boolean isCarAvailable(Integer carId, LocalDate startDate, LocalDate endDate, List<Rental> allRentals) {
+    private boolean isCarAvailable(Long carId, LocalDate startDate, LocalDate endDate, List<Rental> allRentals) {
         // Kolla om det finns någon bokning som överlappar
         for (Rental rental : allRentals) {
             if (rental.getCar().getId().equals(carId)) {

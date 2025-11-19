@@ -2,9 +2,9 @@ package com.nextcar.carrental.controller;
 
 import com.nextcar.carrental.dto.BookingRequest;
 import com.nextcar.carrental.dto.BookingConfirmation;
+import com.nextcar.carrental.dto.CustomerBookingDTO;
 import com.nextcar.carrental.entity.Rental;
 import com.nextcar.carrental.service.RentalService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +26,7 @@ public class RentalController {
 
         Rental rental = rentalService.createBooking(
                 request.getCarId(),
-                request.getCustomerId().longValue(), // för att göra integer till en Long
+                request.getCustomerEmail(),
                 request.getStartDate(),
                 request.getEndDate()
         );
@@ -46,16 +46,16 @@ public class RentalController {
 
     // GET /rentals/customer/{customerId} - Hämta alla bokningar för en specifik kund
     // Detta används för "Mina Bokningar" sidan
-    @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<Rental>> getRentalsByCustomerId(@PathVariable Integer customerId) {
-        List<Rental> customerRentals = rentalService.getRentalsByCustomerId(customerId);
+    @GetMapping("/customers/{customerId}")
+    public ResponseEntity<List<CustomerBookingDTO>> getRentalsByCustomerId(@PathVariable Long customerId) {
+        List<CustomerBookingDTO> customerRentals = rentalService.getBookingsDTOByCustomerId(customerId);
         return ResponseEntity.ok(customerRentals);
     }
 
     // PUT /rentals/{rentalId}/cancel - Avboka en specifik bokning
     // Ändrar status från ACTIVE till CANCELLED
     @PutMapping("/{rentalId}/cancel")
-    public ResponseEntity<String> cancelRental(@PathVariable Integer rentalId) {
+    public ResponseEntity<String> cancelRental(@PathVariable Long rentalId) {
         // Försök att avboka bokningen
         boolean success = rentalService.cancelRental(rentalId);
 
@@ -80,7 +80,7 @@ public class RentalController {
     // GET /rentals/{rentalId} - Hämta en specifik bokning
     // Används för att visa bokningsdetaljer och verifiera ägarskap
     @GetMapping("/{rentalId}")
-    public ResponseEntity<Rental> getRentalById(@PathVariable Integer rentalId) {
+    public ResponseEntity<Rental> getRentalById(@PathVariable Long rentalId) {
         Optional<Rental> rental = rentalService.getRentalById(rentalId);
 
         if (rental.isPresent()) {

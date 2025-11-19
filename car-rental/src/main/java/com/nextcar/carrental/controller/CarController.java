@@ -49,7 +49,7 @@ public class CarController {
 
     // GET /cars/5 - Hämta en specifik bil
     @GetMapping("/{id}")
-    public ResponseEntity<Car> getCarById(@PathVariable Integer id) {
+    public ResponseEntity<Car> getCarById(@PathVariable Long id) {
         Car car = carService.getCarById(id);
         if (car != null) {
             return ResponseEntity.ok(car);
@@ -66,7 +66,7 @@ public class CarController {
 
     // PUT /cars/5 - Uppdatera bil (admin)
     @PutMapping("/{id}")
-    public ResponseEntity<Car> updateCar(@PathVariable Integer id, @RequestBody Car car) {
+    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car car) {
         car.setId(id);
         Car updatedCar = carService.saveCar(car);
         return ResponseEntity.ok(updatedCar);
@@ -74,7 +74,7 @@ public class CarController {
 
     // DELETE /cars/5 - Ta bort bil (admin)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCar(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
         carService.deleteCar(id);
         return ResponseEntity.noContent().build();
     }

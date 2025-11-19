@@ -1,4 +1,4 @@
-package com.nextcar.carrental.config;
+/*package com.nextcar.carrental.config;
 
 import com.nextcar.carrental.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import com.nextcar.carrental.security.JwtTokenUtil;
 import com.nextcar.carrental.security.JwtAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -106,3 +106,5 @@ public class SecurityConfig {
         return source;
     }
 }
+
+ */

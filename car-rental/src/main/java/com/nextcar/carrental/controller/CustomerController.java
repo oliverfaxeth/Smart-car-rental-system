@@ -5,9 +5,10 @@ import com.nextcar.carrental.dto.CustomerProfileDTO;
 import com.nextcar.carrental.entity.Customer;
 import com.nextcar.carrental.service.CustomerService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
@@ -64,16 +65,43 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<?> getMyProfile(Authentication authentication) {
-        if (authentication == null) {
-            return ResponseEntity.status(401).body("Unauthenticated");
-        }
+//    @GetMapping("/me")
+//    public ResponseEntity<?> getMyProfile(Authentication authentication) {
+//        if (authentication == null) {
+//            return ResponseEntity.status(401).body("Unauthenticated");
+//        }
+//
+//        String email = (String) authentication.getPrincipal();
+//        CustomerProfileDTO profile = customerService.getMyProfile(email);
+//        return ResponseEntity.ok(profile);
+//    }
 
-        String email = (String) authentication.getPrincipal();
-        CustomerProfileDTO profile = customerService.getMyProfile(email);
-        return ResponseEntity.ok(profile);
+    @GetMapping("/me")
+    public ResponseEntity<?> getMyProfile(HttpServletRequest request) {
+
+        try {
+            String authHeader = request.getHeader("Authorization");
+
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(401).body("Missing or invalid token");
+            }
+
+            String token = authHeader.substring(7);
+
+            if (!jwtTokenUtil.validateToken(token)) {
+                return ResponseEntity.status(401).body("Invalid token");
+            }
+
+            String email = jwtTokenUtil.getEmailFromToken(token);
+
+            CustomerProfileDTO profile = customerService.getMyProfile(email);
+            return ResponseEntity.ok(profile);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Server error: " + e.getMessage());
+        }
     }
+
 
 
     @PutMapping("/me")

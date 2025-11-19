@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 
 public class CarResponseDTO {
 
+    private Long id;
+
     private String brand;
 
     private String model;
@@ -27,7 +29,8 @@ public class CarResponseDTO {
     public CarResponseDTO() {
     }
 
-    public CarResponseDTO(String brand, String model, Integer year, String fuel, String transmission, CarsCategory category, Integer seats, BigDecimal price, String imageUrl) {
+    public CarResponseDTO(Long id, String brand, String model, Integer year, String fuel, String transmission, CarsCategory category, Integer seats, BigDecimal price, String imageUrl) {
+        this.id = id;
         this.brand = brand;
         this.model = model;
         this.year = year;
@@ -37,6 +40,14 @@ public class CarResponseDTO {
         this.seats = seats;
         this.price = price;
         this.imageUrl = imageUrl;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getBrand() {

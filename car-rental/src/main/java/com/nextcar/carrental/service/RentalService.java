@@ -1,5 +1,6 @@
 package com.nextcar.carrental.service;
 
+import com.nextcar.carrental.dto.CustomerBookingDTO;
 import com.nextcar.carrental.entity.*;
 import com.nextcar.carrental.repository.*;
 import jakarta.persistence.EntityManager;
@@ -35,16 +36,41 @@ public class RentalService {
 
     // Hämta alla bokningar för en specifik kund
     // Detta används för att visa "Mina Bokningar" sidan
-    public List<Rental> getRentalsByCustomerId(Integer customerId) {
-        return rentalRepository.findAll()
-                .stream()
-                .filter(rental -> rental.getCustomer().getId().equals(customerId))
+    public List<CustomerBookingDTO> getBookingsDTOByCustomerId(Long customerId) {
+        List<Rental> rentals = rentalRepository.findBookingsByCustomerId(customerId);
+        return rentals.stream()
+                .map(this::mapToDTO)
                 .collect(Collectors.toList());
+    }
+
+    private CustomerBookingDTO mapToDTO(Rental rental) {
+        CustomerBookingDTO dto = new CustomerBookingDTO();
+
+        // Rental data
+        dto.setId(rental.getId());
+        dto.setBookingNumber(rental.getBookingNumber());
+        dto.setRentalDate(rental.getRentalDate());
+        dto.setStartDate(rental.getStartDate());
+        dto.setEndDate(rental.getEndDate());
+        dto.setStatus(rental.getStatus());
+
+
+        // Car data (from rental.getCar())
+        Car car = rental.getCar();
+        dto.setBrand(car.getBrand());
+        dto.setModel(car.getModel());
+        dto.setRegNr(car.getRegNr());
+
+        // Payment data (from rental.getPayment())
+        Payment payment = rental.getPayment();
+        dto.setAmount(payment.getAmount());
+
+        return dto;
     }
 
     // Avboka en bokning - ändrar status från ACTIVE till CANCELLED
     // Returnerar true om avbokningen lyckades, false om den inte kunde avbokas
-    public boolean cancelRental(Integer rentalId) {
+    public boolean cancelRental(Long rentalId) {
         // Hitta bokningen i databasen
         Optional<Rental> rentalOptional = rentalRepository.findById(rentalId);
 
@@ -73,15 +99,15 @@ public class RentalService {
 
     // Hämta en specifik bokning via ID
     // Detta behövs för att verifiera att en bokning tillhör rätt kund
-    public Optional<Rental> getRentalById(Integer rentalId) {
+    public Optional<Rental> getRentalById(Long rentalId) {
         return rentalRepository.findById(rentalId);
     }
     @Transactional
-    public Rental createBooking(Integer carId, Long customerId, LocalDate startDate, LocalDate endDate) {
+    public Rental createBooking(Long carId, String customerEmail, LocalDate startDate, LocalDate endDate) {
 
         Car car = carRepository.findById(carId)
                 .orElseThrow(() -> new RuntimeException("Car not found"));
-        Customer customer = customerRepository.findById(customerId)
+        Customer customer = customerRepository.findByEmail(customerEmail)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // Kontrollera om bilen är ledig

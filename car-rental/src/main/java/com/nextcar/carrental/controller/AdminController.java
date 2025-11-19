@@ -8,7 +8,7 @@ import com.nextcar.carrental.security.JwtTokenUtil;
 import org.hibernate.mapping.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class AdminController {
     private JwtTokenUtil jwtTokenUtil;
 
     @GetMapping("/me")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getMyProfile(@RequestHeader("Authorization") String authHeader) {
         try {
             // 1. Hämta JWT-token från Authorization-headern ("Bearer <token>")

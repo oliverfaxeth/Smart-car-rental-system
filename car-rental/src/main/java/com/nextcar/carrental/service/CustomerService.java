@@ -6,7 +6,7 @@ import com.nextcar.carrental.entity.Customer;
 import com.nextcar.carrental.repository.CustomerRepository;
 import com.nextcar.carrental.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+   // private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private JwtTokenUtil jwtTokenUtil;
 
@@ -58,6 +58,7 @@ public class CustomerService {
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         return new CustomerProfileDTO(
+                customer.getId(),
                 customer.getFirstName(),
                 customer.getLastName(),
                 customer.getEmail(),
@@ -143,8 +144,8 @@ public class CustomerService {
         newCustomer.setEmail(dto.getEmail());
 
         // Hasha lösenordet med BCrypt
-        String hashedPassword = passwordEncoder.encode(dto.getPassword());
-        newCustomer.setPassword(hashedPassword);
+        //String hashedPassword = passwordEncoder.encode(dto.getPassword());
+        //newCustomer.setPassword(hashedPassword);
 
         newCustomer.setAddress(dto.getAddress());
         newCustomer.setPostalCode(dto.getPostalCode());

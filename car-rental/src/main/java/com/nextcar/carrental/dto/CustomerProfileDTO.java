@@ -3,6 +3,7 @@ package com.nextcar.carrental.dto;
 
 public class CustomerProfileDTO {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String email; // read-only
@@ -15,7 +16,8 @@ public class CustomerProfileDTO {
     public CustomerProfileDTO() {
     }
 
-    public CustomerProfileDTO(String firstName, String lastName, String email, String phone, String address, String postalCode, String city, String country) {
+    public CustomerProfileDTO(Long id, String firstName, String lastName, String email, String phone, String address, String postalCode, String city, String country) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -24,6 +26,14 @@ public class CustomerProfileDTO {
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

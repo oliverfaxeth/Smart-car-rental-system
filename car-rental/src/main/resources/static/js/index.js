@@ -261,7 +261,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     sortAndRenderCars(results, initialSortOrder);
   }
-
 });
 
 function calculateDays(startDate, endDate) {
@@ -280,24 +279,30 @@ function calculateTotalPrice(dailyPrice, startDate, endDate) {
 // ===============================
 async function getCurrentCustomer() {
   const token = sessionStorage.getItem("jwtToken");
-  if (!token) return null;
-
+  //if (!token) return null;
 
   try {
     const res = await fetch("http://localhost:8080/customers/me", {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    if (!res.ok) throw new Error("Kunde inte hämta kund");
+    console.log("Response status:", res.status); // Debug rad
+
+    if (res.status === 401) {
+      window.location.href = "/login"; // Redirect här
+      console.log("Redirecting to login due to 401 Unauthorized"); // Debug rad
+    } else {
+      throw new Error("Kunde inte hämta kund");
+    }
 
     const customer = await res.json();
     sessionStorage.setItem("currentCustomer", JSON.stringify(customer));
     console.log(customer);
     return customer;
-} catch (err) {
+  } catch (err) {
     console.error("Fel vid hämtning av kund:", err);
     return null;
-}
+  }
 }
 
 // ===============================
@@ -314,8 +319,6 @@ async function bookingConfirmation() {
     return;
   }
 
-
-
   const customer = await getCurrentCustomer();
   if (!customer) {
     alert("Du måste logga in för att slutföra bokning.");
@@ -329,9 +332,9 @@ async function bookingConfirmation() {
 
   console.log("Pending booking:", pendingBooking);
 
-  const bookingSummary = {...pendingBooking, customer};
+  const bookingSummary = { ...pendingBooking, customer };
 
-  console.log("Här är summary:" , bookingSummary);
+  console.log("Här är summary:", bookingSummary);
 
   bookingContainer.innerHTML = `
         <div class="row justify-content-center">

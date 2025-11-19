@@ -9,7 +9,7 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false, length = 50)
     private String brand;
@@ -43,8 +43,8 @@ public class Car {
     private String imageUrl;
 
     // Getters and setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getBrand() { return brand; }
     public void setBrand(String brand) { this.brand = brand; }
@@ -74,7 +74,7 @@ public class Car {
     public void setPrice(BigDecimal price) { this.price = price; }
 
     // Hjälpmetod för att hämta categoryId direkt
-    public Integer getCategoryId() {
+    public Long getCategoryId() {
         return category != null ? category.getId() : null;
     }
 

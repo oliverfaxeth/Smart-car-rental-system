@@ -9,7 +9,7 @@ public class Rental {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false) // customer_id i db
@@ -41,8 +41,8 @@ public class Rental {
     private String bookingNumber;
 
     // Getters och setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public Customer getCustomer() { return customer; }
     public void setCustomer(Customer customer) { this.customer = customer; }
