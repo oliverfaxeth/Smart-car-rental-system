@@ -79,17 +79,12 @@ public class RentalController {
 
     // GET /rentals/{rentalId} - Hämta en specifik bokning
     // Används för att visa bokningsdetaljer och verifiera ägarskap
+
     @GetMapping("/{rentalId}")
-    public ResponseEntity<Rental> getRentalById(@PathVariable Long rentalId) {
-        Optional<Rental> rental = rentalService.getRentalById(rentalId);
+    public ResponseEntity<CustomerBookingDTO> getRentalById(@PathVariable Long rentalId) {
+        Optional<CustomerBookingDTO> rental = rentalService.getRentalDTOById(rentalId);
 
-        if (rental.isPresent()) {
-            return ResponseEntity.ok(rental.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return rental.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-
 }
 

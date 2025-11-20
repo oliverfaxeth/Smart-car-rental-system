@@ -43,30 +43,39 @@ public class RentalService {
                 .collect(Collectors.toList());
     }
 
-    private CustomerBookingDTO mapToDTO(Rental rental) {
+    public CustomerBookingDTO mapToDTO(Rental rental) {
         CustomerBookingDTO dto = new CustomerBookingDTO();
 
         // Rental data
-        dto.setId(rental.getId());
-        dto.setBookingNumber(rental.getBookingNumber());
+        dto.setRentalId(rental.getId());
+        dto.setRentalBookingNumber(rental.getBookingNumber());
         dto.setRentalDate(rental.getRentalDate());
-        dto.setStartDate(rental.getStartDate());
-        dto.setEndDate(rental.getEndDate());
-        dto.setStatus(rental.getStatus());
+        dto.setRentalStartDate(rental.getStartDate());
+        dto.setRentalEndDate(rental.getEndDate());
+        dto.setRentalStatus(rental.getStatus());
 
 
         // Car data (from rental.getCar())
         Car car = rental.getCar();
-        dto.setBrand(car.getBrand());
-        dto.setModel(car.getModel());
-        dto.setRegNr(car.getRegNr());
+        dto.setCarBrand(car.getBrand());
+        dto.setCarModel(car.getModel());
+        dto.setCarRegNr(car.getRegNr());
+        dto.setCarYear(car.getYear());
+        dto.setCarFuel(car.getFuel());
+        dto.setCarTransmission(car.getTransmission());
+
 
         // Payment data (from rental.getPayment())
         Payment payment = rental.getPayment();
-        dto.setAmount(payment.getAmount());
+        dto.setPaymentAmount(payment.getAmount());
+
+        // CarsCategory data
+        CarsCategory carsCategory = rental.getCar().getCategory();
+        dto.setCarCategoryName(carsCategory.getName());
 
         return dto;
     }
+
 
     // Avboka en bokning - ändrar status från ACTIVE till CANCELLED
     // Returnerar true om avbokningen lyckades, false om den inte kunde avbokas
@@ -101,6 +110,12 @@ public class RentalService {
     // Detta behövs för att verifiera att en bokning tillhör rätt kund
     public Optional<Rental> getRentalById(Long rentalId) {
         return rentalRepository.findById(rentalId);
+    }
+
+    public Optional<CustomerBookingDTO> getRentalDTOById(Long rentalId) {
+        Optional<Rental> rentalOptional = rentalRepository.findById(rentalId);
+
+        return rentalOptional.map(this::mapToDTO);
     }
     @Transactional
     public Rental createBooking(Long carId, String customerEmail, LocalDate startDate, LocalDate endDate) {

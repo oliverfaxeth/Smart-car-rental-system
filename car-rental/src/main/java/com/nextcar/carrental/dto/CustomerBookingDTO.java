@@ -6,141 +6,97 @@ import java.util.Date;
 
 public class CustomerBookingDTO {
 
-    //Cars
-
-    private String brand;
-
-    private String model;
-
-    private String regNr;
-
-    private String year;
-
-    private String fuel;
-
-    private String transmission;
 
     //Rentals
 
-    private Long id;
+    private Long rentalId;
 
-    private String status;
+    private String rentalStatus;
 
-    private LocalDate startDate;
+    private LocalDate rentalStartDate;
 
-    private LocalDate endDate;
+    private LocalDate rentalEndDate;
 
     private LocalDate rentalDate;
 
-    private String bookingNumber;
+    private String rentalBookingNumber;
 
-    //Payments
 
-    private BigDecimal amount;
+    //Cars
+
+    private String carBrand;
+
+    private String carModel;
+
+    private String carRegNr;
+
+    private Integer carYear;
+
+    private String carFuel;
+
+    private String carTransmission;
+
 
     //Cars_Category
 
-    private String name;
+    private String carCategoryName;
+
+
+    //Payments
+
+    private BigDecimal paymentAmount;
 
 
     public CustomerBookingDTO() {
     }
 
-    public CustomerBookingDTO(String brand, String model, String regNr, String year, String fuel, String transmission, Long id, String status, LocalDate startDate, LocalDate endDate, LocalDate rentalDate, String bookingNumber, BigDecimal amount, String name) {
-        this.brand = brand;
-        this.model = model;
-        this.regNr = regNr;
-        this.year = year;
-        this.fuel = fuel;
-        this.transmission = transmission;
-        this.id = id;
-        this.status = status;
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public CustomerBookingDTO(Long rentalId, String rentalStatus, LocalDate rentalStartDate, LocalDate rentalEndDate, LocalDate rentalDate, String rentalBookingNumber, String carBrand, String carModel, String carRegNr, Integer carYear, String carFuel, String carTransmission, String carCategoryName, BigDecimal paymentAmount) {
+        this.rentalId = rentalId;
+        this.rentalStatus = rentalStatus;
+        this.rentalStartDate = rentalStartDate;
+        this.rentalEndDate = rentalEndDate;
         this.rentalDate = rentalDate;
-        this.bookingNumber = bookingNumber;
-        this.amount = amount;
-        this.name = name;
+        this.rentalBookingNumber = rentalBookingNumber;
+        this.carBrand = carBrand;
+        this.carModel = carModel;
+        this.carRegNr = carRegNr;
+        this.carYear = carYear;
+        this.carFuel = carFuel;
+        this.carTransmission = carTransmission;
+        this.carCategoryName = carCategoryName;
+        this.paymentAmount = paymentAmount;
     }
 
-    public String getBrand() {
-        return brand;
+    public Long getRentalId() {
+        return rentalId;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setRentalId(Long rentalId) {
+        this.rentalId = rentalId;
     }
 
-    public String getModel() {
-        return model;
+    public String getRentalStatus() {
+        return rentalStatus;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setRentalStatus(String rentalStatus) {
+        this.rentalStatus = rentalStatus;
     }
 
-    public String getRegNr() {
-        return regNr;
+    public LocalDate getRentalStartDate() {
+        return rentalStartDate;
     }
 
-    public void setRegNr(String regNr) {
-        this.regNr = regNr;
+    public void setRentalStartDate(LocalDate rentalStartDate) {
+        this.rentalStartDate = rentalStartDate;
     }
 
-    public String getYear() {
-        return year;
+    public LocalDate getRentalEndDate() {
+        return rentalEndDate;
     }
 
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public String getFuel() {
-        return fuel;
-    }
-
-    public void setFuel(String fuel) {
-        this.fuel = fuel;
-    }
-
-    public String getTransmission() {
-        return transmission;
-    }
-
-    public void setTransmission(String transmission) {
-        this.transmission = transmission;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setRentalEndDate(LocalDate rentalEndDate) {
+        this.rentalEndDate = rentalEndDate;
     }
 
     public LocalDate getRentalDate() {
@@ -151,27 +107,75 @@ public class CustomerBookingDTO {
         this.rentalDate = rentalDate;
     }
 
-    public String getBookingNumber() {
-        return bookingNumber;
+    public String getRentalBookingNumber() {
+        return rentalBookingNumber;
     }
 
-    public void setBookingNumber(String bookingNumber) {
-        this.bookingNumber = bookingNumber;
+    public void setRentalBookingNumber(String rentalBookingNumber) {
+        this.rentalBookingNumber = rentalBookingNumber;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public String getCarBrand() {
+        return carBrand;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setCarBrand(String carBrand) {
+        this.carBrand = carBrand;
     }
 
-    public String getName() {
-        return name;
+    public String getCarModel() {
+        return carModel;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getCarRegNr() {
+        return carRegNr;
+    }
+
+    public void setCarRegNr(String carRegNr) {
+        this.carRegNr = carRegNr;
+    }
+
+    public Integer getCarYear() {
+        return carYear;
+    }
+
+    public void setCarYear(Integer carYear) {
+        this.carYear = carYear;
+    }
+
+    public String getCarFuel() {
+        return carFuel;
+    }
+
+    public void setCarFuel(String carFuel) {
+        this.carFuel = carFuel;
+    }
+
+    public String getCarTransmission() {
+        return carTransmission;
+    }
+
+    public void setCarTransmission(String carTransmission) {
+        this.carTransmission = carTransmission;
+    }
+
+    public String getCarCategoryName() {
+        return carCategoryName;
+    }
+
+    public void setCarCategoryName(String carCategoryName) {
+        this.carCategoryName = carCategoryName;
+    }
+
+    public BigDecimal getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(BigDecimal paymentAmount) {
+        this.paymentAmount = paymentAmount;
     }
 }
