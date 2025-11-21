@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Long> {
@@ -48,4 +49,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
             "JOIN FETCH r.payment " +
             "WHERE r.customer.id = :customerId")
     List<Rental> findBookingsByCustomerId(@Param("customerId") Long customerId);
+
+    Optional<Rental> findByIdAndCustomerId(Long id, Long customerId);
 }

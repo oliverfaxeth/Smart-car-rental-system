@@ -6,10 +6,11 @@ import com.nextcar.carrental.entity.Customer;
 import com.nextcar.carrental.repository.CustomerRepository;
 import com.nextcar.carrental.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -20,20 +21,27 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-   // private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder passwordEncoder;
 
     private JwtTokenUtil jwtTokenUtil;
 
 
     public CustomerService(CustomerRepository customerRepository,
-                           JwtTokenUtil jwtTokenUtil) {
+                           JwtTokenUtil jwtTokenUtil,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Hämta alla kunder
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public List<Customer> getAllCustomers(String token) {
+        String role = jwtTokenUtil.getRoleFromToken(token);
+        if ("ADMIN".equals(role)) {
+            return customerRepository.findAll();
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     // Hämta en kund via ID
@@ -142,6 +150,8 @@ public class CustomerService {
         newCustomer.setFirstName(dto.getFirstName());
         newCustomer.setLastName(dto.getLastName());
         newCustomer.setEmail(dto.getEmail());
+
+        newCustomer.setPassword(passwordEncoder.encode(dto.getPassword()));
 
         // Hasha lösenordet med BCrypt
         //String hashedPassword = passwordEncoder.encode(dto.getPassword());

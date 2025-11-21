@@ -1,11 +1,17 @@
 package com.nextcar.carrental.dto;
 
+import com.nextcar.carrental.entity.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
 public class CustomerBookingDTO {
 
+
+    //Customers
+
+    private String customerEmail;
 
     //Rentals
 
@@ -50,21 +56,37 @@ public class CustomerBookingDTO {
     public CustomerBookingDTO() {
     }
 
-    public CustomerBookingDTO(Long rentalId, String rentalStatus, LocalDate rentalStartDate, LocalDate rentalEndDate, LocalDate rentalDate, String rentalBookingNumber, String carBrand, String carModel, String carRegNr, Integer carYear, String carFuel, String carTransmission, String carCategoryName, BigDecimal paymentAmount) {
-        this.rentalId = rentalId;
-        this.rentalStatus = rentalStatus;
-        this.rentalStartDate = rentalStartDate;
-        this.rentalEndDate = rentalEndDate;
-        this.rentalDate = rentalDate;
-        this.rentalBookingNumber = rentalBookingNumber;
-        this.carBrand = carBrand;
-        this.carModel = carModel;
-        this.carRegNr = carRegNr;
-        this.carYear = carYear;
-        this.carFuel = carFuel;
-        this.carTransmission = carTransmission;
-        this.carCategoryName = carCategoryName;
-        this.paymentAmount = paymentAmount;
+    // En "färdig" mappad konstruktor
+
+    public CustomerBookingDTO(Rental rental){
+
+        customerEmail = rental.getCustomer().getEmail();
+
+        rentalId = rental.getId();
+        rentalStatus = rental.getStatus();
+        rentalStartDate = rental.getStartDate();
+        rentalEndDate = rental.getEndDate();
+        rentalDate = rental.getRentalDate();
+        rentalBookingNumber = rental.getBookingNumber();
+
+        carBrand = rental.getCar().getBrand();
+        carModel = rental.getCar().getModel();
+        carRegNr = rental.getCar().getRegNr();
+        carYear = rental.getCar().getYear();
+        carFuel = rental.getCar().getFuel();
+        carTransmission = rental.getCar().getTransmission();
+
+        carCategoryName = rental.getCar().getCategory().getName();
+
+        paymentAmount = rental.getPayment().getAmount();
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
     public Long getRentalId() {

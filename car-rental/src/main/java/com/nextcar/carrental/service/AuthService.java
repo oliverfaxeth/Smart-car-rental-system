@@ -33,34 +33,23 @@ public class AuthService {
     public LoginResponseDTO authenticate(LoginRequestDTO loginRequest) {
         String email = loginRequest.getEmail();
         String rawPassword = loginRequest.getPassword();
+
         // 1) Try customer
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
+        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
         if (customerOpt.isPresent()) {
             Customer customer = customerOpt.get();
-            //if (passwordEncoder.matches(rawPassword, customer.getPassword())) {
-                // Generate token (we include userId claim inside token for server-side use,
-                // but we DO NOT return id/email in the response body)
                 String token = jwtTokenUtil.generateToken(customer.getEmail(), "CUSTOMER");
                 return new LoginResponseDTO(customer.getId(), token, customer.getFirstName(), "CUSTOMER");
-            } /*else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
-            }
-        }*/
-
-        // 2) Try admin
-        Optional<Admin> adminOpt = adminRepository.findByEmail(email);
-        if (adminOpt.isPresent()) {
-            Admin admin = adminOpt.get();
-            //if (passwordEncoder.matches(rawPassword, admin.getPassword())) {
-                String token = jwtTokenUtil.generateToken(admin.getEmail(), "ADMIN");
-                // For admins we return role and token. We avoid returning id/email; returning names is optional.
-                return new LoginResponseDTO(admin.getId(), token, "Admin", "ADMIN");
-            /*} else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
-            }*/
         }
-
-        // Not found in either
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
+        // 2) Try admin
+        else if (adminOpt.isPresent()) {
+            Admin admin = adminOpt.get();
+            String token = jwtTokenUtil.generateToken(admin.getEmail(), "ADMIN");
+            return new LoginResponseDTO(admin.getId(), token, "Admin", "ADMIN");
+        }
+        // 3) Not found in either
+        else
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
     }
 }

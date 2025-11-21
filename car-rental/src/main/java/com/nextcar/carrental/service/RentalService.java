@@ -3,11 +3,17 @@ package com.nextcar.carrental.service;
 import com.nextcar.carrental.dto.CustomerBookingDTO;
 import com.nextcar.carrental.entity.*;
 import com.nextcar.carrental.repository.*;
+import com.nextcar.carrental.security.JwtTokenUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
@@ -22,66 +28,78 @@ public class RentalService {
     private final RentalRepository rentalRepository;
     private final CarRepository carRepository;
     private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
     private final PaymentRepository paymentRepository;
     private final EntityManager entityManager;
+    private JwtTokenUtil jwtTokenUtil;
 
     public RentalService(RentalRepository rentalRepository, CarRepository carRepository,
-                         CustomerRepository customerRepository, PaymentRepository paymentRepository, EntityManager entityManager) {
+                         CustomerRepository customerRepository, CustomerService customerService, PaymentRepository paymentRepository, EntityManager entityManager, JwtTokenUtil jwtTokenUtil) {
         this.rentalRepository = rentalRepository;
         this.carRepository = carRepository;
         this.customerRepository = customerRepository;
+        this.customerService = customerService;
         this.paymentRepository = paymentRepository;
         this.entityManager = entityManager;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     // Hämta alla bokningar för en specifik kund
     // Detta används för att visa "Mina Bokningar" sidan
-    public List<CustomerBookingDTO> getBookingsDTOByCustomerId(Long customerId) {
-        List<Rental> rentals = rentalRepository.findBookingsByCustomerId(customerId);
-        return rentals.stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+    public List<CustomerBookingDTO> getBookingsDTOByUser(String token) {
+        List<CustomerBookingDTO> customerBookingDTOList = new ArrayList<>();
+
+        try {
+            // 1) Extraherar email från Token
+            String email = jwtTokenUtil.getEmailFromToken(token);
+            // 2) Extraherar role från Token
+            String role = jwtTokenUtil.getRoleFromToken(token);
+
+            // 3) Skapar en lista redo att populeras med antigen Admins metod eller Customer
+            List<Rental> rentals;
+
+            // 4) Kollar ifall en admin är inloggad via Token
+            if("ADMIN".equals(role)){
+
+                // 5) Populerar listan med alla customers rentals
+                rentals = rentalRepository.findAll();
+
+            } else {
+
+                // 6) Hämtar customer objektet från databasen baserat på email
+                Customer customer = customerRepository.findByEmail(email).get();
+                // 7) Populerar listan med alla rentals för den specifika customer
+                rentals = rentalRepository.findBookingsByCustomerId(customer.getId());
+            }
+            for (Rental rental : rentals) {
+                CustomerBookingDTO customerBookingDTO = new CustomerBookingDTO(rental);
+                customerBookingDTOList.add(customerBookingDTO);
+                System.out.println("Customer Email: " + customerBookingDTO.getCustomerEmail());
+            }
+            return customerBookingDTOList;
+
+        } catch (Exception e) {
+            // Returnerar en tom lista ifall ingen token stämmer överens
+            return new ArrayList<>();
+        }
     }
-
-    public CustomerBookingDTO mapToDTO(Rental rental) {
-        CustomerBookingDTO dto = new CustomerBookingDTO();
-
-        // Rental data
-        dto.setRentalId(rental.getId());
-        dto.setRentalBookingNumber(rental.getBookingNumber());
-        dto.setRentalDate(rental.getRentalDate());
-        dto.setRentalStartDate(rental.getStartDate());
-        dto.setRentalEndDate(rental.getEndDate());
-        dto.setRentalStatus(rental.getStatus());
-
-
-        // Car data (from rental.getCar())
-        Car car = rental.getCar();
-        dto.setCarBrand(car.getBrand());
-        dto.setCarModel(car.getModel());
-        dto.setCarRegNr(car.getRegNr());
-        dto.setCarYear(car.getYear());
-        dto.setCarFuel(car.getFuel());
-        dto.setCarTransmission(car.getTransmission());
-
-
-        // Payment data (from rental.getPayment())
-        Payment payment = rental.getPayment();
-        dto.setPaymentAmount(payment.getAmount());
-
-        // CarsCategory data
-        CarsCategory carsCategory = rental.getCar().getCategory();
-        dto.setCarCategoryName(carsCategory.getName());
-
-        return dto;
-    }
-
 
     // Avboka en bokning - ändrar status från ACTIVE till CANCELLED
     // Returnerar true om avbokningen lyckades, false om den inte kunde avbokas
-    public boolean cancelRental(Long rentalId) {
-        // Hitta bokningen i databasen
-        Optional<Rental> rentalOptional = rentalRepository.findById(rentalId);
+    public boolean cancelRental(String token, Long rentalId) {
+
+        String email = jwtTokenUtil.getEmailFromToken(token);
+        String role = jwtTokenUtil.getRoleFromToken(token);
+
+        Optional<Rental> rentalOptional;
+
+        if ("ADMIN".equals(role)){
+            rentalOptional = rentalRepository.findById(rentalId);
+        } else {
+            Customer customer = customerService.findByEmail(email);
+            rentalOptional = rentalRepository.findByIdAndCustomerId(rentalId, customer.getId());
+        }
+
 
         if (rentalOptional.isEmpty()) {
             // Bokningen finns inte
@@ -106,17 +124,59 @@ public class RentalService {
         return true;
     }
 
-    // Hämta en specifik bokning via ID
-    // Detta behövs för att verifiera att en bokning tillhör rätt kund
+    // PUT cancel bokning by ID
     public Optional<Rental> getRentalById(Long rentalId) {
         return rentalRepository.findById(rentalId);
     }
 
-    public Optional<CustomerBookingDTO> getRentalDTOById(Long rentalId) {
-        Optional<Rental> rentalOptional = rentalRepository.findById(rentalId);
+    // GET bokning by ID
+    public CustomerBookingDTO getRentalDTOById(String token, Long rentalId) {
 
-        return rentalOptional.map(this::mapToDTO);
+        // 1. Tomma variablar som fylls med token
+        String email;
+        String role;
+
+
+        try {
+            email = jwtTokenUtil.getEmailFromToken(token);
+            role = jwtTokenUtil.getRoleFromToken(token);
+
+            // 2. Skapar en rental-object som ska mappas till en CustomerBookingDTO att returneras
+            Rental rental;
+
+            // 3) Kollar ifall en admin är inloggad via Token
+            if ("ADMIN".equals(role)) {
+                System.out.println("Admin-åtkomst: Hämtar rental " + rentalId);
+
+                // 4) Admin får hämta vilken rental som helst.
+                rental = rentalRepository.findById(rentalId).get();
+
+            } else {
+                // 6) Hämta customer objektet från databasen baserat på email
+                Customer customer;
+                customer = customerService.findByEmail(email);
+
+                // 7) Hämta den specifika Rental-entiteten och kolla ägarskap.
+                Optional<Rental> optionalRental = rentalRepository.findByIdAndCustomerId(rentalId, customer.getId());
+
+                    rental = optionalRental.get();
+            }
+
+            // 8) Skapar en DTO av rental-object
+            CustomerBookingDTO customerBookingDTO = new CustomerBookingDTO(rental);
+
+            System.out.println(customerBookingDTO);
+
+            return customerBookingDTO;
+        } // 9) Catch returnerar en tom DTO ifall:
+        // ADMIN får EntityException
+        // CUSTOMER får AuthorizationException
+        catch (Exception e) {
+            return new CustomerBookingDTO();
+        }
     }
+
+
     @Transactional
     public Rental createBooking(Long carId, String customerEmail, LocalDate startDate, LocalDate endDate) {
 
@@ -155,7 +215,7 @@ public class RentalService {
     }
 
     private long calculateDays(LocalDate start, LocalDate end) {
-        return java.time.temporal.ChronoUnit.DAYS.between(start, end) + 1;
+        return ChronoUnit.DAYS.between(start, end) + 1;
     }
 }
 

@@ -12,4 +12,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     // Hitta kund baserat på email
     Optional<Customer> findByEmail(String email);
 
+
+
 }

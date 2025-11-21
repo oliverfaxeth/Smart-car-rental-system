@@ -2,6 +2,7 @@ package com.nextcar.carrental.controller;
 
 import com.nextcar.carrental.dto.CustomerRegistrationDTO;
 import com.nextcar.carrental.dto.CustomerProfileDTO;
+import com.nextcar.carrental.dto.LoginResponseDTO;
 import com.nextcar.carrental.entity.Customer;
 import com.nextcar.carrental.service.CustomerService;
 
@@ -30,8 +31,8 @@ public class CustomerController {
 
     // GET all customers
     @GetMapping
-    public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+    public List<Customer> getAllCustomers(@RequestBody LoginResponseDTO loginResponseDTO) {
+        return customerService.getAllCustomers(loginResponseDTO.getToken());
     }
 
     // GET customer by ID

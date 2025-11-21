@@ -45,12 +45,24 @@ public class JwtTokenUtil {
     }
 
     public String getEmailFromToken(String token) {
-        return Jwts.parserBuilder()
+        try {return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Invalid Token " + e.getMessage());
+        }
+
+
+
+//        return Jwts.parserBuilder()
+//                .setSigningKey(SECRET_KEY)
+//                .build()
+//                .parseClaimsJws(token)
+//                .getBody()
+//                .getSubject();
     }
 
     public String getRoleFromToken(String token) {

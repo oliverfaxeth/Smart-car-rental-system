@@ -1,5 +1,6 @@
 package com.nextcar.carrental.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +44,7 @@ public class Customer {
     private LocalDateTime created_At;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private List<Rental> rentals;
 
     // Getters and setters
@@ -78,4 +80,12 @@ public class Customer {
 
     public LocalDateTime getCreated_At() { return created_At; }
     public void setCreated_At(LocalDateTime created_At) { this.created_At = created_At; }
+
+    public List<Rental> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(List<Rental> rentals) {
+        this.rentals = rentals;
+    }
 }

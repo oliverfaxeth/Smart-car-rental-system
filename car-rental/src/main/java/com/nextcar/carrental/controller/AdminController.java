@@ -36,17 +36,10 @@ public class AdminController {
             // 2. Hämta role från token
             String role = jwtTokenUtil.getRoleFromToken(token);
 
-            // 3. Hämta id för att validera i Service
-            Long adminId = jwtTokenUtil.getUserIdFromToken(token);
-
-            // 4. Hämta admin från service
-            Admin admin = adminService.getAdminById(adminId)
-                    .orElseThrow(() -> new RuntimeException("Admin not found"));
-
-            // 5. Bygg DTO
+            // 3. Bygg DTO
             AdminResponseDTO response = new AdminResponseDTO(token, role);
 
-            // 6. Returnera DTO
+            // 4. Returnera DTO
             return ResponseEntity.ok(response);
 
         } catch (Exception error) {

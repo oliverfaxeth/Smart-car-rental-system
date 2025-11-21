@@ -3,11 +3,14 @@ package com.nextcar.carrental.controller;
 import com.nextcar.carrental.dto.BookingRequest;
 import com.nextcar.carrental.dto.BookingConfirmation;
 import com.nextcar.carrental.dto.CustomerBookingDTO;
+import com.nextcar.carrental.dto.LoginResponseDTO;
 import com.nextcar.carrental.entity.Rental;
+import com.nextcar.carrental.security.JwtTokenUtil;
 import com.nextcar.carrental.service.RentalService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/rentals")
 public class RentalController {
 
-    private final RentalService rentalService;
+    private RentalService rentalService;
 
     public RentalController(RentalService rentalService) {
         this.rentalService = rentalService;
@@ -44,20 +47,22 @@ public class RentalController {
         return confirmation;
     }
 
-    // GET /rentals/customer/{customerId} - Hämta alla bokningar för en specifik kund
+    // GET /rentals/my-bookings skickas med Token i body - Hämta alla bokningar för en specifik kund
     // Detta används för "Mina Bokningar" sidan
-    @GetMapping("/customers/{customerId}")
-    public ResponseEntity<List<CustomerBookingDTO>> getRentalsByCustomerId(@PathVariable Long customerId) {
-        List<CustomerBookingDTO> customerRentals = rentalService.getBookingsDTOByCustomerId(customerId);
+    @GetMapping("/my-bookings")
+    public ResponseEntity<List<CustomerBookingDTO>> getRentalsByCustomer(@RequestBody LoginResponseDTO loginResponseDTO) {
+
+        List<CustomerBookingDTO> customerRentals = rentalService.getBookingsDTOByUser(loginResponseDTO.getToken());
         return ResponseEntity.ok(customerRentals);
+
     }
 
     // PUT /rentals/{rentalId}/cancel - Avboka en specifik bokning
     // Ändrar status från ACTIVE till CANCELLED
     @PutMapping("/{rentalId}/cancel")
-    public ResponseEntity<String> cancelRental(@PathVariable Long rentalId) {
+    public ResponseEntity<String> cancelRental(@RequestBody LoginResponseDTO loginResponseDTO, @PathVariable Long rentalId) {
         // Försök att avboka bokningen
-        boolean success = rentalService.cancelRental(rentalId);
+        boolean success = rentalService.cancelRental(loginResponseDTO.getToken(), rentalId);
 
         if (success) {
             // Avbokning lyckades
@@ -70,9 +75,8 @@ public class RentalController {
                 // Bokningen finns inte
                 return ResponseEntity.notFound().build();
             } else {
-                // Bokningen finns men kan inte avbokas
                 return ResponseEntity.badRequest()
-                        .body("Bokningen kan inte avbokas eftersom startdatumet har passerat eller bokningen redan är avslutad");
+                        .body("Bokningen kan inte avbokas ( Auktoriserings fel / Bilen är redan avbokad");
             }
         }
     }
@@ -81,10 +85,10 @@ public class RentalController {
     // Används för att visa bokningsdetaljer och verifiera ägarskap
 
     @GetMapping("/{rentalId}")
-    public ResponseEntity<CustomerBookingDTO> getRentalById(@PathVariable Long rentalId) {
-        Optional<CustomerBookingDTO> rental = rentalService.getRentalDTOById(rentalId);
+    public ResponseEntity<CustomerBookingDTO> getRentalById(@PathVariable Long rentalId, @RequestBody LoginResponseDTO loginResponseDTO) {
+        CustomerBookingDTO rental = rentalService.getRentalDTOById(loginResponseDTO.getToken(), rentalId);
 
-        return rental.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(rental);
     }
 }
 
