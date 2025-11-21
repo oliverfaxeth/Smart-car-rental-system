@@ -24,6 +24,8 @@ public class RentalController {
         this.rentalService = rentalService;
     }
 
+    // FÖR ADMIN -- Kan bokas med vilken customerEmail
+    // FÖR CUSTOMER -- Kan bara bokas med sin EGNA customerEmail
     @PostMapping
     public BookingConfirmation createRental(@RequestBody BookingRequest request) {
 
@@ -47,8 +49,10 @@ public class RentalController {
         return confirmation;
     }
 
-    // GET /rentals/my-bookings skickas med Token i body - Hämta alla bokningar för en specifik kund
+    // FÖR CUSTOMER -- Hämtar alla bokningar av inloggad customers token i body. Endpoint GET/rentals/my-bookings
     // Detta används för "Mina Bokningar" sidan
+
+    // FÖR ADMIN -- Hämtar alla bokningar gjorda
     @GetMapping("/my-bookings")
     public ResponseEntity<List<CustomerBookingDTO>> getRentalsByCustomer(@RequestBody LoginResponseDTO loginResponseDTO) {
 
@@ -57,8 +61,10 @@ public class RentalController {
 
     }
 
-    // PUT /rentals/{rentalId}/cancel - Avboka en specifik bokning
+    // FÖR CUSTOMER -- Kan avboka en specifik bokning kopplad till deras Token via PUT /rentals/{rentalId}/cancel
     // Ändrar status från ACTIVE till CANCELLED
+
+    // FÖR ADMIN -- Kan avboka en vilken bokning som helst via rentalId
     @PutMapping("/{rentalId}/cancel")
     public ResponseEntity<String> cancelRental(@RequestBody LoginResponseDTO loginResponseDTO, @PathVariable Long rentalId) {
         // Försök att avboka bokningen
@@ -81,9 +87,9 @@ public class RentalController {
         }
     }
 
-    // GET /rentals/{rentalId} - Hämta en specifik bokning
-    // Används för att visa bokningsdetaljer och verifiera ägarskap
+    // FÖR CUSTOMER -- Kan se/hämta en specifik bokning kopplad till deras Token via PUT /rentals/{rentalId}
 
+    // FÖR ADMIN -- Kan se/hämta vilken bokning som helst via rentalId
     @GetMapping("/{rentalId}")
     public ResponseEntity<CustomerBookingDTO> getRentalById(@PathVariable Long rentalId, @RequestBody LoginResponseDTO loginResponseDTO) {
         CustomerBookingDTO rental = rentalService.getRentalDTOById(loginResponseDTO.getToken(), rentalId);

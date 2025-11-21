@@ -26,8 +26,9 @@ public class AdminController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    // Skicka Authorization : Bearer ${TOKEN} i header POSTMAN
+    // Fungerar samma som customers/me fast returnerar endast "role" och "token"
     @GetMapping("/me")
-    //@PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getMyProfile(@RequestHeader("Authorization") String authHeader) {
         try {
             // 1. Hämta JWT-token från Authorization-headern ("Bearer <token>")

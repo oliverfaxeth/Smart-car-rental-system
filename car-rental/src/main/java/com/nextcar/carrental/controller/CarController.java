@@ -57,6 +57,8 @@ public class CarController {
         return ResponseEntity.notFound().build();
     }
 
+    // Metoderna under ska låsas för ADMIN
+
     // POST /cars - Skapa ny bil (admin)
     @PostMapping
     public ResponseEntity<Car> createCar(@RequestBody Car car) {

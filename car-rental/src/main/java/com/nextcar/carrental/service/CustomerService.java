@@ -45,8 +45,14 @@ public class CustomerService {
     }
 
     // Hämta en kund via ID
-    public Optional<Customer> getCustomerById(Long id) {
-        return customerRepository.findById(id);
+    public Optional<Customer> getCustomerById(String token, Long customerId) {
+        String role = jwtTokenUtil.getRoleFromToken(token);
+        if ("ADMIN".equals(role)) {
+            return customerRepository.findById(customerId);
+        } else {
+            // Är sålänge 500 internal server error
+            throw new RuntimeException("Not permitted by Authorization");
+        }
     }
 
     public Customer findByEmail(String email) {

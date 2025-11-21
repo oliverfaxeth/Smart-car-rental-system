@@ -29,16 +29,16 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    // GET all customers
+    // GET all customers FOR ADMIN ONLY
     @GetMapping
     public List<Customer> getAllCustomers(@RequestBody LoginResponseDTO loginResponseDTO) {
         return customerService.getAllCustomers(loginResponseDTO.getToken());
     }
 
-    // GET customer by ID
+    // GET customer by ID FOR ADMIN ONLY
     @GetMapping("/{id}")
-    public Optional<Customer> getCustomerById(@PathVariable Long id) {
-        return customerService.getCustomerById(id);
+    public Optional<Customer> getCustomerById(@RequestBody LoginResponseDTO loginResponseDTO,@PathVariable Long id) {
+        return customerService.getCustomerById(loginResponseDTO.getToken(), id);
     }
 
 
@@ -66,17 +66,8 @@ public class CustomerController {
         }
     }
 
-//    @GetMapping("/me")
-//    public ResponseEntity<?> getMyProfile(Authentication authentication) {
-//        if (authentication == null) {
-//            return ResponseEntity.status(401).body("Unauthenticated");
-//        }
-//
-//        String email = (String) authentication.getPrincipal();
-//        CustomerProfileDTO profile = customerService.getMyProfile(email);
-//        return ResponseEntity.ok(profile);
-//    }
 
+    // Skicka Authorization : Bearer ${TOKEN} i header POSTMAN
     @GetMapping("/me")
     public ResponseEntity<?> getMyProfile(HttpServletRequest request) {
 
@@ -104,7 +95,7 @@ public class CustomerController {
     }
 
 
-
+    // Kanske bör låsas till endast Customer?
     @PutMapping("/me")
     public ResponseEntity<?> updateMyProfile(
             @RequestBody CustomerProfileDTO dto,
