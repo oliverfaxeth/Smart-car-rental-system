@@ -7,6 +7,7 @@ import com.nextcar.carrental.security.JwtTokenUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -176,29 +177,74 @@ public class RentalService {
         }
     }
 
+    // ADMIN KAN Använda customerEmail I body med BookingRequest för att skapa en bokning åt en speciell Customer
+    // CUSTOMER spelar det ingen roll för CustomerEmail sätts från token om rollen är CUSTOMER.
 
     @Transactional
-    public Rental createBooking(Long carId, String customerEmail, LocalDate startDate, LocalDate endDate) {
+    public Rental createBooking(
+            Long carId,
+            String targetCustomerEmail,
+            LocalDate startDate,
+            LocalDate endDate,
+            String token) throws BadRequestException, AccessDeniedException {
 
-        Car car = carRepository.findById(carId)
-                .orElseThrow(() -> new RuntimeException("Car not found"));
-        Customer customer = customerRepository.findByEmail(customerEmail)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        // --- Identitet ---
+        String role = jwtTokenUtil.getRoleFromToken(token);
+        String authenticatedEmail = jwtTokenUtil.getEmailFromToken(token);
 
-        // Kontrollera om bilen är ledig
-        boolean available = rentalRepository.findRentalsByCarAndDateRange(carId, startDate, endDate).isEmpty();
-        if (!available) {
-            throw new RuntimeException("Car is already booked for these dates");
+        Customer customer;
+
+        // --- Roller och behörighet ---
+
+        if ("ADMIN".equals(role)) {
+
+            // ADMIN måste ange kundens email
+            if (targetCustomerEmail == null || targetCustomerEmail.isBlank()) {
+                throw new BadRequestException("ADMIN måste ange customerEmail vid bokning åt kund.");
+            }
+
+            // Hämta kunden ADMIN bokar åt
+            String finalTargetCustomerEmail = targetCustomerEmail;
+            customer = customerRepository.findByEmail(targetCustomerEmail)
+                    .orElseThrow(() -> new EntityNotFoundException(
+                            "Kunde inte hitta kunden med email: " + finalTargetCustomerEmail));
+
+        } else if ("CUSTOMER".equals(role)) {
+
+            // CUSTOMER ignorerar body-email och använder token-email
+            targetCustomerEmail = authenticatedEmail;
+
+            customer = customerRepository.findByEmail(authenticatedEmail)
+                    .orElseThrow(() -> new AccessDeniedException(
+                            "Konto hittades ej för inloggad användare."));
+
+        } else {
+
+            throw new AccessDeniedException("Behörighet saknas för att skapa bokningar.");
         }
 
-        // Skapa betalning (MVP: godkänd direkt)
+        // --- Validera bil ---
+        Car car = carRepository.findById(carId)
+                .orElseThrow(() -> new EntityNotFoundException("Bil hittades ej."));
+
+        boolean available = rentalRepository
+                .findRentalsByCarAndDateRange(carId, startDate, endDate)
+                .isEmpty();
+
+        if (!available) {
+            throw new BadRequestException("Bilen är redan bokad för dessa datum.");
+        }
+
+        // --- Skapa betalning ---
         Payment payment = new Payment();
-        payment.setMethod("Cash"); // Default, Här sätts betalningsmetoden automatiskt
-        payment.setAmount(car.getPrice().multiply(BigDecimal.valueOf(calculateDays(startDate, endDate))));
+        payment.setMethod("Cash");
+        payment.setAmount(car.getPrice()
+                .multiply(BigDecimal.valueOf(calculateDays(startDate, endDate))));
         payment.setPaymentDate(LocalDate.now());
+
         paymentRepository.save(payment);
 
-        // Skapa rental
+        // --- Skapa rental ---
         Rental rental = new Rental();
         rental.setCar(car);
         rental.setCustomer(customer);
@@ -207,13 +253,12 @@ public class RentalService {
         rental.setStartDate(startDate);
         rental.setEndDate(endDate);
         rental.setStatus("ACTIVE");
-        // Databasen genererar automatiskt ett booking_number med dagensdatum + 001 (upp till 999)
 
         Rental savedRental = rentalRepository.save(rental);
-        entityManager.refresh(savedRental); // Refreshar från databasen den CREATEADE BOOKING
-        return savedRental; // Lämnar tillbaka bokningen med automatiskt genererad booking_number
-    }
+        entityManager.refresh(savedRental);
 
+        return savedRental;
+    }
     private long calculateDays(LocalDate start, LocalDate end) {
         return ChronoUnit.DAYS.between(start, end) + 1;
     }

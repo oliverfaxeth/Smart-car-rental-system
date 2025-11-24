@@ -7,6 +7,9 @@ import com.nextcar.carrental.dto.LoginResponseDTO;
 import com.nextcar.carrental.entity.Rental;
 import com.nextcar.carrental.security.JwtTokenUtil;
 import com.nextcar.carrental.service.RentalService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,33 +23,55 @@ public class RentalController {
 
     private RentalService rentalService;
 
-    public RentalController(RentalService rentalService) {
+    private JwtTokenUtil jwtTokenUtil;
+
+    public RentalController(RentalService rentalService, JwtTokenUtil jwtTokenUtil) {
         this.rentalService = rentalService;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    // FÖR ADMIN -- Kan bokas med vilken customerEmail
-    // FÖR CUSTOMER -- Kan bara bokas med sin EGNA customerEmail
+    // FÖR ADMIN & CUSTOMER
+    // Token hämtas från headern (Standard Bearer-format)
+    // BookingRequest i body (customerEmail för customers hämtas i token) (customerEmails sätts till valfri användare av Admin)
     @PostMapping
-    public BookingConfirmation createRental(@RequestBody BookingRequest request) {
+    public ResponseEntity<BookingConfirmation> createRental(
+            @RequestBody BookingRequest request,
+            @RequestHeader("Authorization") String authHeader) throws AccessDeniedException, BadRequestException {
+
+        // Extrahera Bearer-token (ignorerar "Bearer " prefixet)
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new org.springframework.security.authentication.BadCredentialsException("Missing or invalid token format.");
+        }
+        String token = authHeader.substring(7);
+
 
         Rental rental = rentalService.createBooking(
                 request.getCarId(),
                 request.getCustomerEmail(),
                 request.getStartDate(),
-                request.getEndDate()
+                request.getEndDate(),
+                token // Skickar med token
         );
 
         BookingConfirmation confirmation = new BookingConfirmation();
+
         confirmation.setBookingNumber(rental.getBookingNumber()); // hämtas direkt från MySQL
+
         confirmation.setCarBrand(rental.getCar().getBrand());
+
         confirmation.setCarModel(rental.getCar().getModel());
+
         confirmation.setCustomerName(rental.getCustomer().getFirstName() + " " + rental.getCustomer().getLastName());
+
         confirmation.setStartDate(rental.getStartDate().toString());
+
         confirmation.setEndDate(rental.getEndDate().toString());
+
         confirmation.setTotalDays((int) java.time.temporal.ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) + 1);
         confirmation.setTotalPrice(rental.getPayment().getAmount());
 
-        return confirmation;
+        // Returnerar 201 Created med bekräftelsen i kroppen
+        return ResponseEntity.status(HttpStatus.CREATED).body(confirmation);
     }
 
     // FÖR CUSTOMER -- Hämtar alla bokningar av inloggad customers token i body. Endpoint GET/rentals/my-bookings
