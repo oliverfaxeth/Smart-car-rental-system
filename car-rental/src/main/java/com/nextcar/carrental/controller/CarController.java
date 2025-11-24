@@ -1,15 +1,20 @@
 package com.nextcar.carrental.controller;
 
 import com.nextcar.carrental.dto.CarResponseDTO;
+import com.nextcar.carrental.dto.LoginResponseDTO;
 import com.nextcar.carrental.entity.Car;
 import com.nextcar.carrental.entity.CarsCategory;
+import com.nextcar.carrental.security.JwtTokenUtil;
 import com.nextcar.carrental.service.CarService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 // Controller tar emot HTTP-requests från
 // frontend (GET, POST, PUT, DELETE) och returnerar data.
@@ -21,6 +26,9 @@ public class CarController {
 
     @Autowired
     private CarService carService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     // GET /cars - Hämta alla bilar
     @GetMapping
@@ -59,25 +67,94 @@ public class CarController {
 
     // Metoderna under ska låsas för ADMIN
 
+    // CREATE CAR
+
+    /*{
+        "brand": "Tesla",
+            "model": "Model Y",
+            "year": 2021,
+            "fuel": "El",
+            "transmission": "Automat",
+            "category": {
+        "id": 2,
+                "name": "SUV"
+    },
+        "seats": 5,
+            "regNr": "XCS392",
+            "price": "860",
+            "imageUrl": "willbeupdated"
+    }*/
     // POST /cars - Skapa ny bil (admin)
+    // Authorization Bearer ${TOKEN} i header + Car JSON objekt i Body
+    // 401 ifall Customer försöker komma åt endpointen
+    // 500 ifall om något oväntat fel inträffar
     @PostMapping
-    public ResponseEntity<Car> createCar(@RequestBody Car car) {
-        Car savedCar = carService.saveCar(car);
-        return ResponseEntity.ok(savedCar);
+    public ResponseEntity<?> createCar(HttpServletRequest request, @RequestBody Car car) {
+        try {
+            String authHeader = request.getHeader("Authorization");
+
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(401).body("Missing or invalid token");
+            }
+
+            String token = authHeader.substring(7);
+            String role = jwtTokenUtil.getRoleFromToken(token);
+
+            if (!jwtTokenUtil.validateToken(token)) {
+                return ResponseEntity.status(401).body("Invalid token");
+            }
+
+            if ("CUSTOMER".equals(role)){
+                return ResponseEntity.status(401).body("Unauthorized");
+            }
+
+
+            Car savedCar = carService.saveCar(car, token);
+            return ResponseEntity.ok(savedCar);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // PUT /cars/5 - Uppdatera bil (admin)
     @PutMapping("/{id}")
-    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car car) {
-        car.setId(id);
-        Car updatedCar = carService.saveCar(car);
-        return ResponseEntity.ok(updatedCar);
+    public ResponseEntity<?> updateCar(HttpServletRequest request ,@PathVariable Long id, @RequestBody Car car) {
+        try {
+            String authHeader = request.getHeader("Authorization");
+
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(401).body("Missing or invalid token");
+            }
+
+            String token = authHeader.substring(7);
+            String role = jwtTokenUtil.getRoleFromToken(token);
+
+            if (!jwtTokenUtil.validateToken(token)) {
+                return ResponseEntity.status(401).body("Invalid token");
+            }
+
+            if ("CUSTOMER".equals(role)){
+                return ResponseEntity.status(401).body("Unauthorized");
+            }
+
+
+            car.setId(id);
+            Car updatedCar = carService.saveCar(car, token);
+            return ResponseEntity.ok(updatedCar);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // DELETE /cars/5 - Ta bort bil (admin)
+    // Returnerar 204 BÅDE till admin och customer
+    // Endast 204 för admin ändrar i Databasen
+    // DELETE operation sker bara med Admins token även om de returnerar samma status
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
-        carService.deleteCar(id);
+    public ResponseEntity<Map<String, String>> deleteCar(@PathVariable Long id, @RequestBody LoginResponseDTO loginResponseDTO) {
+        String token = loginResponseDTO.getToken();
+        carService.deleteCar(id, token);
         return ResponseEntity.noContent().build();
     }
 }

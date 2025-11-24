@@ -6,6 +6,7 @@ import com.nextcar.carrental.entity.CarsCategory;
 import com.nextcar.carrental.entity.Rental;
 import com.nextcar.carrental.repository.CarRepository;
 import com.nextcar.carrental.repository.RentalRepository;
+import com.nextcar.carrental.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class CarService {
 
     @Autowired
     private RentalRepository rentalRepository;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
 
 
@@ -50,14 +54,26 @@ public class CarService {
         return carRepository.findById(id).orElse(null);
     }
 
-    // Spara eller uppdatera en bil
-    public Car saveCar(Car car) {
-        return carRepository.save(car);
+    // Skapa eller uppdatera en bil som ADMIN
+    public Car saveCar(Car car, String token) {
+        String role = jwtTokenUtil.getRoleFromToken(token);
+
+        if ("ADMIN".equals(role)){
+            return carRepository.save(car);
+        } else {
+            throw new RuntimeException("Annat fel, försök igen.");
+        }
+
     }
 
     // Ta bort en bil
-    public void deleteCar(Long id) {
-        carRepository.deleteById(id);
+    public void deleteCar(Long id, String token) {
+        String role = jwtTokenUtil.getRoleFromToken(token);
+
+        if ("ADMIN".equals(role)) {
+            carRepository.deleteById(id);
+        }
+
     }
 
     // Hitta tillgängliga bilar baserat på datumintervall OCH kategori
