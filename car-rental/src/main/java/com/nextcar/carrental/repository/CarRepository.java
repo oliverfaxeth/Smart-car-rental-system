@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 //Vi behöver inte skriva någon SQL!
 
 @Repository
-public interface CarRepository extends JpaRepository<Car, Integer> {
+public interface CarRepository extends JpaRepository<Car, Long> {
     // Spring Data JPA skapar automatiskt alla grundläggande metoder!
     // findAll(), findById(), save(), delete(), etc.
 }

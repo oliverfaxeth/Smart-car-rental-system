@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="37a8786d-979a-40f1-ad7c-5956d54168d1" name="Changes" comment="Just misc.xml" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;AliDevEng&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/oliverfaxeth/Smart-car-rental-system.git&quot;,
+    &quot;accountId&quot;: &quot;594d3ed3-670c-4599-82bf-96c423f0d7f8&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;oliverfaxeth&quot;,
+    &quot;repository&quot;: &quot;Smart-car-rental-system&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="33p7MTtb5NtaP1kfSY6dQ9yx0DC" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Application.CarRentalApp.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ali-admin-create-car&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/OneDrive-Ali/OneDrive/Coding/SpringBoot/Grupparbete - sista kurs/smart-car-rental-system/NextCar-System&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="CarRentalApp" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.nextcar.carrental.CarRentalApplication" />
+      <module name="car-rental" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="37a8786d-979a-40f1-ad7c-5956d54168d1" name="Changes" comment="" />
+      <created>1760002112327</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760002112327</updated>
+    </task>
+    <task id="LOCAL−00001" summary="Created CarController, CarRepository, CarService. I created SecurityConfig temporary to inactivate CSRF-protection">
+      <option name="closed" value="true" />
+      <created>1760006298992</created>
+      <option name="number" value="LOCAL−00001" />
+      <option name="presentableId" value="LOCAL−00001" />
+      <updated>1760006298992</updated>
+    </task>
+    <task id="LOCAL−00002" summary="Made Rental and RentalRepository">
+      <option name="closed" value="true" />
+      <created>1760009752081</created>
+      <option name="number" value="LOCAL−00002" />
+      <option name="presentableId" value="LOCAL−00002" />
+      <updated>1760009752081</updated>
+    </task>
+    <task id="LOCAL−00003" summary="Updated CarController &amp; Rental">
+      <option name="closed" value="true" />
+      <created>1760390197311</created>
+      <option name="number" value="LOCAL−00003" />
+      <option name="presentableId" value="LOCAL−00003" />
+      <updated>1760390197311</updated>
+    </task>
+    <task id="LOCAL−00004" summary="Hjälpmetod i Car.java för att hantera bilcategory.&#10;CarService, uppdaterade getAvailableCars med BilCategory.&#10;Uppdaterade CarController ang. bilkategori">
+      <option name="closed" value="true" />
+      <created>1760393067869</created>
+      <option name="number" value="LOCAL−00004" />
+      <option name="presentableId" value="LOCAL−00004" />
+      <updated>1760393067869</updated>
+    </task>
+    <task id="LOCAL−00005" summary="Customer Registration (US-6):&#10;- Created CustomerRegistrationDTO for registration data&#10;- Implemented POST /customers/register endpoint&#10;- Added validation: email format, password length (min 8 chars), password match&#10;- Implemented BCrypt password hashing&#10;- Added duplicate email check&#10;- Added findByEmail() method in CustomerRepository">
+      <option name="closed" value="true" />
+      <created>1760394949153</created>
+      <option name="number" value="LOCAL−00005" />
+      <option name="presentableId" value="LOCAL−00005" />
+      <updated>1760394949153</updated>
+    </task>
+    <task id="LOCAL−00006">
+      <option name="closed" value="true" />
+      <created>1760432050262</created>
+      <option name="number" value="LOCAL−00006" />
+      <option name="presentableId" value="LOCAL−00006" />
+      <updated>1760432050262</updated>
+    </task>
+    <task id="LOCAL−00007" summary="Put application.properties in gitignore sot it won't change everytime we push to Main">
+      <option name="closed" value="true" />
+      <created>1760434159457</created>
+      <option name="number" value="LOCAL−00007" />
+      <option name="presentableId" value="LOCAL−00007" />
+      <updated>1760434159457</updated>
+    </task>
+    <task id="LOCAL−00008" summary="Complet index.js for frontend and search function.&#10;Also made sorting function in backend.&#10;Made sorting function in JavaScript too.&#10;Changed the password in application.properties">
+      <option name="closed" value="true" />
+      <created>1760528313742</created>
+      <option name="number" value="LOCAL−00008" />
+      <option name="presentableId" value="LOCAL−00008" />
+      <updated>1760528313742</updated>
+    </task>
+    <task id="LOCAL−00009" summary="Updated soring function in index.js">
+      <option name="closed" value="true" />
+      <created>1760531673603</created>
+      <option name="number" value="LOCAL−00009" />
+      <option name="presentableId" value="LOCAL−00009" />
+      <updated>1760531673603</updated>
+    </task>
+    <task id="LOCAL−00010" summary="Implementera kundinregistrering med frontend och backend&#10;&#10;Filer:&#10;- frontend/register.js: Lägg till JavaScript-validering och asynkron registreringshantering&#10;- backend/CustomerController.java: Skapa endpoint för kundregistrering&#10;- backend/CustomerService.java: Implementera affärslogik för registrering&#10;- backend/CustomerRegistrationDTO.java: Skapa DTO för registreringsdata&#10;&#10;Funktionalitet:&#10;- Skapa registreringsformulär med JavaScript-validering&#10;- Implementera endpoints för kundregistrering i backend&#10;- Validera och spara kunduppgifter i databasen">
+      <option name="closed" value="true" />
+      <created>1760543112063</created>
+      <option name="number" value="LOCAL−00010" />
+      <option name="presentableId" value="LOCAL−00010" />
+      <updated>1760543112063</updated>
+    </task>
+    <task id="LOCAL−00011" summary="Implementera kundinregistrering med frontend och backend&#10;&#10;Filer:&#10;- frontend/register.js: Lägg till JavaScript-validering och asynkron registreringshantering&#10;- backend/CustomerController.java: Skapa endpoint för kundregistrering&#10;- backend/CustomerService.java: Implementera affärslogik för registrering&#10;- backend/CustomerRegistrationDTO.java: Skapa DTO för registreringsdata&#10;&#10;Funktionalitet:&#10;- Skapa registreringsformulär med JavaScript-validering&#10;- Implementera endpoints för kundregistrering i backend&#10;- Validera och spara kunduppgifter i databasen">
+      <option name="closed" value="true" />
+      <created>1760543119052</created>
+      <option name="number" value="LOCAL−00011" />
+      <option name="presentableId" value="LOCAL−00011" />
+      <updated>1760543119052</updated>
+    </task>
+    <task id="LOCAL−00012" summary="Implementera JWT-autentisering och bokningsflöde för gäster&#10;&#10;Filer:&#10;- backend/SecurityConfig.java: Uppdatera säkerhetskonfiguration&#10;- backend/AuthController.java: Skapa inloggningsendpoint&#10;- backend/JwtTokenUtil.java: Skapa JWT-tokenhantering&#10;- backend/JwtAuthenticationFilter.java: Implementera JWT-autentiseringsfilter&#10;- frontend/login.js: Uppdatera inloggningshantering med JWT&#10;- frontend/index.js: Förbered bokningsflöde för gäster&#10;&#10;Ändringar:&#10;- Lägg till JWT-tokenhantering i backend&#10;- Uppdatera SecurityConfig för öppen åtkomst till vissa endpoints&#10;- Skapa AuthController för inloggningshantering&#10;- Påbörja implementation av bokningsflöde för icke-inloggade användare&#10;&#10;Kvarstående arbete:&#10;- Fullständig implementation av bokningsfunktionalitet&#10;- Felsökning av bilvisning efter sökning">
+      <option name="closed" value="true" />
+      <created>1760547141219</created>
+      <option name="number" value="LOCAL−00012" />
+      <option name="presentableId" value="LOCAL−00012" />
+      <updated>1760547141219</updated>
+    </task>
+    <task id="LOCAL−00013" summary="Updated cars card after seeking with dates.&#10;There is a &quot;Book&quot; button now">
+      <option name="closed" value="true" />
+      <created>1760604640071</created>
+      <option name="number" value="LOCAL−00013" />
+      <option name="presentableId" value="LOCAL−00013" />
+      <updated>1760604640071</updated>
+    </task>
+    <task id="LOCAL−00014" summary="Updated .gitignore">
+      <option name="closed" value="true" />
+      <created>1760606241194</created>
+      <option name="number" value="LOCAL−00014" />
+      <option name="presentableId" value="LOCAL−00014" />
+      <updated>1760606241194</updated>
+    </task>
+    <task id="LOCAL−00015" summary="Updated .gitignore">
+      <option name="closed" value="true" />
+      <created>1760606360527</created>
+      <option name="number" value="LOCAL−00015" />
+      <option name="presentableId" value="LOCAL−00015" />
+      <updated>1760606360527</updated>
+    </task>
+    <task id="LOCAL−00016" summary="update app.properties">
+      <option name="closed" value="true" />
+      <created>1760613229098</created>
+      <option name="number" value="LOCAL−00016" />
+      <option name="presentableId" value="LOCAL−00016" />
+      <updated>1760613229098</updated>
+    </task>
+    <task id="LOCAL−00017" summary="Deleted app.properties">
+      <option name="closed" value="true" />
+      <created>1760613483828</created>
+      <option name="number" value="LOCAL−00017" />
+      <option name="presentableId" value="LOCAL−00017" />
+      <updated>1760613483828</updated>
+    </task>
+    <task id="LOCAL−00018" summary="Fixed: Global handleBooking function and sortSelect scope&#10;&#10;Fixes booking redirect to login - handleBooking now accessible from HTML onclick&quot;">
+      <option name="closed" value="true" />
+      <created>1760617135927</created>
+      <option name="number" value="LOCAL−00018" />
+      <option name="presentableId" value="LOCAL−00018" />
+      <updated>1760617135927</updated>
+    </task>
+    <task id="LOCAL−00019" summary="Created Admin-pages and admin-styles.css">
+      <option name="closed" value="true" />
+      <created>1760793826214</created>
+      <option name="number" value="LOCAL−00019" />
+      <option name="presentableId" value="LOCAL−00019" />
+      <updated>1760793826214</updated>
+    </task>
+    <task id="LOCAL−00020" summary="Implementera kundlogin med JWT-autentisering&#10;&#10;Ändringar:&#10;- AuthController.java: Lade till login-endpoint med JWT-token generering&#10;- JwtTokenUtil.java: Uppdaterade för att hantera Integer userId i token&#10;- SecurityConfig.java: Konfigurerade CORS och säkerhetsregler för login-endpointen&#10;&#10;- Nya frontend-filer:&#10;  * js/auth.js: Gemensamma autentiseringsfunktioner&#10;  * js/login.js: Hantering av inloggningsformulär&#10;  * login.html: Korrigerade teckenkodning och lade till skript-referenser">
+      <option name="closed" value="true" />
+      <created>1761037554426</created>
+      <option name="number" value="LOCAL−00020" />
+      <option name="presentableId" value="LOCAL−00020" />
+      <updated>1761037554426</updated>
+    </task>
+    <task id="LOCAL−00021" summary="feat: Implementera dynamisk carousel med verkliga bildata från databas&#10;&#10;Refaktorerade index.html carousel-sektion för att ladda bilar dynamiskt från backend istället för hårdkodade testdata. Implementerade separation of concerns med dedikerade service- och komponent-filer.&#10;&#10;Filer som ändrats:&#10;- index.html: Rensade hårdkodat carousel-innehåll, lade till script-taggar för nya moduler&#10;- js/services/carService.js: Ny fil - hanterar API-kommunikation med backend för bildata&#10;- js/components/carouselComponent.js: Ny fil - renderar bilkort dynamiskt från databasobjekt&#10;- js/index.js: Lade till initializeCarousel() och carousel navigation-funktionalitet&#10;- styles.css: Justerade carousel-knappar, lade till responsiva media queries för mobil/surfplatta/desktop (1/2/3/4 kort), optimerade bildhöjder för vertikala bilder&#10;&#10;Förbättringar:&#10;- Carousel visar nu 4 kort på desktop, 3 på surfplatta liggande, 2 på surfplatta stående, 1 på mobil&#10;- Bildvägar korrigerade till images/-mappen&#10;- Implementerade scroll-snap för smidig navigation på touch-enheter&#10;- Ökad bildhöjd till 320px för bättre visning av vertikala bilbilder">
+      <option name="closed" value="true" />
+      <created>1761076196460</created>
+      <option name="number" value="LOCAL−00021" />
+      <option name="presentableId" value="LOCAL−00021" />
+      <updated>1761076196460</updated>
+    </task>
+    <task id="LOCAL−00022" summary="Updated Rental.java med status för bokningar">
+      <option name="closed" value="true" />
+      <created>1761084459842</created>
+      <option name="number" value="LOCAL−00022" />
+      <option name="presentableId" value="LOCAL−00022" />
+      <updated>1761084459842</updated>
+    </task>
+    <task id="LOCAL−00023" summary="feat: Implementera avbokningsfunktionalitet för bokningar&#10;&#10;- Lägg till status-fält i Rental-entitet med hjälpmetoder&#10;- Skapa avbokningslogik i RentalService  &#10;- Lägg till REST-endpoints för bokningshantering&#10;&#10;Backend: Rental.java, RentalService.java, RentalController.java&#10;Databas: Lägg till status-kolumn + bookings number">
+      <option name="closed" value="true" />
+      <created>1761220587120</created>
+      <option name="number" value="LOCAL−00023" />
+      <option name="presentableId" value="LOCAL−00023" />
+      <updated>1761220587120</updated>
+    </task>
+    <task id="LOCAL−00024" summary="Ändrade alla href i frontend filer.&#10;Skapade PageController för att hantera alla clean URL">
+      <option name="closed" value="true" />
+      <created>1761253577613</created>
+      <option name="number" value="LOCAL−00024" />
+      <option name="presentableId" value="LOCAL−00024" />
+      <updated>1761253577613</updated>
+    </task>
+    <task id="LOCAL−00025" summary="feat: Implementera clean URLs utan .html-ändelser&#10;&#10;Backend:&#10;* PageController.java (ny fil) - mappar clean URLs till HTML-filer&#10;  - / → index.html&#10;  - /register → register.html  &#10;  - /login → login.html&#10;  - /all-cars → all-cars.html (undviker konflikt med CarController /cars API)&#10;  - /about → about.html&#10;  - /contact → contact.html&#10;  - /profile → profile.html&#10;  &#10;  - /admin/dashboard → admin-dashboard.html&#10;  - /admin/cars → admin-cars.html&#10;  - /admin/customers → admin-customers.html&#10;  - /admin/bookings → admin-bookings.html&#10;  - /admin/payments → admin-payments.html&#10;&#10;Frontend - Navigation uppdaterad i alla HTML-filer:&#10;* index.html - nav länkar till clean URLs&#10;* all-cars.html - nav länkar till clean URLs&#10;* contact.html - nav länkar till clean URLs  &#10;* register.html - nav länkar till clean URLs&#10;* login.html - nav länkar till clean URLs&#10;* profile.html - nav länkar till clean URLs&#10;* about.html - nav länkar + footer länkar + CTA knappar till clean URLs + fix: tog bort felaktig all-cars.js import&#10;* admin-dashboard.html - admin nav till clean URLs&#10;* admin-cars.html - admin nav till clean URLs&#10;* admin-customers.html - admin nav till clean URLs&#10;* admin-bookings.html - admin nav till clean URLs  &#10;* admin-payments.html - admin nav till clean URLs&#10;&#10;JavaScript - window.location och href uppdaterad:&#10;* auth.js - innerHTML href till clean URLs + logout redirect till /&#10;* register.js - success redirect till /login&#10;* index.js - login redirect till /login&#10;&#10;API-endpoints (/cars, /rentals etc.) påverkas EJ - bara sidnavigation">
+      <option name="closed" value="true" />
+      <created>1761641514607</created>
+      <option name="number" value="LOCAL−00025" />
+      <option name="presentableId" value="LOCAL−00025" />
+      <updated>1761641514607</updated>
+    </task>
+    <task id="LOCAL−00026" summary="Skapade customer-styles.css och my-bookings.html för att visa lista på bokningar samt avsboka bokning">
+      <option name="closed" value="true" />
+      <created>1761647876776</created>
+      <option name="number" value="LOCAL−00026" />
+      <option name="presentableId" value="LOCAL−00026" />
+      <updated>1761647876776</updated>
+    </task>
+    <task id="LOCAL−00027" summary="Tog bort testdata från my-bookings.html&#10;&#10;Skapade my-bookings.js för att koppla till backend">
+      <option name="closed" value="true" />
+      <created>1761649375466</created>
+      <option name="number" value="LOCAL−00027" />
+      <option name="presentableId" value="LOCAL−00027" />
+      <updated>1761649375466</updated>
+    </task>
+    <task id="LOCAL−00028" summary="&quot;Förbättra bokningssidan med modulär CSS-arkitektur och skalbar design&#10;&#10;- customer-styles.css: Lägg till nya modulära komponenter för användarnavigation, &#10;  premium bokningskort och förbättrade header-stilar med korrekt färgschema&#10;- my-bookings.html: Uppdatera till ren HTML-struktur utan inbäddade stilar för &#10;  bättre separation of concerns och skalbarhet&#10;- my-bookings.js: Implementera förbättrade bokningskort med registreringsnummer,&#10;  detaljerad fordonsinformation och förbättrad visuell presentation&#10;&#10;Fixar ikon-spacing, rubrikfärger och bakgrundskontrast för optimal användarupplevelse.&#10;Alla stilar nu organiserade modulärt för framtida utveckling och underhåll.&quot;">
+      <option name="closed" value="true" />
+      <created>1761935682222</created>
+      <option name="number" value="LOCAL−00028" />
+      <option name="presentableId" value="LOCAL−00028" />
+      <updated>1761935682222</updated>
+    </task>
+    <task id="LOCAL−00029" summary="Uppdaterade indelningen för bokningar med &quot;Bekräftade&quot;, &quot;Aktiva&quot;, &quot;Avslutade&quot;, &quot;Avbokade&quot;.&#10;&#10;Ändrade både i my-bookings.html och my-bookings.js">
+      <option name="closed" value="true" />
+      <created>1762253348655</created>
+      <option name="number" value="LOCAL−00029" />
+      <option name="presentableId" value="LOCAL−00029" />
+      <updated>1762253348656</updated>
+    </task>
+    <task id="LOCAL−00030" summary="feat: Implementera &quot;Lägg till bil&quot; funktionalitet för admin&#10;&#10;- Backend: Lägg till Spring Validation i Car.java entitet med svenska felmeddelanden&#10;- Backend: Förbättra CarController med @Valid, strukturerad felhantering och HTTP statuskoder  &#10;- Frontend: Skapa admin-cars.js med komplett formulärhantering och API-integration&#10;- Frontend: Uppdatera admin-cars.html med förbättrad layout och responsiv design&#10;- UX: Egen kolumn för registreringsnummer för bättre tydlighet&#10;- UX: Färgade status-badges (grön ACTIVE, röd INACTIVE) &#10;- UX: Förbättrade action-knappar med power-symbol för inaktivera&#10;- Funktionalitet: Kategori-dropdown hämtas dynamiskt från /categories API&#10;- Funktionalitet: Redigera bil-funktionalitet med modal pre-population&#10;- Funktionalitet: Komplett validation på både frontend och backend&#10;- Funktionalitet: Success/error-meddelanden och automatisk bil-lista uppdatering">
+      <option name="closed" value="true" />
+      <created>1762644326267</created>
+      <option name="number" value="LOCAL−00030" />
+      <option name="presentableId" value="LOCAL−00030" />
+      <updated>1762644326267</updated>
+    </task>
+    <task id="LOCAL−00031" summary="feat: Förbättra bil-hantering med sök, filter och bättre status-hantering&#10;&#10;- Frontend: Implementera komplett sök-funktionalitet (märke, modell, reg.nr, år, kategori)&#10;- Frontend: Lägg till status-filter (Alla/Endast aktiva/Endast inaktiva) med real-time filtrering&#10;- Backend: Lägg till PATCH /cars/{id}/status endpoint för status-uppdatering&#10;- UX: Ta bort separat inaktivera-knapp från tabellen för renare design&#10;- UX: Integrera status-hantering i redigera-modal med färgad dropdown&#10;- UX: Status-fält visas endast vid redigering, döljs för nya bilar&#10;- UX: Egen kolumn för registreringsnummer för bättre tydlighet&#10;- UX: Förbättrade färgade status-badges (grön ACTIVE, röd INACTIVE)&#10;- UX: Kombinerad sök + filter funktionalitet som fungerar tillsammans&#10;- Frontend: Debounced search (300ms) för optimal prestanda&#10;- Frontend: Smart pagination-info som visar &quot;(filtrerat)&quot; när filter aktivt&#10;- Funktionalitet: Bilar kan nu både aktiveras OCH inaktiveras via samma interface">
+      <option name="closed" value="true" />
+      <created>1762646199130</created>
+      <option name="number" value="LOCAL−00031" />
+      <option name="presentableId" value="LOCAL−00031" />
+      <updated>1762646199130</updated>
+    </task>
+    <task id="LOCAL−00032" summary="- Frontend: Ta bort alla alert() och confirm() browser-popups  &#10;- Frontend: Implementera Bootstrap Toast-system för meddelanden&#10;- Frontend: Skapa bekräftelse-modal istället för confirm() dialogs">
+      <option name="closed" value="true" />
+      <created>1762649002042</created>
+      <option name="number" value="LOCAL−00032" />
+      <option name="presentableId" value="LOCAL−00032" />
+      <updated>1762649002042</updated>
+    </task>
+    <task id="LOCAL−00033" summary="Separerade PageController till vanlig och admin">
+      <option name="closed" value="true" />
+      <created>1762654491596</created>
+      <option name="number" value="LOCAL−00033" />
+      <option name="presentableId" value="LOCAL−00033" />
+      <updated>1762654491596</updated>
+    </task>
+    <task id="LOCAL−00034" summary="Fixade styles i Navbar vid inloggad läge">
+      <option name="closed" value="true" />
+      <created>1762658401669</created>
+      <option name="number" value="LOCAL−00034" />
+      <option name="presentableId" value="LOCAL−00034" />
+      <updated>1762658401669</updated>
+    </task>
+    <task id="LOCAL−00035" summary="&quot;Fix: Inaktiva bilar visas inte längre som tillgängliga + Auto-scroll UX förbättring&#10;&#10;- CarService: Filtrera bara AKTIVA bilar i getAvailableCars() och ny getActiveCars() metod&#10;- CarController: Nytt /cars/active endpoint för kunder, /cars kvar för admin&#10;- index.js: Använd /cars/active för fallback + auto-scroll till sökresultat&#10;- UX: Automatisk scroll direkt till bilarna efter datumfiltering&#10;&#10;Filer ändrade: CarService.java, CarController.java, index.js&#10;Säkerhet: Inaktiva bilar kan ej bokas, all-cars.html opåverkad&quot;">
+      <option name="closed" value="true" />
+      <created>1762858781906</created>
+      <option name="number" value="LOCAL−00035" />
+      <option name="presentableId" value="LOCAL−00035" />
+      <updated>1762858781906</updated>
+    </task>
+    <task id="LOCAL−00036" summary="last changes on this branch">
+      <option name="closed" value="true" />
+      <created>1763982770059</created>
+      <option name="number" value="LOCAL−00036" />
+      <option name="presentableId" value="LOCAL−00036" />
+      <updated>1763982770059</updated>
+    </task>
+    <task id="LOCAL−00037" summary="Just misc.xml">
+      <option name="closed" value="true" />
+      <created>1763982950737</created>
+      <option name="number" value="LOCAL−00037" />
+      <option name="presentableId" value="LOCAL−00037" />
+      <updated>1763982950737</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Implementera JWT-autentisering och bokningsflöde för gäster&#10;&#10;Filer:&#10;- backend/SecurityConfig.java: Uppdatera säkerhetskonfiguration&#10;- backend/AuthController.java: Skapa inloggningsendpoint&#10;- backend/JwtTokenUtil.java: Skapa JWT-tokenhantering&#10;- backend/JwtAuthenticationFilter.java: Implementera JWT-autentiseringsfilter&#10;- frontend/login.js: Uppdatera inloggningshantering med JWT&#10;- frontend/index.js: Förbered bokningsflöde för gäster&#10;&#10;Ändringar:&#10;- Lägg till JWT-tokenhantering i backend&#10;- Uppdatera SecurityConfig för öppen åtkomst till vissa endpoints&#10;- Skapa AuthController för inloggningshantering&#10;- Påbörja implementation av bokningsflöde för icke-inloggade användare&#10;&#10;Kvarstående arbete:&#10;- Fullständig implementation av bokningsfunktionalitet&#10;- Felsökning av bilvisning efter sökning" />
+    <MESSAGE value="Updated cars card after seeking with dates.&#10;There is a &quot;Book&quot; button now" />
+    <MESSAGE value="Updated .gitignore" />
+    <MESSAGE value="update app.properties" />
+    <MESSAGE value="Deleted app.properties" />
+    <MESSAGE value="Fixed: Global handleBooking function and sortSelect scope&#10;&#10;Fixes booking redirect to login - handleBooking now accessible from HTML onclick&quot;" />
+    <MESSAGE value="Created Admin-pages and admin-styles.css" />
+    <MESSAGE value="Implementera kundlogin med JWT-autentisering&#10;&#10;Ändringar:&#10;- AuthController.java: Lade till login-endpoint med JWT-token generering&#10;- JwtTokenUtil.java: Uppdaterade för att hantera Integer userId i token&#10;- SecurityConfig.java: Konfigurerade CORS och säkerhetsregler för login-endpointen&#10;&#10;- Nya frontend-filer:&#10;  * js/auth.js: Gemensamma autentiseringsfunktioner&#10;  * js/login.js: Hantering av inloggningsformulär&#10;  * login.html: Korrigerade teckenkodning och lade till skript-referenser" />
+    <MESSAGE value="feat: Implementera dynamisk carousel med verkliga bildata från databas&#10;&#10;Refaktorerade index.html carousel-sektion för att ladda bilar dynamiskt från backend istället för hårdkodade testdata. Implementerade separation of concerns med dedikerade service- och komponent-filer.&#10;&#10;Filer som ändrats:&#10;- index.html: Rensade hårdkodat carousel-innehåll, lade till script-taggar för nya moduler&#10;- js/services/carService.js: Ny fil - hanterar API-kommunikation med backend för bildata&#10;- js/components/carouselComponent.js: Ny fil - renderar bilkort dynamiskt från databasobjekt&#10;- js/index.js: Lade till initializeCarousel() och carousel navigation-funktionalitet&#10;- styles.css: Justerade carousel-knappar, lade till responsiva media queries för mobil/surfplatta/desktop (1/2/3/4 kort), optimerade bildhöjder för vertikala bilder&#10;&#10;Förbättringar:&#10;- Carousel visar nu 4 kort på desktop, 3 på surfplatta liggande, 2 på surfplatta stående, 1 på mobil&#10;- Bildvägar korrigerade till images/-mappen&#10;- Implementerade scroll-snap för smidig navigation på touch-enheter&#10;- Ökad bildhöjd till 320px för bättre visning av vertikala bilbilder" />
+    <MESSAGE value="Updated Rental.java med status för bokningar" />
+    <MESSAGE value="feat: Implementera avbokningsfunktionalitet för bokningar&#10;&#10;- Lägg till status-fält i Rental-entitet med hjälpmetoder&#10;- Skapa avbokningslogik i RentalService  &#10;- Lägg till REST-endpoints för bokningshantering&#10;&#10;Backend: Rental.java, RentalService.java, RentalController.java&#10;Databas: Lägg till status-kolumn + bookings number" />
+    <MESSAGE value="Ändrade alla href i frontend filer.&#10;Skapade PageController för att hantera alla clean URL" />
+    <MESSAGE value="feat: Implementera clean URLs utan .html-ändelser&#10;&#10;Backend:&#10;* PageController.java (ny fil) - mappar clean URLs till HTML-filer&#10;  - / → index.html&#10;  - /register → register.html  &#10;  - /login → login.html&#10;  - /all-cars → all-cars.html (undviker konflikt med CarController /cars API)&#10;  - /about → about.html&#10;  - /contact → contact.html&#10;  - /profile → profile.html&#10;  &#10;  - /admin/dashboard → admin-dashboard.html&#10;  - /admin/cars → admin-cars.html&#10;  - /admin/customers → admin-customers.html&#10;  - /admin/bookings → admin-bookings.html&#10;  - /admin/payments → admin-payments.html&#10;&#10;Frontend - Navigation uppdaterad i alla HTML-filer:&#10;* index.html - nav länkar till clean URLs&#10;* all-cars.html - nav länkar till clean URLs&#10;* contact.html - nav länkar till clean URLs  &#10;* register.html - nav länkar till clean URLs&#10;* login.html - nav länkar till clean URLs&#10;* profile.html - nav länkar till clean URLs&#10;* about.html - nav länkar + footer länkar + CTA knappar till clean URLs + fix: tog bort felaktig all-cars.js import&#10;* admin-dashboard.html - admin nav till clean URLs&#10;* admin-cars.html - admin nav till clean URLs&#10;* admin-customers.html - admin nav till clean URLs&#10;* admin-bookings.html - admin nav till clean URLs  &#10;* admin-payments.html - admin nav till clean URLs&#10;&#10;JavaScript - window.location och href uppdaterad:&#10;* auth.js - innerHTML href till clean URLs + logout redirect till /&#10;* register.js - success redirect till /login&#10;* index.js - login redirect till /login&#10;&#10;API-endpoints (/cars, /rentals etc.) påverkas EJ - bara sidnavigation" />
+    <MESSAGE value="Skapade customer-styles.css och my-bookings.html för att visa lista på bokningar samt avsboka bokning" />
+    <MESSAGE value="Tog bort testdata från my-bookings.html&#10;&#10;Skapade my-bookings.js för att koppla till backend" />
+    <MESSAGE value="&quot;Förbättra bokningssidan med modulär CSS-arkitektur och skalbar design&#10;&#10;- customer-styles.css: Lägg till nya modulära komponenter för användarnavigation, &#10;  premium bokningskort och förbättrade header-stilar med korrekt färgschema&#10;- my-bookings.html: Uppdatera till ren HTML-struktur utan inbäddade stilar för &#10;  bättre separation of concerns och skalbarhet&#10;- my-bookings.js: Implementera förbättrade bokningskort med registreringsnummer,&#10;  detaljerad fordonsinformation och förbättrad visuell presentation&#10;&#10;Fixar ikon-spacing, rubrikfärger och bakgrundskontrast för optimal användarupplevelse.&#10;Alla stilar nu organiserade modulärt för framtida utveckling och underhåll.&quot;" />
+    <MESSAGE value="Uppdaterade indelningen för bokningar med &quot;Bekräftade&quot;, &quot;Aktiva&quot;, &quot;Avslutade&quot;, &quot;Avbokade&quot;.&#10;&#10;Ändrade både i my-bookings.html och my-bookings.js" />
+    <MESSAGE value="feat: Implementera &quot;Lägg till bil&quot; funktionalitet för admin&#10;&#10;- Backend: Lägg till Spring Validation i Car.java entitet med svenska felmeddelanden&#10;- Backend: Förbättra CarController med @Valid, strukturerad felhantering och HTTP statuskoder  &#10;- Frontend: Skapa admin-cars.js med komplett formulärhantering och API-integration&#10;- Frontend: Uppdatera admin-cars.html med förbättrad layout och responsiv design&#10;- UX: Egen kolumn för registreringsnummer för bättre tydlighet&#10;- UX: Färgade status-badges (grön ACTIVE, röd INACTIVE) &#10;- UX: Förbättrade action-knappar med power-symbol för inaktivera&#10;- Funktionalitet: Kategori-dropdown hämtas dynamiskt från /categories API&#10;- Funktionalitet: Redigera bil-funktionalitet med modal pre-population&#10;- Funktionalitet: Komplett validation på både frontend och backend&#10;- Funktionalitet: Success/error-meddelanden och automatisk bil-lista uppdatering" />
+    <MESSAGE value="feat: Förbättra bil-hantering med sök, filter och bättre status-hantering&#10;&#10;- Frontend: Implementera komplett sök-funktionalitet (märke, modell, reg.nr, år, kategori)&#10;- Frontend: Lägg till status-filter (Alla/Endast aktiva/Endast inaktiva) med real-time filtrering&#10;- Backend: Lägg till PATCH /cars/{id}/status endpoint för status-uppdatering&#10;- UX: Ta bort separat inaktivera-knapp från tabellen för renare design&#10;- UX: Integrera status-hantering i redigera-modal med färgad dropdown&#10;- UX: Status-fält visas endast vid redigering, döljs för nya bilar&#10;- UX: Egen kolumn för registreringsnummer för bättre tydlighet&#10;- UX: Förbättrade färgade status-badges (grön ACTIVE, röd INACTIVE)&#10;- UX: Kombinerad sök + filter funktionalitet som fungerar tillsammans&#10;- Frontend: Debounced search (300ms) för optimal prestanda&#10;- Frontend: Smart pagination-info som visar &quot;(filtrerat)&quot; när filter aktivt&#10;- Funktionalitet: Bilar kan nu både aktiveras OCH inaktiveras via samma interface" />
+    <MESSAGE value="- Frontend: Ta bort alla alert() och confirm() browser-popups  &#10;- Frontend: Implementera Bootstrap Toast-system för meddelanden&#10;- Frontend: Skapa bekräftelse-modal istället för confirm() dialogs" />
+    <MESSAGE value="Separerade PageController till vanlig och admin" />
+    <MESSAGE value="Fixade styles i Navbar vid inloggad läge" />
+    <MESSAGE value="&quot;Fix: Inaktiva bilar visas inte längre som tillgängliga + Auto-scroll UX förbättring&#10;&#10;- CarService: Filtrera bara AKTIVA bilar i getAvailableCars() och ny getActiveCars() metod&#10;- CarController: Nytt /cars/active endpoint för kunder, /cars kvar för admin&#10;- index.js: Använd /cars/active för fallback + auto-scroll till sökresultat&#10;- UX: Automatisk scroll direkt till bilarna efter datumfiltering&#10;&#10;Filer ändrade: CarService.java, CarController.java, index.js&#10;Säkerhet: Inaktiva bilar kan ej bokas, all-cars.html opåverkad&quot;" />
+    <MESSAGE value="last changes on this branch" />
+    <MESSAGE value="Just misc.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Just misc.xml" />
+  </component>
+</project>

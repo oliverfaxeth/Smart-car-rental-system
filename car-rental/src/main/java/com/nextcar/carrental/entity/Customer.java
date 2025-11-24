@@ -1,5 +1,6 @@
 package com.nextcar.carrental.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,7 +11,7 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false, length = 50)
     private String firstName;
@@ -43,11 +44,12 @@ public class Customer {
     private LocalDateTime created_At;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private List<Rental> rentals;
 
     // Getters and setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -78,4 +80,12 @@ public class Customer {
 
     public LocalDateTime getCreated_At() { return created_At; }
     public void setCreated_At(LocalDateTime created_At) { this.created_At = created_At; }
+
+    public List<Rental> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(List<Rental> rentals) {
+        this.rentals = rentals;
+    }
 }

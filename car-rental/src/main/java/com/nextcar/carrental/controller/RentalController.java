@@ -2,12 +2,15 @@ package com.nextcar.carrental.controller;
 
 import com.nextcar.carrental.dto.BookingRequest;
 import com.nextcar.carrental.dto.BookingConfirmation;
+import com.nextcar.carrental.dto.CustomerBookingDTO;
+import com.nextcar.carrental.dto.LoginResponseDTO;
 import com.nextcar.carrental.entity.Rental;
+import com.nextcar.carrental.security.JwtTokenUtil;
 import com.nextcar.carrental.service.RentalService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,18 +18,20 @@ import java.util.Optional;
 @RequestMapping("/rentals")
 public class RentalController {
 
-    private final RentalService rentalService;
+    private RentalService rentalService;
 
     public RentalController(RentalService rentalService) {
         this.rentalService = rentalService;
     }
 
+    // FÖR ADMIN -- Kan bokas med vilken customerEmail
+    // FÖR CUSTOMER -- Kan bara bokas med sin EGNA customerEmail
     @PostMapping
     public BookingConfirmation createRental(@RequestBody BookingRequest request) {
 
         Rental rental = rentalService.createBooking(
                 request.getCarId(),
-                request.getCustomerId().longValue(), // för att göra integer till en Long
+                request.getCustomerEmail(),
                 request.getStartDate(),
                 request.getEndDate()
         );
@@ -44,20 +49,26 @@ public class RentalController {
         return confirmation;
     }
 
-    // GET /rentals/customer/{customerId} - Hämta alla bokningar för en specifik kund
+    // FÖR CUSTOMER -- Hämtar alla bokningar av inloggad customers token i body. Endpoint GET/rentals/my-bookings
     // Detta används för "Mina Bokningar" sidan
-    @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<Rental>> getRentalsByCustomerId(@PathVariable Integer customerId) {
-        List<Rental> customerRentals = rentalService.getRentalsByCustomerId(customerId);
+
+    // FÖR ADMIN -- Hämtar alla bokningar gjorda
+    @GetMapping("/my-bookings")
+    public ResponseEntity<List<CustomerBookingDTO>> getRentalsByCustomer(@RequestBody LoginResponseDTO loginResponseDTO) {
+
+        List<CustomerBookingDTO> customerRentals = rentalService.getBookingsDTOByUser(loginResponseDTO.getToken());
         return ResponseEntity.ok(customerRentals);
+
     }
 
-    // PUT /rentals/{rentalId}/cancel - Avboka en specifik bokning
+    // FÖR CUSTOMER -- Kan avboka en specifik bokning kopplad till deras Token via PUT /rentals/{rentalId}/cancel
     // Ändrar status från ACTIVE till CANCELLED
+
+    // FÖR ADMIN -- Kan avboka en vilken bokning som helst via rentalId
     @PutMapping("/{rentalId}/cancel")
-    public ResponseEntity<String> cancelRental(@PathVariable Integer rentalId) {
+    public ResponseEntity<String> cancelRental(@RequestBody LoginResponseDTO loginResponseDTO, @PathVariable Long rentalId) {
         // Försök att avboka bokningen
-        boolean success = rentalService.cancelRental(rentalId);
+        boolean success = rentalService.cancelRental(loginResponseDTO.getToken(), rentalId);
 
         if (success) {
             // Avbokning lyckades
@@ -70,26 +81,20 @@ public class RentalController {
                 // Bokningen finns inte
                 return ResponseEntity.notFound().build();
             } else {
-                // Bokningen finns men kan inte avbokas
                 return ResponseEntity.badRequest()
-                        .body("Bokningen kan inte avbokas eftersom startdatumet har passerat eller bokningen redan är avslutad");
+                        .body("Bokningen kan inte avbokas ( Auktoriserings fel / Bilen är redan avbokad");
             }
         }
     }
 
-    // GET /rentals/{rentalId} - Hämta en specifik bokning
-    // Används för att visa bokningsdetaljer och verifiera ägarskap
+    // FÖR CUSTOMER -- Kan se/hämta en specifik bokning kopplad till deras Token via PUT /rentals/{rentalId}
+
+    // FÖR ADMIN -- Kan se/hämta vilken bokning som helst via rentalId
     @GetMapping("/{rentalId}")
-    public ResponseEntity<Rental> getRentalById(@PathVariable Integer rentalId) {
-        Optional<Rental> rental = rentalService.getRentalById(rentalId);
+    public ResponseEntity<CustomerBookingDTO> getRentalById(@PathVariable Long rentalId, @RequestBody LoginResponseDTO loginResponseDTO) {
+        CustomerBookingDTO rental = rentalService.getRentalDTOById(loginResponseDTO.getToken(), rentalId);
 
-        if (rental.isPresent()) {
-            return ResponseEntity.ok(rental.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(rental);
     }
-
-
 }
 

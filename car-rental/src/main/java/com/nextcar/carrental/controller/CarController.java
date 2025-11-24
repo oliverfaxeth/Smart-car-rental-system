@@ -1,6 +1,8 @@
 package com.nextcar.carrental.controller;
 
+import com.nextcar.carrental.dto.CarResponseDTO;
 import com.nextcar.carrental.entity.Car;
+import com.nextcar.carrental.entity.CarsCategory;
 import com.nextcar.carrental.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,10 +29,10 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    // GET /cars - Hämta alla bilar (ink. inaktiva - bara för admin)
+    // GET /cars - Hämta alla bilar
     @GetMapping
-    public ResponseEntity<List<Car>> getAllCars() {
-        List<Car> cars = carService.getAllCars();
+    public ResponseEntity<List<CarResponseDTO>> getAllCars() {
+        List<CarResponseDTO> cars = carService.getAllCars();
         return ResponseEntity.ok(cars);
     }
 
@@ -46,7 +48,7 @@ public class CarController {
     public ResponseEntity<?> getAvailableCars(
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate,
-            @RequestParam(required = false) Integer categoryId,
+            @RequestParam(required = false) CarsCategory category,
             @RequestParam(required = false, defaultValue = "asc") String sort){
 
         // Validering 1: Kolla att parametrarna inte är null eller tomma
@@ -81,14 +83,16 @@ public class CarController {
         }
 
         // Om alla valideringar är OK, hämta tillgängliga bilar (med eller utan kategorifilter)
-        List<Car> availableCars = carService.getAvailableCars(start, end, categoryId, sort);
+        List<CarResponseDTO> availableCarsDTO = carService.userInputValidation(startDate, endDate, category, sort);
 
-        return ResponseEntity.ok(availableCars);
+        return ResponseEntity.ok(availableCarsDTO);
     }
+
+
 
     // GET /cars/5 - Hämta en specifik bil
     @GetMapping("/{id}")
-    public ResponseEntity<Car> getCarById(@PathVariable Integer id) {
+    public ResponseEntity<Car> getCarById(@PathVariable Long id) {
         Car car = carService.getCarById(id);
         if (car != null) {
             return ResponseEntity.ok(car);
@@ -96,6 +100,9 @@ public class CarController {
         return ResponseEntity.notFound().build();
     }
 
+    // Metoderna under ska låsas för ADMIN
+
+    // POST /cars - Skapa ny bil (admin)
     // POST /cars - Skapa ny bil (admin) - FÖRBÄTTRAD MED VALIDATION
     @PostMapping
     public ResponseEntity<?> createCar(@Valid @RequestBody Car car, BindingResult bindingResult) {
@@ -136,7 +143,7 @@ public class CarController {
         }
     }
 
-    // PUT /cars/5 - Uppdatera bil (admin) - OCKSÅ FÖRBÄTTRAD MED VALIDATION
+    // PUT /cars/5 - Uppdatera bil (admin)
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCar(@PathVariable Integer id, @Valid @RequestBody Car car, BindingResult bindingResult) {
 
@@ -171,6 +178,10 @@ public class CarController {
                     "message", "Ett fel uppstod när bilen skulle uppdateras: " + e.getMessage()
             ));
         }
+    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car car) {
+        car.setId(id);
+        Car updatedCar = carService.saveCar(car);
+        return ResponseEntity.ok(updatedCar);
     }
 
     // DELETE /cars/5 - Ta bort bil (admin)

@@ -54,7 +54,7 @@ const logout = () => {
     sessionStorage.removeItem('lastName');
     
     // Redirecta till startsidan
-    window.location.href = 'index.html';
+    window.location.href = '/';
 };
 
 // Uppdaterar gränssnittet baserat på användarens inloggningsstatus
@@ -72,8 +72,12 @@ const updateLoginUI = () => {
     console.log('✅ authButtons hittad, isAuthenticated:', isAuthenticated()); // 👈 Debug
     
     if (isAuthenticated()) {
-        const firstName = localStorage.getItem('firstName') || sessionStorage.getItem('firstName');
+        let firstName = localStorage.getItem('firstName') || sessionStorage.getItem('firstName');
         const userRole = getUserRole();
+
+        if (userRole === 'ADMIN') {   
+            firstName = 'Admin';
+        }
         
         // Rendera inloggade knappar
         if (userRole !== 'ADMIN') {
@@ -149,7 +153,7 @@ const protectPage = (requiredRole = null) => {
 };
 
 // Funktion för att redirecta till referrer eller annan sida
-const redirectToReferrer = (defaultUrl = 'index.html') => {
+const redirectToReferrer = (defaultUrl = '/') => {
     // Kontrollera om det finns en referrer URL sparad
     const referrer = sessionStorage.getItem('referrer');
     if (referrer) {

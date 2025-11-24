@@ -4,13 +4,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.context.annotation.Bean;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -35,14 +37,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String email = jwtTokenUtil.getEmailFromToken(token);
                 String role = jwtTokenUtil.getRoleFromToken(token);
 
-                UsernamePasswordAuthenticationToken authentication =
+                /*UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 email,
                                 null,
-                                Collections.singletonList(new SimpleGrantedAuthority(role))
+                                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
+                                // "ROLE_" för att fyllas ut med ADMIN ELLER CUSTOMER
+                                // Så att Spring Security kan använda PreAuthorize("hasRole('')")
                         );
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                SecurityContextHolder.getContext().setAuthentication(authentication);*/
             }
         }
 

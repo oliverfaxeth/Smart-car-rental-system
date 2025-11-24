@@ -1,10 +1,13 @@
 package com.nextcar.carrental.service;
 
+import com.nextcar.carrental.dto.CarResponseDTO;
 import com.nextcar.carrental.entity.Car;
+import com.nextcar.carrental.entity.CarsCategory;
 import com.nextcar.carrental.entity.Rental;
 import com.nextcar.carrental.repository.CarRepository;
 import com.nextcar.carrental.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,8 +28,21 @@ public class CarService {
 
 
     // Hämta alla bilar
-    public List<Car> getAllCars() {
-        return carRepository.findAll();
+    public List<CarResponseDTO> getAllCars() {
+        List<Car> list = carRepository.findAll();
+        return list.stream().map(
+                car -> new CarResponseDTO(
+                        car.getId(),
+                        car.getBrand(),
+                        car.getModel(),
+                        car.getYear(),
+                        car.getFuel(),
+                        car.getTransmission(),
+                        car.getCategory(),
+                        car.getSeats(),
+                        car.getPrice(),
+                        car.getImageUrl()))
+                        .collect(Collectors.toList());
     }
 
     // Hämta endast AKTIVA bilar (för kunder)
@@ -37,7 +53,7 @@ public class CarService {
     }
 
     // Hämta en bil via ID
-    public Car getCarById(Integer id) {
+    public Car getCarById(Long id) {
         return carRepository.findById(id).orElse(null);
     }
 
@@ -47,22 +63,19 @@ public class CarService {
     }
 
     // Ta bort en bil
-    public void deleteCar(Integer id) {
+    public void deleteCar(Long id) {
         carRepository.deleteById(id);
     }
 
     // Hitta tillgängliga bilar baserat på datumintervall OCH kategori
-    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate, Integer categoryId, String sort) {
-        // 1. Hämta endast AKTIVA bilar (KRITISK SÄKERHETSFIX)
-        // INAKTIVA bilar (på reparation, underhåll, etc.) ska ALDRIG visas som tillgängliga
-        List<Car> allCars = carRepository.findAll().stream()
-                .filter(car -> "ACTIVE".equalsIgnoreCase(car.getStatus()))
-                .collect(Collectors.toList());
+    public List<CarResponseDTO> getAvailableCars(LocalDate startDate, LocalDate endDate, CarsCategory category, String sort) {
+        // 1. Hämta alla bilar
+        List<Car> allCars = carRepository.findAll();
 
         // 2. Filtrera på kategori (om categoryId anges)
-        if (categoryId != null) {
+        if (category != null) {
             allCars = allCars.stream()
-                    .filter(car -> car.getCategoryId().equals(categoryId))
+                    .filter(car -> car.getCategory().equals(category))
                     .collect(Collectors.toList());
         }
 
@@ -74,57 +87,96 @@ public class CarService {
                 .filter(car -> isCarAvailable(car.getId(), startDate, endDate, allRentals))
                 .collect(Collectors.toList());
 
+        // 5. Mappa om avaliableCars från Car -> CarResponseDTO
+        List<CarResponseDTO> availableCarsDTO = availableCars.stream().map(
+                car -> new CarResponseDTO(
+                        car.getId(),
+                        car.getBrand(),
+                        car.getModel(),
+                        car.getYear(),
+                        car.getFuel(),
+                        car.getTransmission(),
+                        car.getCategory(),
+                        car.getSeats(),
+                        car.getPrice(),
+                        car.getImageUrl()))
+                .collect(Collectors.toList());
+
+
 
         // Om sort är specificerat, sortera bilarna
         if (sort != null && !sort.isEmpty()) {
-            availableCars = sortCars(availableCars, sort);
+            availableCarsDTO = sortCars(availableCarsDTO, sort);
         }
 
-        return availableCars;
+        return availableCarsDTO;
     }
 
-    public List<Car> sortCars(List<Car> cars, String sort) {
+    public List<CarResponseDTO> sortCars(List<CarResponseDTO> cars, String sort) {
 
-        List<Car> sortedCars = new ArrayList<>(cars);
+        List<CarResponseDTO> sortedCars = new ArrayList<>(cars);
 
         // Sortera bilar efter pris
         if ("desc".equalsIgnoreCase(sort)) {
             sortedCars.sort((a, b) -> b.getPrice().compareTo(a.getPrice()));
         } else {
             // Default är stigande ordning (lägsta först)
-            sortedCars.sort(Comparator.comparing(Car::getPrice));
+            sortedCars.sort(Comparator.comparing(CarResponseDTO::getPrice));
         }
 
         return sortedCars;
     }
 
     // Overload: Om inget categoryId anges, visa alla kategorier
-    public List<Car> getAvailableCars(LocalDate startDate, LocalDate endDate) {
+    public List<CarResponseDTO> getAvailableCars(LocalDate startDate, LocalDate endDate) {
         return getAvailableCars(startDate, endDate, null, "asc");
     }
 
     // Hjälpmetod: Kolla om en bil är tillgänglig
-    private boolean isCarAvailable(Integer carId, LocalDate startDate, LocalDate endDate, List<Rental> allRentals) {
+    private boolean isCarAvailable(Long carId, LocalDate startDate, LocalDate endDate, List<Rental> allRentals) {
         // Kolla om det finns någon bokning som överlappar
         for (Rental rental : allRentals) {
-            // Hoppa över bokningar som inte är aktiva eller bekräftade
-            if (!"ACTIVE".equals(rental.getStatus()) && !"CONFIRMED".equals(rental.getStatus())) {
-                continue;
-            }
-
-            // Kontrollera om det är samma bil
             if (rental.getCar().getId().equals(carId)) {
-                LocalDate rentalStart = rental.getStartDate();
-                LocalDate rentalEnd = rental.getEndDate();
-
-                // Kontrollera om datumintervallen överlappar
-                // Överlappning sker om: startDate < rentalEnd OCH endDate > rentalStart
-                if (startDate.isBefore(rentalEnd) && endDate.isAfter(rentalStart)) {
-                    return false; // Bilen är redan bokad
+                // Kolla om datumen överlappar
+                boolean overlaps = !(endDate.isBefore(rental.getStartDate()) || startDate.isAfter(rental.getEndDate()));
+                if (overlaps) {
+                    return false; // Bilen är INTE tillgänglig
                 }
             }
         }
         return true; // Bilen är tillgänglig
+    }
+
+    public List<CarResponseDTO> userInputValidation(String startDate, String endDate, CarsCategory category, String sort) {
+        // Validering 1: Kolla att parametrarna inte är null eller tomma
+        if (startDate == null || startDate.isEmpty() || endDate == null || endDate.isEmpty()) {
+            //throw new RuntimeException("Både startdatum och slutdatum måste anges");
+            throw new IllegalArgumentException("Både startdatum och slutdatum måste anges");
+        }
+
+        // Konvertera String till LocalDate
+        LocalDate start;
+        LocalDate end;
+
+        try {
+            start = LocalDate.parse(startDate);
+            end = LocalDate.parse(endDate);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Ogiltigt datumformat. Använd format: YYYY-MM-DD");
+        }
+
+        // Validering 2: Startdatum kan inte vara tidigare än dagens datum
+        LocalDate today = LocalDate.now();
+        if (start.isBefore(today)) { // BLOCKERAR TIDIGARE DATUM & IDAG
+            throw new IllegalArgumentException("Startdatum måste vara efter dagens datum");
+        }
+
+        // Validering 3: Slutdatum måste vara minst 1 dag efter startdatum
+        if (!end.isAfter(start)) {
+            throw new IllegalArgumentException("Slutdatum måste vara minst 1 dag efter startdatum");
+        }
+
+        return getAvailableCars(start, end, category, sort);
     }
 
 }
