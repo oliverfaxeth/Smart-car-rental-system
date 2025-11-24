@@ -82,9 +82,7 @@ public class CarController {
                     .body("Slutdatum måste vara minst 1 dag efter startdatum");
         }
 
-        // Om alla valideringar är OK, hämta tillgängliga bilar (med eller utan kategorifilter)
-        List<CarResponseDTO> availableCarsDTO = carService.userInputValidation(startDate, endDate, category, sort);
-
+        List<CarResponseDTO> availableCarsDTO = carService.getAvailableCars(start, end, category, sort);
         return ResponseEntity.ok(availableCarsDTO);
     }
 
@@ -100,6 +98,7 @@ public class CarController {
         return ResponseEntity.notFound().build();
     }
 
+    // ===== ADMIN-METODER =====
     // Metoderna under ska låsas för ADMIN
 
     // POST /cars - Skapa ny bil (admin)
@@ -130,7 +129,7 @@ public class CarController {
             // Returnera skapad bil med HTTP 201 Created + success-meddelande
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                     "success", true,
-                    "message", "Bil tillagd", // Enligt acceptanskriterier
+                    "message", "Bil tillagd",
                     "car", savedCar
             ));
 
@@ -145,16 +144,13 @@ public class CarController {
 
     // PUT /cars/5 - Uppdatera bil (admin)
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCar(@PathVariable Integer id, @Valid @RequestBody Car car, BindingResult bindingResult) {
+    public ResponseEntity<?> updateCar(@PathVariable Long id, @Valid @RequestBody Car car, BindingResult bindingResult) {
 
-        // Kontrollera validation-fel
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
-
             for (FieldError error : bindingResult.getFieldErrors()) {
                 errors.put(error.getField(), error.getDefaultMessage());
             }
-
             return ResponseEntity.badRequest().body(Map.of(
                     "success", false,
                     "message", "Validering misslyckades",
@@ -178,22 +174,19 @@ public class CarController {
                     "message", "Ett fel uppstod när bilen skulle uppdateras: " + e.getMessage()
             ));
         }
-    public ResponseEntity<Car> updateCar(@PathVariable Long id, @RequestBody Car car) {
-        car.setId(id);
-        Car updatedCar = carService.saveCar(car);
-        return ResponseEntity.ok(updatedCar);
     }
+
 
     // DELETE /cars/5 - Ta bort bil (admin)
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCar(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
         carService.deleteCar(id);
         return ResponseEntity.noContent().build();
     }
 
     // PATCH /cars/5/status - Uppdatera bil-status (ACTIVE/INACTIVE)
     @PatchMapping("/{id}/status")
-    public ResponseEntity<?> updateCarStatus(@PathVariable Integer id, @RequestBody Map<String, String> statusUpdate) {
+    public ResponseEntity<?> updateCarStatus(@PathVariable Long id, @RequestBody Map<String, String> statusUpdate) {
         try {
             String newStatus = statusUpdate.get("status");
 
@@ -201,17 +194,16 @@ public class CarController {
             if (!"ACTIVE".equals(newStatus) && !"INACTIVE".equals(newStatus)) {
                 return ResponseEntity.badRequest().body(Map.of(
                         "success", false,
-                        "message", "Status måste vara ACTIVE eller INACTIVE"
+                        "message", "Ogiltig status. Endast ACTIVE eller INACTIVE tillåten."
                 ));
             }
 
-            // Hämta bil
+            // Hämta bil och uppdatera status
             Car car = carService.getCarById(id);
             if (car == null) {
                 return ResponseEntity.notFound().build();
             }
 
-            // Uppdatera status
             car.setStatus(newStatus);
             Car updatedCar = carService.saveCar(car);
 
@@ -231,7 +223,7 @@ public class CarController {
         }
     }
 
-    // Global felhantering för validation-exceptions (backup)
+    // Global felhantering för validation-exceptions
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
