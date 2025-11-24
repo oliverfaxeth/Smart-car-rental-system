@@ -757,3 +757,100 @@ html {
         display: none;
     }
 }
+
+/* ===== MINIMAL PROFILE DROPDOWN ===== */
+/* Lägg till detta i slutet av customer-styles.css */
+
+/* Profile dropdown container */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown button (använder befintlig btn-profile styling) */
+.profile-dropdown .btn-profile {
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    position: relative;
+}
+
+/* Chevron icon för dropdown */
+.profile-dropdown .dropdown-chevron {
+    margin-left: 8px;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.profile-dropdown.open .dropdown-chevron {
+    transform: rotate(180deg);
+}
+
+/* Dropdown menu */
+.profile-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 180px;
+    padding: 8px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+}
+
+.profile-dropdown.open .profile-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Dropdown items */
+.profile-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.profile-dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #333;
+    text-decoration: none;
+}
+
+.profile-dropdown-item i {
+    width: 16px;
+    margin-right: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Specifika färger för olika items */
+.profile-dropdown-item.bookings i {
+    color: #28a745;
+}
+
+.profile-dropdown-item.profile i {
+    color: #007bff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-dropdown-menu {
+        min-width: 160px;
+        right: -10px;
+    }
+    
+    .profile-dropdown-item {
+        padding: 8px 14px;
+        font-size: 0.9rem;
+    }
+}

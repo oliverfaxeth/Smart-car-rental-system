@@ -100,9 +100,22 @@ class NextCarBookingsManager {
         const userName = this.currentUserName || 'Användare';
         
         authButtons.innerHTML = `
-            <a href="profile.html" class="btn-profile">
-                <i class="bi bi-person-circle"></i> ${userName}
-            </a>
+            <div class="profile-dropdown">
+                <button type="button" class="btn-profile" onclick="toggleProfileDropdown()" style="text-decoration: none; border: none;">
+                    <i class="bi bi-person-circle"></i> ${userName}
+                    <i class="bi bi-chevron-down dropdown-chevron"></i>
+                </button>
+                <div class="profile-dropdown-menu">
+                    <a href="my-bookings.html" class="profile-dropdown-item bookings" style="font-weight: 600; background-color: #f8f9fa;">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Mina Bokningar</span>
+                    </a>
+                    <a href="profile.html" class="profile-dropdown-item profile">
+                        <i class="bi bi-person-gear"></i>
+                        <span>Redigera Profil</span>
+                    </a>
+                </div>
+            </div>
             <a href="#" id="logoutBtn" class="btn-logout">
                 <i class="bi bi-box-arrow-right"></i> Logga ut
             </a>
@@ -662,3 +675,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 console.log('📄 NextCar BookingsManager v2.0 laddad framgångsrikt');
+
+// Profile dropdown funktioner för my-bookings
+function toggleProfileDropdown() {
+    const dropdown = document.querySelector('.profile-dropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('open');
+    }
+}
+
+document.addEventListener('click', function(event) {
+    const dropdown = document.querySelector('.profile-dropdown');
+    if (dropdown && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('open');
+    }
+});

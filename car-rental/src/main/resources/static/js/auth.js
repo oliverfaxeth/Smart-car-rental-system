@@ -76,14 +76,38 @@ const updateLoginUI = () => {
         const userRole = getUserRole();
         
         // Rendera inloggade knappar
-        authContainer.innerHTML = `
-            <a href="${userRole === 'ADMIN' ? 'admin/dashboard' : '/profile'}" class="btn-profile" style="text-decoration: none;">
-                <i class="bi bi-person-circle"></i> ${firstName || (userRole === 'ADMIN' ? 'Admin' : 'Profil')}
-            </a>
-            <a href="#" id="logoutBtn" class="btn-logout" style="text-decoration: none; margin-left: 10px;">
-                <i class="bi bi-box-arrow-right"></i> Logga ut
-            </a>
-        `;
+        if (userRole !== 'ADMIN') {
+            authContainer.innerHTML = `
+                <div class="profile-dropdown">
+                    <button type="button" class="btn-profile" onclick="toggleProfileDropdown()" style="text-decoration: none; border: none;">
+                        <i class="bi bi-person-circle"></i> ${firstName || 'Profil'}
+                        <i class="bi bi-chevron-down dropdown-chevron"></i>
+                    </button>
+                    <div class="profile-dropdown-menu">
+                        <a href="my-bookings.html" class="profile-dropdown-item bookings">
+                            <i class="bi bi-calendar-check"></i>
+                            <span>Mina Bokningar</span>
+                        </a>
+                        <a href="profile.html" class="profile-dropdown-item profile">
+                            <i class="bi bi-person-gear"></i>
+                            <span>Redigera Profil</span>
+                        </a>
+                    </div>
+                </div>
+                <a href="#" id="logoutBtn" class="btn-logout" style="text-decoration: none; margin-left: 10px;">
+                    <i class="bi bi-box-arrow-right"></i> Logga ut
+                </a>
+            `;
+        } else {
+            authContainer.innerHTML = `
+                <a href="admin/dashboard" class="btn-profile" style="text-decoration: none;">
+                    <i class="bi bi-person-circle"></i> ${firstName || 'Admin'}
+                </a>
+                <a href="#" id="logoutBtn" class="btn-logout" style="text-decoration: none; margin-left: 10px;">
+                    <i class="bi bi-box-arrow-right"></i> Logga ut
+                </a>
+            `;
+        }
         
         // Lägg till utloggningsfunktion
         const logoutBtn = document.getElementById('logoutBtn');
@@ -139,3 +163,18 @@ const redirectToReferrer = (defaultUrl = 'index.html') => {
 
 // Kör updateLoginUI när DOM är redo
 document.addEventListener('DOMContentLoaded', updateLoginUI);
+
+// ===== PROFILE DROPDOWN FUNKTIONER (TILLAGD) =====
+function toggleProfileDropdown() {
+    const dropdown = document.querySelector('.profile-dropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('open');
+    }
+}
+
+document.addEventListener('click', function(event) {
+    const dropdown = document.querySelector('.profile-dropdown');
+    if (dropdown && !dropdown.contains(event.target)) {
+        dropdown.classList.remove('open');
+    }
+});
