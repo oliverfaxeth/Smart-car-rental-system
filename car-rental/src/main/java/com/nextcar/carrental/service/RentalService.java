@@ -260,7 +260,7 @@ public class RentalService {
         return savedRental;
     }
     private long calculateDays(LocalDate start, LocalDate end) {
-        return ChronoUnit.DAYS.between(start, end) + 1;
+        return ChronoUnit.DAYS.between(start, end);
     }
 }
 

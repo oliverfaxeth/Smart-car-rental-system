@@ -67,7 +67,7 @@ public class RentalController {
 
         confirmation.setEndDate(rental.getEndDate().toString());
 
-        confirmation.setTotalDays((int) java.time.temporal.ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()) + 1);
+        confirmation.setTotalDays((int) java.time.temporal.ChronoUnit.DAYS.between(rental.getStartDate(), rental.getEndDate()));
         confirmation.setTotalPrice(rental.getPayment().getAmount());
 
         // Returnerar 201 Created med bekräftelsen i kroppen
@@ -79,11 +79,9 @@ public class RentalController {
 
     // FÖR ADMIN -- Hämtar alla bokningar gjorda
     @GetMapping("/my-bookings")
-    public ResponseEntity<List<CustomerBookingDTO>> getRentalsByCustomer(@RequestBody LoginResponseDTO loginResponseDTO) {
-
-        List<CustomerBookingDTO> customerRentals = rentalService.getBookingsDTOByUser(loginResponseDTO.getToken());
+    public ResponseEntity<List<CustomerBookingDTO>> getRentalsByCustomer(@RequestHeader("Authorization") String token) {
+        List<CustomerBookingDTO> customerRentals = rentalService.getBookingsDTOByUser(token);
         return ResponseEntity.ok(customerRentals);
-
     }
 
     // FÖR CUSTOMER -- Kan avboka en specifik bokning kopplad till deras Token via PUT /rentals/{rentalId}/cancel
