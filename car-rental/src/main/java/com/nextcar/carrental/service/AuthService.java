@@ -7,6 +7,7 @@ import com.nextcar.carrental.entity.Customer;
 import com.nextcar.carrental.repository.AdminRepository;
 import com.nextcar.carrental.repository.CustomerRepository;
 import com.nextcar.carrental.security.JwtTokenUtil;
+import com.nextcar.carrental.security.PasswordEncoderConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 //import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,8 +25,8 @@ public class AuthService {
     @Autowired
     private AdminRepository adminRepository;
 
-    //@Autowired
-    //private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoderConfig passwordEncoderConfig;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -39,17 +40,20 @@ public class AuthService {
         Optional<Admin> adminOpt = adminRepository.findByEmail(email);
         if (customerOpt.isPresent()) {
             Customer customer = customerOpt.get();
-                String token = jwtTokenUtil.generateToken(customer.getEmail(), "CUSTOMER");
-                return new LoginResponseDTO(customer.getId(), token, customer.getFirstName(), "CUSTOMER");
+                if (passwordEncoderConfig.passwordEncoder().matches(rawPassword, customer.getPassword())) {
+                    String token = jwtTokenUtil.generateToken(customer.getEmail(), "CUSTOMER");
+                    return new LoginResponseDTO(customer.getId(), token, customer.getFirstName(), "CUSTOMER");
+                }
         }
         // 2) Try admin
         else if (adminOpt.isPresent()) {
             Admin admin = adminOpt.get();
-            String token = jwtTokenUtil.generateToken(admin.getEmail(), "ADMIN");
-            return new LoginResponseDTO(admin.getId(), token, "Admin", "ADMIN");
+            if (passwordEncoderConfig.passwordEncoder().matches(rawPassword, admin.getPassword())) {
+                String token = jwtTokenUtil.generateToken(admin.getEmail(), "ADMIN");
+                return new LoginResponseDTO(admin.getId(), token, "Admin", "ADMIN");
+            }
         }
         // 3) Not found in either
-        else
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
     }
 }
